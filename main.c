@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/12 15:06:51 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/12 17:33:56 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void	print_prompt_string(void)
 	ft_putstr_fd("minishell$> ", 1);
 }
 
+void handler(int num)
+{
+	printf("поймал сигнал: %d\n", num);
+}
+
 int	main(int argc, char **argv)
 {
 	(void) argc;
@@ -35,6 +40,7 @@ int	main(int argc, char **argv)
 	char *s;
 	char *temp;
 	
+	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	s = malloc(1000);
 	using_history();    /* initialize history */
 	temp = NULL;

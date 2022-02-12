@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/12 15:02:49 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/12 17:35:31 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@
 # include <histedit.h>
 # include <string.h>
 
+typedef struct s_cmd
+{
+	int				flag_exit;
+	int				single_quot;
+	int				double_quot;//для парсинга кавычек, флаги загораются при открытии кавычки и гаснут при закрытии
+	int				pipe;
+	int				redirect;
+	int				exit_code; //с каким кодом завершилась команда
+	struct s_cmd	*next;
+	struct s_cmd	*previous;//сделаем двусвязный, как в пайпексе
+	
+	
+}	t_cmd;
 
 void	ft_putstr_fd(char *s, int fd);
 
