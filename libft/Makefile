@@ -6,7 +6,7 @@
 #    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 20:08:26 by dirony            #+#    #+#              #
-#    Updated: 2021/10/16 18:06:15 by dirony           ###   ########.fr        #
+#    Updated: 2022/02/16 21:47:00 by dirony           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,15 +27,15 @@ SRC = 		ft_isalpha.c		ft_calloc.c\
 			ft_memmove.c		ft_putstr_fd.c\
 			ft_strlcpy.c		ft_putendl_fd.c\
 			ft_strlcat.c		ft_putnbr_fd.c\
-			ft_toupper.c\
-			ft_tolower.c\
-			ft_strchr.c\
-			ft_strrchr.c\
-			ft_strncmp.c\
-			ft_memchr.c\
-			ft_memcmp.c\
-			ft_strnstr.c\
-			ft_atoi.c
+			ft_toupper.c		ft_tolower.c\
+			ft_strchr.c			ft_strrchr.c\
+			ft_strncmp.c		ft_memchr.c\
+			ft_memcmp.c			ft_strnstr.c\
+			ft_atoi.c			ft_lstnew_bonus.c\
+			ft_lstadd_front_bonus.c		ft_lstiter_bonus.c\
+			ft_lstadd_back_bonus.c		ft_lstmap_bonus.c\
+			ft_lstlast_bonus.c			ft_lstdelone_bonus.c\
+			ft_lstclear_bonus.c	ft_lstsize_bonus.c
 
 SRC_BONUS = ft_lstnew_bonus.c			ft_lstsize_bonus.c\
 			ft_lstadd_front_bonus.c		ft_lstiter_bonus.c\
