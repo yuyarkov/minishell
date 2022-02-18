@@ -6,14 +6,15 @@
 #    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/02/16 21:44:53 by dirony           ###   ########.fr        #
+#    Updated: 2022/02/18 20:35:51 by dirony           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS = 	main.c						parse_utils.c\
-		list_utils.c				error_utils.c
+		list_utils.c				error_utils.c\
+		exec_utils.c
 	
 LIBDIR =   ./libft/
 

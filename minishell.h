@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/16 21:50:13 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/18 20:34:14 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_list	*add_cmd_to_list(int argc, char **argv, char **envp);
 char	*get_cmd_name(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
+
+void	execute_with_redirect(int *fd, t_list *list, char **envp);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/16 21:49:58 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/18 20:49:09 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_list
 {
 	char			*content;
 	char			*cmd;
+	char			**arguments;
 	int				flag_exit;
 	int				single_quot;
 	int				double_quot;//для парсинга кавычек, флаги загораются при открытии кавычки и гаснут при закрытии

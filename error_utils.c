@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/16 21:22:17 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/18 19:39:42 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void	print_cmd_error(char *argv)
 	ft_putstr_fd("minishell: command not found: ", 2);
 	ft_putstr_fd(get_cmd_name(argv), 2);
 	ft_putstr_fd("\n", 2);
-	exit (EXIT_FAILURE);
 }
