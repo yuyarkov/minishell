@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/16 21:07:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/19 17:38:52 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,16 @@ char	*find_cmd_path(char *cmd, char *path)
 	i = 0;
 	result = NULL;
 	temp = get_cmd_name(cmd);
-	cmd = ft_strjoin("/", temp);
+	if (cmd[0] != '/') //похоже на костыль, чтобы не добавлять второй / 
+		cmd = ft_strjoin("/", temp);
+	//printf("get_cmd_name: %s\n", cmd);
 	free(temp);
 	while (dirs[i] && !result)
 	{
-		temp = ft_strjoin(dirs[i], cmd);
+		if (ft_strncmp(dirs[i], cmd, ft_strlen(dirs[i])) != 0)//ещё костыль, чтобы учесть команды, где уже указан полный путь
+			temp = ft_strjoin(dirs[i], cmd);
+		else
+			temp = ft_strdup(cmd);
 		if (access(temp, 1 << 0) == 0)
 			result = ft_strdup(temp);
 		free(temp);
@@ -56,6 +61,7 @@ char	*find_cmd_path(char *cmd, char *path)
 		free(dirs[i++]);
 	free(dirs);
 	free(cmd);
+	//printf("результат из find_cmd_path: %s\n", result);
 	return (result);
 }
 
@@ -66,6 +72,8 @@ char	*get_cmd_path(char *cmd, char **envp)
 	char	start[5];
 	int		result;
 
+//	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
+//		return (cmd); //но при этом перестаёт работать pwd
 	result = 0;
 	i = 0;
 	while (!result && envp[i])

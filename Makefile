@@ -6,7 +6,7 @@
 #    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/02/18 20:35:51 by dirony           ###   ########.fr        #
+#    Updated: 2022/02/19 15:55:36 by dirony           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,8 @@ $(NAME)	:	$(OBJS) $(LIBDIR)$(LIBFT)
 
 -include $(DEP)
 
+test	:  
+			bash ./test/test.sh my
 clean	: 		
 			@make clean -C $(LIBDIR)
 			@$(RM) $(OBJS) $(DEP)
@@ -72,4 +74,4 @@ fclean	:	clean
 
 re		:	fclean all
 
-.PHONY	: 	all clean fclean re libmake
+.PHONY	: 	all clean fclean re libmake test
