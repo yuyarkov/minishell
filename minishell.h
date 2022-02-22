@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/18 20:34:14 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/22 20:34:56 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@
 # include <histedit.h>
 # include <string.h>
 # include <errno.h>
+
+# define SEMICOLON 201
+# define AND_SIGN 202
+# define OR_SIGN 203
+
+
+typedef struct s_info
+{
+	int		num_of_commands;
+	int		*limiters;
+	t_list	*commands;
+}	t_info;
+
+void	get_info_from_string(char *s, t_info *info);
 
 t_list	*add_cmd_to_list(int argc, char **argv, char **envp);
 char	*get_cmd_name(char *cmd);

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/19 17:38:52 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/22 20:52:23 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,43 @@ char	*get_cmd_path(char *cmd, char **envp)
 		return (find_cmd_path(cmd, envp[result] + 5));
 	else
 		return (NULL);
+}
+
+void	get_info_from_string(char *s, t_info *info)
+{
+	int	i;
+	int	j;
+	int	num;
+
+	i = 0;
+	num = 0;
+	while (s[i] && s[i + 1])
+	{
+		if (s[i] == ';')
+			num++;
+		if (ft_strncmp(&s[i], "&&", 2) == 0 || ft_strncmp(&s[i], "||", 2) == 0)
+			num++;
+		i++;			
+	}
+	if (num == 0)
+		info->num_of_commands = 1;
+	else
+		info->num_of_commands = num + 1;
+	info->limiters = malloc(sizeof(int) * info->num_of_commands);
+	if (NULL == info->limiters)
+		exit(EXIT_FAILURE);
+	i = 0;
+	j = 0;
+	while (s[i] && s[i + 1])
+	{
+		if (s[i] == ';')
+			info->limiters[j++] = SEMICOLON;
+		if (ft_strncmp(&s[i], "&&", 2) == 0)
+			info->limiters[j++] = AND_SIGN;
+		if (ft_strncmp(&s[i], "||", 2) == 0)
+			info->limiters[j++] = OR_SIGN;
+		i++;
+	}
+	if (num == 0)
+		info->limiters[0] = SEMICOLON;
 }

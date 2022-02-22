@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/19 17:39:15 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/22 21:22:58 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_commands_list(t_list *cmd)
 }
 
 
-t_list	*parse_cmd(char *str, char **envp)
+t_list	*parse_cmd(char *str, t_info *info, char **envp)
 {
 	char	**commands;
 	t_list	*result;
@@ -85,15 +85,18 @@ int	main(int argc, char **argv, char **envp)
 	rl_outstream = stderr;
 	char 	*str;
 	t_list	*commands;
+	int		status;
+	t_info	info;
 	
 	str = NULL;
+	status = 0; //возвращать статус из дочерних процессов
 	if (argc >= 3)
 	{
 		if (ft_strncmp(argv[1], "-c", 3) == 0)
 			str = argv[2];
 	}
-	// if (execve("/bin/ls", argv, envp) == -1) 
-	// 	perror ("Could not execve /bin/ls");
+						// if (execve("/bin/ls", argv, envp) == -1) 
+						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
 	while (ft_strncmp(str, "exit\0", 5) != 0)
@@ -103,14 +106,20 @@ int	main(int argc, char **argv, char **envp)
 			str = readline("minishell$");//readline сама выводит строку приглашения
 			add_history(str);
 		}
-		commands = parse_cmd(str, envp);
-		//print_commands_list(commands);
+		get_info_from_string(str, &info);
+						// printf("info->num_of_commands: %d\n", info.num_of_commands);
+						// for (int i = 0; i < info.num_of_commands - 1; i++)
+						// 	printf("limeter[%d]: %d\n", i, info.limiters[i]);
+		commands = parse_cmd(str, &info, envp);
+						//print_commands_list(commands);
 		if (ft_strncmp(str, "exit\0", 5) != 0)//ничего поизящнее не придумал
 		{
 			execute_commands(commands, envp);
 			str = NULL;
 		}
+				//где-то здесь нужно освобождать структуры
 	}
 	
-	return (0);
+	
+	return (status);
 }
