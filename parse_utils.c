@@ -6,11 +6,29 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/22 20:52:23 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/23 16:04:15 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_exit_command(char *str)
+{
+	if (ft_strncmp(str, "exit\0", 5) == 0)
+		return (1);
+	else
+		return (0);
+}
+
+int is_builtin_command(char *s)
+{
+	if (ft_strncmp(s, "exit", 4) == 0)
+		return (1);
+	if (ft_strncmp(s, "cd", 2) == 0)//как отличать случаи cdk, cdcd и т.д.?
+		return (1);
+	
+	return (0);
+}
 
 char	*get_cmd_name(char *cmd)
 {
@@ -74,6 +92,8 @@ char	*get_cmd_path(char *cmd, char **envp)
 
 //	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
 //		return (cmd); //но при этом перестаёт работать pwd
+	if (is_builtin_command(cmd))
+		return (cmd);
 	result = 0;
 	i = 0;
 	while (!result && envp[i])

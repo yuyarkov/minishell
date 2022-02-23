@@ -6,13 +6,13 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/18 21:07:26 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/23 13:37:14 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*create_elem(char *argv, char **envp)
+t_list	*create_elem(char *str, char **envp)
 {
 	t_list	*new_elem;
 
@@ -21,10 +21,10 @@ t_list	*create_elem(char *argv, char **envp)
 		return (NULL);
 	new_elem->next = NULL;
 	new_elem->previous = NULL;
-	new_elem->cmd = get_cmd_path(argv, envp);
+	new_elem->cmd = get_cmd_path(str, envp);
 	if (!new_elem->cmd)
-		print_cmd_error(argv);
-	new_elem->arguments = ft_split(argv, ' ');
+		print_cmd_error(str);
+	new_elem->arguments = ft_split(str, ' ');
 	new_elem->end[0] = 0;//для пайпов пригодится
 	new_elem->end[1] = 0;
 	return (new_elem);

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/22 21:22:58 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/23 16:03:16 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ void	print_commands_list(t_list *cmd)
 }
 
 
-t_list	*parse_cmd(char *str, t_info *info, char **envp)
+t_list	*parse_commands(char *str, t_info *info, char **envp)
 {
 	char	**commands;
 	t_list	*result;
 	int		num_of_commands;
 	
+	(void) info;
 	if (ft_strchr(str, '|')) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
 		commands = ft_split(str, '|');
 	else
@@ -58,27 +59,48 @@ void	execute_cmd(t_list *cmd, char **envp)
 	//printf("вот такую команду исполняю: %s\n", cmd->cmd);
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);//подумать, как брать корректный код выхода из execve
 }
 
-void	execute_commands(t_list *commands, char **envp)
+int	execute_builtin(t_list *cmd, char **envp)
+{
+	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
+		return (execute_cd_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
+		return (execute_exit_command(cmd, envp));
+	return (0);
+}
+
+int	execute_commands(t_list *commands, char **envp)
 {
 	pid_t	child;
 	int		status;
 	t_list	*iter;
 	
+	status = 0;
 	iter = commands;
 	while(iter)
 	{
-		child = fork();
-		if (child < 0)
-			return (perror("Fork: "));
-		if (child == 0)
-			execute_cmd(iter, envp);
-		waitpid(child, &status, 0);
+		if (is_builtin_command(iter->cmd))
+			status = execute_builtin(iter, envp);
+		else
+		{
+			child = fork();
+			if (child < 0)
+			{
+				perror("Fork: ");
+				return (-1);//подумать, какой правильный код возвращать
+			}
+			if (child == 0)
+				execute_cmd(iter, envp);
+			waitpid(child, &status, 0);
+		}
 		iter = iter->next;
 	}
+	return (status);
 }
+
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -99,7 +121,7 @@ int	main(int argc, char **argv, char **envp)
 						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	while (ft_strncmp(str, "exit\0", 5) != 0)
+	while (!is_exit_command(str))
 	{
 		if (!str) //для разделения случая, когда команда пришла в аргументах при запуске
 		{
@@ -110,11 +132,11 @@ int	main(int argc, char **argv, char **envp)
 						// printf("info->num_of_commands: %d\n", info.num_of_commands);
 						// for (int i = 0; i < info.num_of_commands - 1; i++)
 						// 	printf("limeter[%d]: %d\n", i, info.limiters[i]);
-		commands = parse_cmd(str, &info, envp);
+		commands = parse_commands(str, &info, envp);
 						//print_commands_list(commands);
-		if (ft_strncmp(str, "exit\0", 5) != 0)//ничего поизящнее не придумал
+		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
-			execute_commands(commands, envp);
+			status = execute_commands(commands, envp);
 			str = NULL;
 		}
 				//где-то здесь нужно освобождать структуры
