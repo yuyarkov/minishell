@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/18 20:49:09 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/25 19:59:52 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,13 @@
 
 typedef struct s_list
 {
-	char			*content;
-	char			*cmd;
-	char			**arguments;
-	int				flag_exit;
-	int				single_quot;
-	int				double_quot;//для парсинга кавычек, флаги загораются при открытии кавычки и гаснут при закрытии
-	int				pipe;
-	int				end[2];
-	int				redirect;
+	char			*cmd;// сама команда, например ls или cat
+	char			**arguments;//вся строка с командой и аргументами, например "ls -la"
+	//int				single_quot;
+	//int				double_quot;//для парсинга кавычек, флаги загораются при открытии кавычки и гаснут при закрытии
+	int				limiter; //коды int SEMICOLON, AND_SIGN и т.д.
+	int				end[2];//заполняется, если есть pipe
+	int				redirect;//тут наверно помимо флага нужно ещё поле для пути файла
 	int				exit_code; //с каким кодом завершилась команда
 	struct s_list	*next;
 	struct s_list	*previous;//сделаем двусвязный, как в пайпексе

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/23 16:03:16 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/25 19:45:39 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	execute_builtin(t_list *cmd, char **envp)
 		return (execute_cd_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
 		return (execute_exit_command(cmd, envp));
+	// if (ft_strncmp(cmd->cmd, "export ", 7) == 0)
+	// 	return (execute_export_command(cmd, envp));
 	return (0);
 }
 
@@ -121,7 +123,7 @@ int	main(int argc, char **argv, char **envp)
 						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	while (!is_exit_command(str))
+	while (!is_exit_command(str))//надо будет менять условие для бесконечного цикла
 	{
 		if (!str) //для разделения случая, когда команда пришла в аргументах при запуске
 		{

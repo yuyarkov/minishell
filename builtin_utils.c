@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/23 16:05:09 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/25 19:43:11 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	execute_cd_command(t_list *cmd, char **envp)
 	(void) envp;
 	path = ft_substr(cmd->cmd, 3, ft_strlen(cmd->cmd) - 3);
 	//printf("inside execute_cd, path: %s\n", path);
-	chdir(path); //заработало. добавить обработку ошибок
+	printf("chdir result: %d\n", chdir(path)); //заработало. добавить обработку ошибок
 	return (0);
 }
 

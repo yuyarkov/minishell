@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/23 16:02:40 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/25 21:10:08 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ typedef struct s_info
 {
 	int		num_of_commands;
 	int		*limiters;
+	int		in_redirect;
+	int		out_redirect;
+	int		err_redirect;
 	t_list	*commands;
 }	t_info;
 
