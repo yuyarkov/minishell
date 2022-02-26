@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/25 19:59:52 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/26 13:19:37 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 typedef struct s_list
 {
+	void			*content;
 	char			*cmd;// сама команда, например ls или cat
 	char			**arguments;//вся строка с командой и аргументами, например "ls -la"
 	//int				single_quot;

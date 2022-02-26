@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/23 13:37:14 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/26 17:51:52 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ t_list	*create_elem(char *str, char **envp)
 		return (NULL);
 	new_elem->next = NULL;
 	new_elem->previous = NULL;
-	new_elem->cmd = get_cmd_path(str, envp);
+	if (is_builtin_command(str))
+		new_elem->cmd = str;
+	else
+		new_elem->cmd = get_cmd_path(str, envp);
 	if (!new_elem->cmd)
 		print_cmd_error(str);
 	new_elem->arguments = ft_split(str, ' ');
@@ -35,22 +38,22 @@ t_list	*add_cmd_to_list(int argc, char **commands, char **envp)
 	int		i;
 	t_list	*new_elem;
 	t_list	*list;
-	char	*temp;
+	//char	*temp;
 
-	i = 0;
 	new_elem = NULL;
-	list = create_elem(commands[i], envp);
-	while (i < argc - 1)
+	list = create_elem(commands[0], envp);
+	i = 1;
+	while (i < argc)
 	{
-		temp = get_cmd_path(commands[i], envp);
-		if (temp)
-		{	
+		// temp = get_cmd_path(commands[i], envp);
+		// if (temp)
+		// {	
 			new_elem = create_elem(commands[i], envp);
 			ft_lstadd_back(&list, new_elem);
-		}
-		else
-			print_cmd_error(commands[i]);
-		free(temp);
+		// }
+		// else
+		// 	print_cmd_error(commands[i]);
+		// free(temp);
 		i++;
 	}
 	return (list);

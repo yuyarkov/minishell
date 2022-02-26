@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/25 21:10:08 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/26 17:25:49 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,28 @@
 # include <string.h>
 # include <errno.h>
 
-# define SEMICOLON 201
-# define AND_SIGN 202
+# define SPACES " \n\t\v\f\r"
+# define SEMICOLON 202
+# define PIPE 204
+# define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
 # define OR_SIGN 203
 
+typedef struct s_limiter
+{
+	int	sign;
+	int	index;
+} t_limiter;
 
 typedef struct s_info
 {
-	int		num_of_commands;
-	int		*limiters;
-	int		in_redirect;
-	int		out_redirect;
-	int		err_redirect;
-	t_list	*commands;
+	int			num_of_commands;
+	t_limiter	*limiters;
+	int			in_redirect;
+	int			out_redirect;
+	int			err_redirect;
+	t_list		*commands;
 }	t_info;
+
 
 int		is_exit_command(char *str);
 int 	is_builtin_command(char *s);

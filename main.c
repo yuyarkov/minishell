@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/25 19:45:39 by dirony           ###   ########.fr       */
+/*   Updated: 2022/02/26 17:55:22 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,49 @@ void	print_commands_list(t_list *cmd)
 	}	
 }
 
+char	**split_commands_by_limiters(char *str, t_info *info)
+{
+	char	**result;
+	int		length;
+	int		index;
+	int		i;
+
+
+	result = malloc(sizeof(char *) * (info->num_of_commands + 1));
+	if (NULL == result)
+		exit(EXIT_FAILURE);
+	result[0] = ft_strtrim(ft_substr(str, 0, info->limiters[0].index), SPACES);//подумать над освобождением строк после trim и substr
+	//printf("result[0]: %s\n", result[0]);
+	i = 1;
+	while (i < info->num_of_commands)
+	{
+		index = info->limiters[i - 1].index + (info->limiters[i - 1].sign % 2 + 1);
+		length = info->limiters[i].index - index;
+		result[i] = ft_strtrim(ft_substr(str, index, length), SPACES);
+		//printf("result[%d]: %s\n", i, result[i]);
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
+}
 
 t_list	*parse_commands(char *str, t_info *info, char **envp)
 {
 	char	**commands;
 	t_list	*result;
-	int		num_of_commands;
 	
-	(void) info;
-	if (ft_strchr(str, '|')) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
-		commands = ft_split(str, '|');
+	if (info->num_of_commands > 1) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
+		commands = split_commands_by_limiters(str, info);
 	else
 	{
 		commands = malloc(sizeof(char *) * 2);
 		commands[0] = str; //и помечаю пустым последний элемент массива строк
 		commands[1] = NULL;
 	}
-	num_of_commands = 0;
-	while (commands[num_of_commands])
-		num_of_commands++;
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], num_of_commands);
-	result = add_cmd_to_list(num_of_commands, commands, envp);
-
+	
+	result = add_cmd_to_list(info->num_of_commands, commands, envp);
+	//добавить освобождение commands и строк
 	return (result);
 }
 
