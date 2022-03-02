@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/26 13:19:37 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/02 20:38:33 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ typedef struct s_list
 	int				exit_code; //с каким кодом завершилась команда
 	struct s_list	*next;
 	struct s_list	*previous;//сделаем двусвязный, как в пайпексе
-	
-	
 }	t_list;
 
 void	*ft_memset(void *s, int value, size_t num_bytes);

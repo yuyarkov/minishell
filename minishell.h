@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/26 17:25:49 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/02 21:18:55 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_limiter
 {
 	int	sign;
 	int	index;
-} t_limiter;
+}	t_limiter;
 
 typedef struct s_info
 {
@@ -45,20 +45,19 @@ typedef struct s_info
 	t_list		*commands;
 }	t_info;
 
-
 int		is_exit_command(char *str);
-int 	is_builtin_command(char *s);
+int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
 t_list	*add_cmd_to_list(int argc, char **argv, char **envp);
 char	*get_cmd_name(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
-
+// builtin's //
 int		execute_cd_command(t_list *cmd, char **envp);
 int		execute_exit_command(t_list *cmd, char **envp);
+int		execute_echo_n_command(t_list *cmd, char **envp);
 
 void	execute_with_redirect(int *fd, t_list *list, char **envp);
-
 
 #endif

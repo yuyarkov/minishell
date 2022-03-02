@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/26 17:54:56 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/02 21:17:37 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 int	execute_cd_command(t_list *cmd, char **envp)
 {
 	char	*path;
-	
 
 	(void) envp;
 	path = ft_substr(cmd->cmd, 3, ft_strlen(cmd->cmd) - 3);
-	//printf("inside execute_cd, path: %s\n", path);
-	chdir(path); //заработало. добавить обработку ошибок
+	printf("inside execute_cd, path: %s\n", path);
+	chdir(path);//заработало. добавить обработку ошибок
 	return (0);
 }
 
@@ -43,9 +42,9 @@ int	is_numeric(char *s)
 int	execute_exit_command(t_list *cmd, char **envp)
 {
 	int		exit_code;
-	char 	**argv;
+	char	**argv;
 	int		argc;
-	
+
 	(void) envp;
 	argv = ft_split(cmd->cmd, ' ');
 	argc = 0;
@@ -72,4 +71,19 @@ int	execute_exit_command(t_list *cmd, char **envp)
 		}
 	}
 	return (1);//какой должен быть код?
+}
+
+int	execute_echo_n_command(t_list *cmd, char **envp)
+{
+	int		iterator;
+
+	(void) envp;
+	iterator = 0;
+	while (cmd->arguments[iterator])
+	{
+		ft_putstr_fd(cmd->arguments[iterator++], 1);
+		ft_putchar_fd(' ', 1);
+		printf("HERE\n");//не захожу сюда
+	}// проверить после написания unset. или есть другой способ?
+	return (0);
 }

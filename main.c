@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/26 17:55:22 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/02 21:17:06 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handler(int num)
+void	handler(int num)
 {
 	printf("got the signal code: %d\n", num);
 }
@@ -35,7 +35,6 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	int		length;
 	int		index;
 	int		i;
-
 
 	result = malloc(sizeof(char *) * (info->num_of_commands + 1));
 	if (NULL == result)
@@ -89,8 +88,8 @@ int	execute_builtin(t_list *cmd, char **envp)
 		return (execute_cd_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
 		return (execute_exit_command(cmd, envp));
-	// if (ft_strncmp(cmd->cmd, "export ", 7) == 0)
-	// 	return (execute_export_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "echo -n ", 8) == 0)//где хранится флаг -n?
+		return (execute_echo_n_command(cmd, envp));
 	return (0);
 }
 
@@ -99,7 +98,7 @@ int	execute_commands(t_list *commands, char **envp)
 	pid_t	child;
 	int		status;
 	t_list	*iter;
-	
+
 	status = 0;
 	iter = commands;
 	while(iter)
@@ -123,8 +122,6 @@ int	execute_commands(t_list *commands, char **envp)
 	return (status);
 }
 
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	rl_outstream = stderr;
@@ -144,11 +141,12 @@ int	main(int argc, char **argv, char **envp)
 						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	while (!is_exit_command(str))//надо будет менять условие для бесконечного цикла
+	while (!is_exit_command(str))//Артём - можно запустить бесконечный цикл, while (true) например, и прописать последующие действия в ифах;
+								//Юра - надо будет менять условие для бесконечного цикла
 	{
-		if (!str) //для разделения случая, когда команда пришла в аргументах при запуске
+		if (!str) //для разделения   запуске
 		{
-			str = readline("minishell$");//readline сама выводит строку приглашения
+			str = readline("minishell $ ");//readline сама выводит строку приглашения
 			add_history(str);
 		}
 		get_info_from_string(str, &info);
@@ -162,9 +160,7 @@ int	main(int argc, char **argv, char **envp)
 			status = execute_commands(commands, envp);
 			str = NULL;
 		}
-				//где-то здесь нужно освобождать структуры
+//где-то здесь нужно освобождать структуры
 	}
-	
-	
 	return (status);
 }
