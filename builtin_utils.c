@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/02 21:17:37 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/03 21:03:31 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,20 @@ int	execute_exit_command(t_list *cmd, char **envp)
 	return (1);//какой должен быть код?
 }
 
-int	execute_echo_n_command(t_list *cmd, char **envp)
+int	execute_echo_command(t_list *cmd, char **envp)
 {
 	int		iterator;
 
 	(void) envp;
-	iterator = 0;
+	iterator = 2;
 	while (cmd->arguments[iterator])
 	{
 		ft_putstr_fd(cmd->arguments[iterator++], 1);
-		ft_putchar_fd(' ', 1);
-		printf("HERE\n");//не захожу сюда
-	}// проверить после написания unset. или есть другой способ?
-	return (0);
+		if (cmd->arguments[iterator])
+			ft_putchar_fd(' ', 1);
+	}
+	if (ft_strncmp(cmd->arguments[1], "-n\0", 3) != 0)//если нет -n пиши перевод каретки
+		ft_putchar_fd('\n', 1);
+	printf("==inside execute_echo\n");//принтф странно работает без \n
+	return (0);//добавить обработку ошибок
 }

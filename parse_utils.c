@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/26 17:45:35 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/03 19:58:44 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@ int	is_exit_command(char *str)
 		return (0);
 }
 
-int is_builtin_command(char *s)
+int	is_builtin_command(char *s)
 {
 	if (ft_strncmp(s, "exit", 4) == 0)
 		return (1);
-	if (ft_strncmp(s, "cd", 2) == 0)//как отличать случаи cdk, cdcd и т.д.?
+	if (ft_strncmp(s, "cd ", 3) == 0)//Артём - можно попробовать поставить пробел после cd.
+									//Юра - как отличать случаи cdk, cdcd и т.д.?
 		return (1);
-	
+	if (ft_strncmp(s, "echo ", 5) == 0)
+		return (1);
 	return (0);
 }
 
@@ -118,7 +120,7 @@ void	parse_limiters(char *s, t_info *info)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	j = 0;
 	while (s[i] && s[i + 1])

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/02 21:17:06 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/03 20:04:49 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int	execute_builtin(t_list *cmd, char **envp)
 		return (execute_cd_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
 		return (execute_exit_command(cmd, envp));
-	if (ft_strncmp(cmd->cmd, "echo -n ", 8) == 0)//где хранится флаг -n?
-		return (execute_echo_n_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
+		return (execute_echo_command(cmd, envp));
 	return (0);
 }
 
@@ -101,7 +101,7 @@ int	execute_commands(t_list *commands, char **envp)
 
 	status = 0;
 	iter = commands;
-	while(iter)
+	while (iter)
 	{
 		if (is_builtin_command(iter->cmd))
 			status = execute_builtin(iter, envp);
