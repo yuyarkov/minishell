@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/03 19:58:44 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:23:18 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	is_builtin_command(char *s)
 									//Юра - как отличать случаи cdk, cdcd и т.д.?
 		return (1);
 	if (ft_strncmp(s, "echo ", 5) == 0)
+		return (1);
+	if (ft_strncmp(s, "pwd", 3) == 0)
 		return (1);
 	return (0);
 }

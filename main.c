@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/03 20:04:49 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:16:43 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 {
 	char	**commands;
 	t_list	*result;
-	
+
 	if (info->num_of_commands > 1) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
 		commands = split_commands_by_limiters(str, info);
 	else
@@ -90,6 +90,8 @@ int	execute_builtin(t_list *cmd, char **envp)
 		return (execute_exit_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
 		return (execute_echo_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
+		return (execute_pwd_command(cmd, envp));
 	return (0);
 }
 
@@ -141,7 +143,7 @@ int	main(int argc, char **argv, char **envp)
 						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	while (!is_exit_command(str))//Артём - можно запустить бесконечный цикл, while (true) например, и прописать последующие действия в ифах;
+	while (!is_exit_command(str))//Артём - можно запустить бесконечный цикл, например while (true), и прописать последующие действия в ифах;
 								//Юра - надо будет менять условие для бесконечного цикла
 	{
 		if (!str) //для разделения   запуске
@@ -153,8 +155,9 @@ int	main(int argc, char **argv, char **envp)
 						// printf("info->num_of_commands: %d\n", info.num_of_commands);
 						// for (int i = 0; i < info.num_of_commands - 1; i++)
 						// 	printf("limeter[%d]: %d\n", i, info.limiters[i]);
-		commands = parse_commands(str, &info, envp);
-						//print_commands_list(commands);
+		commands = parse_commands(str, &info, envp);// Артём - если (1)перед командой или (2)после команды есть пробелы, парсер должен их отрезать (см. bash).
+													//Сейчас (1)ругается ошибкой "Could not execve: Permission denied" и (2)сегается (при "echo          ")
+						// print_commands_list(commands);
 		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
 			status = execute_commands(commands, envp);
