@@ -125,7 +125,11 @@ if [ "$1" == "my" ] || [ "$1" == "all" ]; then
   exec_test 'pwd'
   exec_test "ls"
   exec_test "/bin/ls"
-
+  exec_test "ls -la"
+  exec_test 'cd .. && pwd'
+  exec_test 'cd .. && pwd && pwd'
+  exec_test 'echo test tout'
+  # exec_test "true && ls"
   # exec_test "/bin/ls && echo $?" 
   # exec_test "/bin/ip || echo $?" 
   # exec_test "/bin/aaaaaaaaaaaa || echo $?" 
@@ -310,7 +314,7 @@ exec_test "cat something"
 exec_test "| echo -n oui"
 exec_test "echo -n oui"
 exec_test "trying to destroy your minishell"
-exec_test "trying something again echo if you see this message thats not a good new"
+exec_test "trying something again echo if you see this message thats not a good news"
 exec_test "qewew"
 exec_test "wtf"
 exec_test "hi im thallard"

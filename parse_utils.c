@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/04 18:23:18 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/07 16:14:31 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char	*get_cmd_path(char *cmd, char **envp)
 //	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
 //		return (cmd); //но при этом перестаёт работать pwd
 	if (is_builtin_command(cmd))
+		return (cmd);
+	if (*cmd == '\0')
 		return (cmd);
 	result = 0;
 	i = 0;

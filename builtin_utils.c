@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/04 20:23:07 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/07 13:50:28 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_cd_command(t_list *cmd, char **envp)
 
 	(void) envp;
 	path = ft_substr(cmd->cmd, 3, ft_strlen(cmd->cmd) - 3);
-	printf("inside execute_cd, path: %s\n", path);
+	//printf("inside execute_cd, path: %s\n", path);
 	chdir(path);//заработало. добавить обработку ошибок
 	//ft_free(path);// освободить память
 	return (0);
@@ -80,7 +80,7 @@ int	execute_echo_command(t_list *cmd, char **envp)
 	int		iterator;
 
 	(void) envp;
-	iterator = 2;
+	iterator = 1;//почему 2? заменил на 1, заработало
 	while (cmd->arguments[iterator])
 	{
 		ft_putstr_fd(cmd->arguments[iterator++], 1);
@@ -89,7 +89,7 @@ int	execute_echo_command(t_list *cmd, char **envp)
 	}
 	if (ft_strncmp(cmd->arguments[1], "-n\0", 3) != 0)//если нет -n пиши перевод каретки
 		ft_putchar_fd('\n', 1);
-	printf("==inside execute_echo\n");//принтф странно работает без \n
+	//printf("==inside execute_echo\n");//принтф странно работает без \n
 	return (0);//добавить обработку ошибок и обработать флаг -nnnnnnnn (должен работать как -n)
 }
 
@@ -98,7 +98,7 @@ int	execute_pwd_command(t_list *cmd, char **envp)
 	char	buf[1024];
 
 	(void) envp;
-	printf("inside execute_pwd\n");//
+	//printf("inside execute_pwd\n");//
 	if (ft_strncmp(cmd->arguments[0], "pwd\0", 4) == 0)
 	{
 		getcwd(buf, 1024);

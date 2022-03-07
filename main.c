@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/04 20:16:43 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/07 16:16:16 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	print_commands_list(t_list *cmd)
 char	**split_commands_by_limiters(char *str, t_info *info)
 {
 	char	**result;
+	char	*temp;
 	int		length;
 	int		index;
 	int		i;
@@ -46,7 +47,9 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	{
 		index = info->limiters[i - 1].index + (info->limiters[i - 1].sign % 2 + 1);
 		length = info->limiters[i].index - index;
-		result[i] = ft_strtrim(ft_substr(str, index, length), SPACES);
+		temp = ft_substr(str, index, length);
+		result[i] = ft_strtrim(temp, SPACES);
+		free(temp);
 		//printf("result[%d]: %s\n", i, result[i]);
 		i++;
 	}
@@ -67,7 +70,7 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 		commands[0] = str; //и помечаю пустым последний элемент массива строк
 		commands[1] = NULL;
 	}
-	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], num_of_commands);
+	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
 	
 	result = add_cmd_to_list(info->num_of_commands, commands, envp);
 	//добавить освобождение commands и строк
@@ -107,8 +110,9 @@ int	execute_commands(t_list *commands, char **envp)
 	{
 		if (is_builtin_command(iter->cmd))
 			status = execute_builtin(iter, envp);
-		else
+		else if (*iter->cmd != '\0')
 		{
+			//printf("iter->cmd: %s\n", iter->cmd);
 			child = fork();
 			if (child < 0)
 			{
@@ -148,7 +152,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (!str) //для разделения   запуске
 		{
-			str = readline("minishell $ ");//readline сама выводит строку приглашения
+			str = readline("minishell$ ");//readline сама выводит строку приглашения
 			add_history(str);
 		}
 		get_info_from_string(str, &info);
