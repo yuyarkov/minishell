@@ -3,24 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/07 13:50:28 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/09 22:38:58 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*search_home(char **envp)
+{
+	int	iterator;
+
+	iterator = 0;
+	while (envp[iterator])
+	{
+		if (!ft_memcmp(envp[iterator], "HOME=", 5))
+			return (envp[iterator] + 5);
+		iterator++;
+	}
+	// ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	return (NULL);//если нет HOME bash возвращает "bash: cd: HOME not set"; додумать после написания unset
+}
+
 int	execute_cd_command(t_list *cmd, char **envp)
 {
 	char	*path;
 
-	(void) envp;
-	path = ft_substr(cmd->cmd, 3, ft_strlen(cmd->cmd) - 3);
-	//printf("inside execute_cd, path: %s\n", path);
-	chdir(path);//заработало. добавить обработку ошибок
-	//ft_free(path);// освободить память
+	if (!cmd->arguments[1])//если после cd нет ничего
+		path = search_home(envp);// нужно взять путь из envp HOME= , и применить его как абсолютный
+	else
+		path = cmd->arguments[1];// теперь не надо освобождать память
+	// path = ft_substr(cmd->cmd, 3, ft_strlen(cmd->cmd) - 3);
+	printf("inside execute_cd, path: %s\n", path);
+	if (chdir(path) != 0)//если не удалось перейти выводи ошибку
+		perror("cd");
+	//free(path);// освободить память
 	return (0);
 }
 
@@ -80,7 +99,10 @@ int	execute_echo_command(t_list *cmd, char **envp)
 	int		iterator;
 
 	(void) envp;
-	iterator = 1;//почему 2? заменил на 1, заработало
+	iterator = 1;//Артём - при 1 флаг -n печатается))
+				//Юра - почему 2? заменил на 1, заработало
+	if (ft_strncmp(cmd->arguments[1], "-n\0", 3) == 0)//если есть -n iterator = 2
+		iterator = 2;
 	while (cmd->arguments[iterator])
 	{
 		ft_putstr_fd(cmd->arguments[iterator++], 1);
