@@ -6,7 +6,7 @@
 /*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/09 22:38:58 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/13 20:59:57 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ char	*search_home(char **envp)
 		if (!ft_memcmp(envp[iterator], "HOME=", 5))
 			return (envp[iterator] + 5);
 		iterator++;
-	}
-	// ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-	return (NULL);//если нет HOME bash возвращает "bash: cd: HOME not set"; додумать после написания unset
+	}//если нет HOME bash возвращает "bash: cd: HOME not set" и 1
+	ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	return (NULL);
 }
 
 int	execute_cd_command(t_list *cmd, char **envp)
@@ -32,14 +32,25 @@ int	execute_cd_command(t_list *cmd, char **envp)
 	char	*path;
 
 	if (!cmd->arguments[1])//если после cd нет ничего
-		path = search_home(envp);// нужно взять путь из envp HOME= , и применить его как абсолютный
+	{
+		path = search_home(envp);// нужно взять путь из envp HOME
+		if (!path)//если нет HOME bash возвращает "bash: cd: HOME not set" и 1
+			return (1);
+	}
 	else
-		path = cmd->arguments[1];// теперь не надо освобождать память
-	// path = ft_substr(cmd->cmd, 3, ft_strlen(cmd->cmd) - 3);
-	printf("inside execute_cd, path: %s\n", path);
-	if (chdir(path) != 0)//если не удалось перейти выводи ошибку
-		perror("cd");
-	//free(path);// освободить память
+		path = cmd->arguments[1];
+	if (chdir(path) == 0)// при каждом корректном вызове cd
+	{
+		// OLDPWD=PWD
+		// PWD=path
+	}
+	else//иначе - выводи ошибку
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
+	}
 	return (0);
 }
 
@@ -62,36 +73,30 @@ int	is_numeric(char *s)
 int	execute_exit_command(t_list *cmd, char **envp)
 {
 	int		exit_code;
-	char	**argv;
-	int		argc;
 
 	(void) envp;
-	argv = ft_split(cmd->cmd, ' ');
-	argc = 0;
-	while (argv[argc])
-		argc++;
 	ft_putstr_fd("exit\n", 1);
-	if (argc > 2)
+	if (!is_numeric(cmd->arguments[1]))
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2); //проверить fd для вывода ошибки
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(cmd->arguments[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit(255);//bash закрывается с кодом 255
+	}
+	else if (cmd->arguments[2])
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2); //Юра - проверить fd для вывода ошибки
 		return (1); //в этом случае из минишелла не выходим
 	}
-	if (argc > 0)
+	else if (is_numeric(cmd->arguments[1]) && !cmd->arguments[2])
 	{
-		if (is_numeric(argv[1]))
-		{
-			exit_code = ft_atoi(argv[1]);
-			exit(exit_code);
-		}
-		else
-		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(argv[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-		}
+		exit_code = ft_atoi(cmd->arguments[1]);
+		exit(exit_code);
 	}
-	//ft_free(argv);// освободить память
-	return (1);//какой должен быть код?
+	return (0);// до этого момента не доходит, т.к. останавливается цикл в main
+//Юра - какой должен быть код?
+//Артём - если значение exit_code не указано, статусом выхода будет статус выхода последней выполненной команды
+//сейчас так и работает
 }
 
 int	execute_echo_command(t_list *cmd, char **envp)
@@ -111,7 +116,7 @@ int	execute_echo_command(t_list *cmd, char **envp)
 	}
 	if (ft_strncmp(cmd->arguments[1], "-n\0", 3) != 0)//если нет -n пиши перевод каретки
 		ft_putchar_fd('\n', 1);
-	//printf("==inside execute_echo\n");//принтф странно работает без \n
+	//printf("==inside execute_echo\n");
 	return (0);//добавить обработку ошибок и обработать флаг -nnnnnnnn (должен работать как -n)
 }
 
@@ -132,6 +137,5 @@ int	execute_pwd_command(t_list *cmd, char **envp)
 		ft_putstr_fd(cmd->arguments[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 	}
-	//free(buf);// ???освободить память или нет???
 	return (0);
 }

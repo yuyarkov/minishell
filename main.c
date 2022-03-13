@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/07 16:16:16 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/13 20:39:45 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,8 @@ int	main(int argc, char **argv, char **envp)
 						// printf("info->num_of_commands: %d\n", info.num_of_commands);
 						// for (int i = 0; i < info.num_of_commands - 1; i++)
 						// 	printf("limeter[%d]: %d\n", i, info.limiters[i]);
-		commands = parse_commands(str, &info, envp);// Артём - если (1)перед командой или (2)после команды есть пробелы, парсер должен их отрезать (см. bash).
-													//Сейчас (1)ругается ошибкой "Could not execve: Permission denied" и (2)сегается (при "echo          ")
+		commands = parse_commands(str, &info, envp);// Артём - если перед командой, после команды и между командой и аргументом есть пробелы, парсер должен их отрезать (см. bash).
+													//Сейчас ругается ошибкой "Could not execve: Permission denied" (пример "    cd    ..    ")
 						// print_commands_list(commands);
 		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
