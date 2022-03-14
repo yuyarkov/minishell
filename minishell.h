@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/04 18:11:55 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:34:14 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int		execute_cd_command(t_list *cmd, char **envp);
 int		execute_exit_command(t_list *cmd, char **envp);
 int		execute_echo_command(t_list *cmd, char **envp);
 int		execute_pwd_command(t_list *cmd, char **envp);
+// int		execute_env_command(t_list *cmd, char **envp);
+// int		create_env(t_list *cmd, char **envp);
 
 void	execute_with_redirect(int *fd, t_list *list, char **envp);
 

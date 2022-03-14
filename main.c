@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/13 20:39:45 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/14 16:59:19 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 		commands[1] = NULL;
 	}
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
-	
 	result = add_cmd_to_list(info->num_of_commands, commands, envp);
 	//добавить освобождение commands и строк
 	return (result);
@@ -135,7 +134,7 @@ int	main(int argc, char **argv, char **envp)
 	t_list	*commands;
 	int		status;
 	t_info	info;
-	
+
 	str = NULL;
 	status = 0; //возвращать статус из дочерних процессов
 	if (argc >= 3)
@@ -147,7 +146,8 @@ int	main(int argc, char **argv, char **envp)
 						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	while (!is_exit_command(str))//Артём - можно запустить бесконечный цикл, например while (true), и прописать последующие действия в ифах;
+	// create_env(commands, envp);// нужно создать env до входа в цикл и потом работать с ним 
+	while (!is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
 								//Юра - надо будет менять условие для бесконечного цикла
 	{
 		if (!str) //для разделения   запуске

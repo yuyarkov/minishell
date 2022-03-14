@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/13 20:59:57 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/14 19:15:41 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,3 +139,40 @@ int	execute_pwd_command(t_list *cmd, char **envp)
 	}
 	return (0);
 }
+/*
+1) создать отдельный файл для программ енв
+2) исправить код под новую структуру
+
+int	execute_env_command(t_list *cmd, char **envp)
+{
+	int		iterator;
+
+	(void) envp;
+	iterator = 0;
+	while (cmd->env[iterator])
+	{
+		ft_putstr_fd(cmd->env[iterator], 1);
+		ft_putstr_fd("\n", 1);
+		iterator++;
+	}
+	return (0);
+}
+
+int	create_env(t_list *cmd, char **envp)
+{
+	int		iterator;
+
+	iterator = 0;
+	while (envp[iterator])
+		iterator++;
+	cmd->env = ft_calloc(iterator + 1, sizeof(char *));
+	iterator = 0;
+	while (envp[iterator])
+	{
+		cmd->env[iterator] = ft_substr(envp[iterator], 0, ft_strlen(envp[iterator]));
+		iterator++;
+	}
+	cmd->env[iterator] = NULL;
+	return (0);
+}
+*/

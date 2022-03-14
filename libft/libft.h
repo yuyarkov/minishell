@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/04 18:05:46 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/14 19:10:18 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+
+typedef struct s_envp
+{
+	char			*key;
+	char			*value;
+	struct s_envp	*next;
+}	t_envp;
 
 typedef struct s_list
 {
@@ -28,6 +35,7 @@ typedef struct s_list
 	int				redirect;//тут наверно помимо флага нужно ещё поле для пути файла
 	int				exit_code; //с каким кодом завершилась команда
 	int				return_value; //сюда будем записывать значения выполнения билтинов
+	t_envp			*env;
 	struct s_list	*next;
 	struct s_list	*previous;//сделаем двусвязный, как в пайпексе
 }	t_list;
