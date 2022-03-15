@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/14 18:34:14 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/15 12:23:53 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ char	*get_cmd_name(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
 // builtin's //
+char	**our_env(char **envp);
+void	free_str_pointer(char **str);//перенести в другой раздел
 int		execute_cd_command(t_list *cmd, char **envp);
 int		execute_exit_command(t_list *cmd, char **envp);
 int		execute_echo_command(t_list *cmd, char **envp);
 int		execute_pwd_command(t_list *cmd, char **envp);
-// int		execute_env_command(t_list *cmd, char **envp);
-// int		create_env(t_list *cmd, char **envp);
+int		execute_env_command(t_list *cmd, char **envp);
 
 void	execute_with_redirect(int *fd, t_list *list, char **envp);
 

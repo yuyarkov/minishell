@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/14 16:59:19 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/15 12:31:00 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	execute_builtin(t_list *cmd, char **envp)
 		return (execute_echo_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
 		return (execute_pwd_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "env\0", 4) == 0)
+		return (execute_env_command(cmd, envp));
 	return (0);
 }
 
@@ -146,7 +148,7 @@ int	main(int argc, char **argv, char **envp)
 						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	// create_env(commands, envp);// нужно создать env до входа в цикл и потом работать с ним 
+	envp = our_env(envp);// делаю копию envp
 	while (!is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
 								//Юра - надо будет менять условие для бесконечного цикла
 	{
@@ -169,5 +171,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 //где-то здесь нужно освобождать структуры
 	}
+	free_str_pointer(envp);
 	return (status);
 }

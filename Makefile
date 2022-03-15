@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: jg <jg@student.42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/02/23 13:51:15 by dirony           ###   ########.fr        #
+#    Updated: 2022/03/15 12:04:28 by jg               ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = minishell
 
 SRCS = 	main.c						parse_utils.c\
 		list_utils.c				error_utils.c\
-		exec_utils.c				builtin_utils.c
+		exec_utils.c				builtin_utils.c\
+		builtin_env.c
 	
 LIBDIR =   ./libft/
 
