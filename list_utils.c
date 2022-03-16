@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/14 16:48:14 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/16 20:52:59 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_list	*create_elem(char *str, char **envp)
 		new_elem->cmd = str;
 	else
 		new_elem->cmd = get_cmd_path(str, envp);
+	//printf("new_elem->cmd: %s\n", new_elem->cmd);
 	if (!new_elem->cmd)
 		print_cmd_error(str);
 	new_elem->arguments = ft_split(str, ' ');

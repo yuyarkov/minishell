@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/15 12:31:00 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/16 20:53:35 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,12 @@ int	execute_commands(t_list *commands, char **envp)
 
 	status = 0;
 	iter = commands;
+
 	while (iter)
 	{
 		if (is_builtin_command(iter->cmd))
 			status = execute_builtin(iter, envp);
-		else if (*iter->cmd != '\0')
+		else if (iter->cmd && *iter->cmd != '\0')
 		{
 			//printf("iter->cmd: %s\n", iter->cmd);
 			child = fork();
@@ -158,9 +159,6 @@ int	main(int argc, char **argv, char **envp)
 			add_history(str);
 		}
 		get_info_from_string(str, &info);
-						// printf("info->num_of_commands: %d\n", info.num_of_commands);
-						// for (int i = 0; i < info.num_of_commands - 1; i++)
-						// 	printf("limeter[%d]: %d\n", i, info.limiters[i]);
 		commands = parse_commands(str, &info, envp);// Артём - если перед командой, после команды и между командой и аргументом есть пробелы, парсер должен их отрезать (см. bash).
 													//Сейчас ругается ошибкой "Could not execve: Permission denied" (пример "    cd    ..    ")
 						// print_commands_list(commands);

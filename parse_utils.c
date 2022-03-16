@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/15 09:53:47 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/16 20:52:26 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	is_exit_command(char *str)
 
 int	is_builtin_command(char *s)
 {
+	if (!s)
+		return (0);
 	if (ft_strncmp(s, "exit", 4) == 0)
 		return (1);
 	if ((ft_strncmp(s, "cd ", 3) == 0) || (ft_strncmp(s, "cd\0", 3) == 0))
@@ -90,15 +92,22 @@ char	*find_cmd_path(char *cmd, char *path)
 	return (result);
 }
 
-char	*get_cmd_path(char *cmd, char **envp)
+char	*get_cmd_path(char *input_cmd, char **envp)
 {
 	int		i;
 	int		j;
 	char	start[5];
 	int		result;
+	char	*cmd;
 
-//	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
-//		return (cmd); //но при этом перестаёт работать pwd
+	if (input_cmd && *input_cmd != '\0')
+		cmd = ft_split(input_cmd, ' ')[0];//подумать, как освобождать память
+	//split лучше заменить на простую функцию get_first_word
+	else
+		cmd = input_cmd;
+	//printf("cmd before access: %s\n", cmd);
+	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
+		return (cmd);
 	if (is_builtin_command(cmd))
 		return (cmd);
 	if (*cmd == '\0')

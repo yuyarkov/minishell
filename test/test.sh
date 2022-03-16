@@ -129,7 +129,7 @@ if [ "$1" == "my" ] || [ "$1" == "all" ]; then
   exec_test 'cd .. && pwd'
   exec_test 'cd .. && pwd && pwd'
   exec_test 'echo test tout'
-  # exec_test "true && ls"
+  exec_test "true && ls"
   # exec_test "/bin/ls && echo $?" 
   # exec_test "/bin/ip || echo $?" 
   # exec_test "/bin/aaaaaaaaaaaa || echo $?" 
