@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/16 20:52:26 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/17 18:11:19 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	is_builtin_command(char *s)
 	if (ft_strncmp(s, "pwd", 3) == 0)
 		return (1);
 	if (ft_strncmp(s, "env\0", 4) == 0)
+		return (1);
+	if (ft_strncmp(s, "unset\0", 6) == 0)// (cmd->cmd, "unset\0", 7)
 		return (1);
 	return (0);
 }
