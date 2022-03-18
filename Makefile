@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jg <jg@student.42.fr>                      +#+  +:+       +#+         #
+#    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/03/17 17:28:23 by jg               ###   ########.fr        #
+#    Updated: 2022/03/18 20:53:51 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,9 @@ $(NAME)	:	$(OBJS) $(LIBDIR)$(LIBFT)
 -include $(DEP)
 
 test	:  
-			bash ./test/test.sh my
+			cd test
+			bash test.sh my
+			cd ..
 clean	: 		
 			@make clean -C $(LIBDIR)
 			@$(RM) $(OBJS) $(DEP)

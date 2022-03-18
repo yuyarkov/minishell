@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 17:26:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/18 19:27:24 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/18 19:54:43 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	search_and_del(t_env **list, char *str)
 	{
 		if (ft_strncmp(tmp->key, str, ft_strlen(tmp->key)) == 0)//если ключ совпал
 		{
-			printf("HERE\n");//ищу ошибку дальше отсюда
+			// printf("HERE\n");//ищу ошибку дальше отсюда
 			del_list_from_env(list, tmp->next, iterator);//далле работаю с енв, элементом след за удаляемым и номером удаляемого элта
 		}
 		tmp = tmp->next;
