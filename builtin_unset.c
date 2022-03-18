@@ -6,19 +6,50 @@
 /*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 17:26:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/17 18:13:58 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/18 17:29:19 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// void	env_lstdelone(t_env *list, void (*del)(void *))
+// {
+// 	del(list->key);
+// 	del(list->value);
+// 	free(list);
+// }
 
-
-void	env_lstdelone(t_env *list, void (*del)(void *))
+void	del_list_from_env(t_env **list, t_env *tmp, int iterator)
 {
-	del(list->key);
-	del(list->value);
-	free(list);
+	t_env	*new_env;
+
+	new_env = *list;
+	while (iterator - 1)//нахожу лист перед удаляемым
+	{
+		new_env = new_env->next;
+		iterator--;
+	}
+	new_env->next = tmp;//связываю эл перед удаляем с эл после удаляемого
+	*list = new_env;
+}
+
+void	search_and_del(t_env **list, char *str)
+{
+	t_env	*tmp;
+	int		iterator;
+
+	tmp = *list;
+	iterator = 0;
+	while (tmp)// пока список есть
+	{
+		if (ft_strncmp(str, tmp->key, ft_strlen(str)) == 0)//если ключ совпал
+		{
+			printf("HERE\n");//ищу ошибку дальше отсюда
+			del_list_from_env(list, tmp->next, iterator);//далле работаю с енв, элементом след за удаляемым и номером удаляемого элта
+		}
+		tmp = tmp->next;
+		iterator++;
+	}
 }
 
 int	execute_unset_command(t_list *cmd, char **envp, t_env *env)
@@ -26,14 +57,8 @@ int	execute_unset_command(t_list *cmd, char **envp, t_env *env)
 	(void)envp;
 	if (cmd->arguments[1])
 	{
-		while (env)
-		{
-			if (ft_strncmp(cmd->arguments[1], env->key, ft_strlen(cmd->arguments[1])) == 0)
-			{
-				env_lstdelone(env, free);// это удаление не работает, сечас минишелл просто закрывается
-			}
-			env = env->next;
-		}
+		
+		search_and_del(&env, cmd->arguments[1]);
 	}
 	return (0);
 }
