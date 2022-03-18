@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/18 21:02:28 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:06:10 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,21 +156,21 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 	t_info	info;
 	t_env	*env;
+	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
 
 	str = NULL;
+	one_time_launch = 1;
 	status = 0; //возвращать статус из дочерних процессов
 	if (argc >= 3) //если при запуске в аргументах что-то есть - берем команду из них. Для тестов и для чеклиста
 	{
 		if (ft_strncmp(argv[1], "-c", 3) == 0)
 			str = argv[2];
 	}
-						// if (execve("/bin/ls", argv, envp) == -1) 
-						// 	perror ("Could not execve /bin/ls");
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
 	env = create_env(envp);//заполняю связный список значениями из envp
 	// printf_env(env);
-	while (!is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
+	while (one_time_launch && !is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
 								//Юра - надо будет менять условие для бесконечного цикла
 	{
 		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка
@@ -180,6 +180,8 @@ int	main(int argc, char **argv, char **envp)
 			str = readline("minishell$ ");//readline сама выводит строку приглашения
 			add_history(str);
 		}
+		else
+			one_time_launch = 0;
 		get_info_from_string(str, &info);
 		commands = parse_commands(str, &info, envp);// Артём - если перед командой, после команды и между командой и аргументом есть пробелы, парсер должен их отрезать (см. bash).
 													//Сейчас ругается ошибкой "Could not execve: Permission denied" (пример "    cd    ..    ")
