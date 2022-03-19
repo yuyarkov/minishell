@@ -6,7 +6,7 @@
 /*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 13:44:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/14 21:39:38 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/19 10:28:34 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ char	*search_home(char **envp)
 	return (NULL);
 }
 
-int	execute_cd_command(t_list *cmd, char **envp)
+int	execute_cd_command(t_list *cmd, char **envp, t_env *env)
 {
 	char	*path;
 
+	(void)env;
 	if (!cmd->arguments[1])//если после cd нет ничего
 	{
 		path = search_home(envp);// нужно взять путь из envp HOME

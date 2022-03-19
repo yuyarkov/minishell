@@ -6,7 +6,7 @@
 /*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/17 17:48:28 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/19 07:30:34 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,16 +157,6 @@ t_env	*create_env(char **envp)
 	return (list);
 }
 
-void	clear_env(t_env *list)
-{
-	if (list)
-	{
-		clear_env(list->next);
-		free(list);
-		list = NULL;
-	}
-}
-
 void	lstiter_env(t_env *list, void (*f)(void *))
 {
 	while (list)
@@ -174,5 +164,15 @@ void	lstiter_env(t_env *list, void (*f)(void *))
 		f(list->key);
 		f(list->value);
 		list = list->next;
+	}
+}
+
+void	clear_env(t_env *list)
+{
+	if (list)
+	{
+		clear_env(list->next);
+		free(list);
+		list = NULL;
 	}
 }

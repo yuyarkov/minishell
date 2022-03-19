@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/18 21:06:10 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/19 10:23:50 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	execute_cmd(t_list *cmd, char **envp)
 int	execute_builtin(t_list *cmd, char **envp, t_env **env)
 {
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
-		return (execute_cd_command(cmd, envp));
+		return (execute_cd_command(cmd, envp, *env));
 	if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
 		return (execute_exit_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
@@ -109,7 +109,6 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 
 	status = 0;
 	iter = commands;
-
 	while (iter)
 	{
 		if (is_builtin_command(iter->cmd))

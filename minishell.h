@@ -6,7 +6,7 @@
 /*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/17 18:06:34 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/19 10:24:11 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_str_pointer(char **str);//перенести в другой раздел
 // builtin's //
-int		execute_cd_command(t_list *cmd, char **envp);
+int		execute_cd_command(t_list *cmd, char **envp, t_env *env);
 int		execute_exit_command(t_list *cmd, char **envp);
 int		execute_echo_command(t_list *cmd, char **envp);
 int		execute_pwd_command(t_list *cmd, char **envp);
