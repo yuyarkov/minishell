@@ -6,7 +6,7 @@
 /*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 17:26:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/19 10:21:20 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/20 20:44:14 by jg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	delete_list_from_env(t_env **list, t_env *tmp, int index)
 	{
 		new_env = (*list)->next;
 		**list = *new_env;//обращаюсь к голове связного списка
+		// *list = new_env;//изменяю содержимое env
 	}
 	else
 	{
@@ -31,6 +32,8 @@ void	delete_list_from_env(t_env **list, t_env *tmp, int index)
 		}
 		new_env->next = tmp;//связываю эл перед удаляем с эл после удаляемого
 		*list = new_env;//изменяю содержимое env
+		// free(new_env->next->key);
+		// free(new_env->next->value);
 	}
 }
 
