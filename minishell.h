@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/19 10:24:11 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/23 17:48:34 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ int		execute_echo_command(t_list *cmd, char **envp);
 int		execute_pwd_command(t_list *cmd, char **envp);
 int		execute_env_command(t_list *cmd, char **envp);
 int		execute_unset_command(t_list *cmd, char **envp, t_env *env);
+int		execute_export_command(t_list *cmd, char **envp, t_env *env);
+void	env_lstadd_back(t_env **list, t_env *new_elem);
+t_env	*env_create_elem(char *str);
 
 void	execute_with_redirect(int *fd, t_list *list, char **envp);
 

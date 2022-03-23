@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jg <jg@student.42.fr>                      +#+  +:+       +#+         #
+#    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/03/20 18:40:17 by jg               ###   ########.fr        #
+#    Updated: 2022/03/23 15:53:12 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCS = 	main.c						parse_utils.c\
 		builtin_env.c				builtin_unset.c\
 		builtin_exit.c				builtin_cd.c\
 		builtin_pwd.c				free_utils.c\
+		builtin_export.c
 	
 LIBDIR =   ./libft/
 
@@ -27,7 +28,7 @@ OBJS 	=	$(SRCS:%.c=%.o)
 
 DEP	=	$(SRCS:%.c=%.d)
 
-CC = gcc
+CC = cc
 
 HOMEBREW_PREFIX := $(shell test -n "$$(which brew)" \
                         && brew config | grep HOMEBREW_PREFIX | cut -d' ' -f2)

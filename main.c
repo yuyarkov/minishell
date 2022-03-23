@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/19 10:23:50 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/23 16:29:46 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int	execute_builtin(t_list *cmd, char **envp, t_env **env)
 		return (execute_env_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "unset\0", 6) == 0)
 		return (execute_unset_command(cmd, envp, *env));
+	if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
+		return (execute_export_command(cmd, envp, *env));
 	return (0);
 }
 
