@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/16 20:52:59 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/23 21:07:11 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,27 @@ t_list	*create_elem(char *str, char **envp)
 	return (new_elem);
 }
 
-t_list	*add_cmd_to_list(int argc, char **commands, char **envp)
+void	ft_double_list_add_back(t_list **list, t_list *new_elem)
+{
+	t_list	*iterator;
+
+	iterator = *list;
+	if (*list)
+	{
+		while (iterator->next)
+		{
+		//	printf("inside add_back, iterator->cmd: %s\n", iterator->cmd);
+			iterator = iterator->next;
+		}
+		iterator->next = new_elem;
+		new_elem->previous = iterator;
+	}
+	else
+		*list = new_elem;
+}
+
+
+t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp)
 {
 	int		i;
 	t_list	*new_elem;
@@ -43,14 +63,16 @@ t_list	*add_cmd_to_list(int argc, char **commands, char **envp)
 
 	new_elem = NULL;
 	list = create_elem(commands[0], envp);
+	list->limiter = info->limiters[0].sign;
 	i = 1;
-	while (i < argc)
+	while (i < info->num_of_commands)
 	{
 		// temp = get_cmd_path(commands[i], envp);
 		// if (temp)
 		// {	
 			new_elem = create_elem(commands[i], envp);
-			ft_lstadd_back(&list, new_elem);
+			new_elem->limiter = info->limiters[i].sign;
+			ft_double_list_add_back(&list, new_elem);
 		// }
 		// else
 		// 	print_cmd_error(commands[i]);

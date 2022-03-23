@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/02/18 20:51:06 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/23 21:04:18 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ void	dup_child_pipe(t_list *cmd)
 
 void	child_pipex(int *fd, t_list *cmd, char **envp)
 {
+	(void) fd;
+	printf("inside child_pipex, cmd->cmd: %s, cmd->previous->cmd: %s\n", cmd->cmd, cmd->previous->cmd);
 	if (!cmd->previous)
 	{
 		close(cmd->end[0]);
-		if (dup2(fd[0], STDIN_FILENO) < 0)
-			perror ("Could not dup2 STDIN");
+		// if (dup2(fd[0], STDIN_FILENO) < 0)
+		// 	perror ("Could not dup2 STDIN");
 		if (dup2(cmd->end[1], STDOUT_FILENO) < 0)
 			perror ("Could not dup2 STDOUT");
 	}
@@ -37,8 +39,8 @@ void	child_pipex(int *fd, t_list *cmd, char **envp)
 	{
 		if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
 			perror ("Could not dup2 STDIN");
-		if (dup2(fd[1], STDOUT_FILENO) < 0)
-			perror ("Could not dup2 STDOUT");
+		// if (dup2(fd[1], STDOUT_FILENO) < 0)
+		// 	perror ("Could not dup2 STDOUT");
 	}
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
@@ -58,27 +60,32 @@ void	close_parent_pipes(t_list *iter)
 		close(iter->previous->end[1]);
 }
 
-void	execute_with_redirect(int *fd, t_list *list, char **envp)
+t_list	*execute_with_redirect(t_list *list, char **envp)
 {
 	int		status;
 	pid_t	child;
 	t_list	*iter;
+	int		fd[2];//пока заглушка для fd, закинуть инфу о файлах в общую структуру
 
-	printf("inside execute_with_redirect\n");
+	fd[0] = 1;
+	fd[1] = 0;
 	iter = list;
 	// if (list->redirect)
-	// 	pipe_for_heredoc(list, &(fd[0]));//это была для ввода с heredoc
-	while (iter)
+	// 	pipe_for_heredoc(list, &(fd[0]));//это было для ввода с heredoc
+	while (iter->limiter == PIPE || iter->previous->limiter == PIPE)
 	{
+	printf("inside execute_with_redirect, iter->cmd: %s, iter->prev: %p\n", iter->cmd, iter->previous);
 		if (iter->next)
 			pipe(iter->end);
 		child = fork();
 		if (child < 0)
-			return (perror("Fork: "));
+			exit(EXIT_FAILURE);//придумать корректный выход
+			//return (perror("Fork: "));
 		if (child == 0)
 			child_pipex(fd, iter, envp);
 		close_parent_pipes(iter);
 		waitpid(child, &status, 0);
 		iter = iter->next;
 	}
+	return (iter);
 }

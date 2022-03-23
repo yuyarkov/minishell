@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 17:48:34 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/23 20:38:57 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		is_exit_command(char *str);
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
-t_list	*add_cmd_to_list(int argc, char **argv, char **envp);
+t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_cmd_name(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
@@ -70,6 +70,6 @@ int		execute_export_command(t_list *cmd, char **envp, t_env *env);
 void	env_lstadd_back(t_env **list, t_env *new_elem);
 t_env	*env_create_elem(char *str);
 
-void	execute_with_redirect(int *fd, t_list *list, char **envp);
+t_list	*execute_with_redirect(t_list *list, char **envp);
 
 #endif

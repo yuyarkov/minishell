@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 18:12:18 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/23 20:11:30 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	get_info_from_string(char *str, t_info *info)
 	num = 0;
 	while (s[i] && s[i + 1])
 	{
-		if (s[i] == ';')
+		if (s[i] == ';' || s[i] == '|')
 			num++;
 		if (ft_strncmp(&s[i], "&&", 2) == 0 || ft_strncmp(&s[i], "||", 2) == 0)
 			num++;

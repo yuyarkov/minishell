@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 16:29:46 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/23 21:06:00 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_commands_list(t_list *cmd)
 	while (iterator)
 	{
 		printf("print_commands_list. parsed command: %s\n", iterator->cmd);
+		printf("print_commands_list. previous command: %p\n", iterator->previous);
 		iterator = iterator->next;
 	}	
 }
@@ -71,7 +72,7 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 		commands[1] = NULL;
 	}
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
-	result = add_cmd_to_list(info->num_of_commands, commands, envp);
+	result = add_cmd_to_list(info, commands, envp);
 	//добавить освобождение commands и строк
 	return (result);
 }
@@ -117,16 +118,22 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 			status = execute_builtin(iter, envp, env);
 		else if (iter->cmd && *iter->cmd != '\0')
 		{
-			//printf("iter->cmd: %s\n", iter->cmd);
-			child = fork();
-			if (child < 0)
+		//	printf("iter->cmd: %s, iter->limiter: %d, iter->previous: %p\n", iter->cmd,
+		//		 iter->limiter, iter->previous);
+			if (iter->limiter == PIPE)
+				iter = execute_with_redirect(iter, envp);
+			else
 			{
-				perror("Fork: ");
-				return (-1);//подумать, какой правильный код возвращать
+				child = fork();
+				if (child < 0)
+				{
+					perror("Fork: ");
+					return (-1);//подумать, какой правильный код возвращать
+				}
+				if (child == 0)
+					execute_cmd(iter, envp);
+				waitpid(child, &status, 0);
 			}
-			if (child == 0)
-				execute_cmd(iter, envp);
-			waitpid(child, &status, 0);
 		}
 		iter = iter->next;
 	}
