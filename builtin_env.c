@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/23 17:24:41 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:49:56 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,18 @@ t_env	*env_create_elem(char *str)
 	if (NULL == new_elem)
 		return (NULL);
 	new_elem->next = NULL;
-	result = ft_split(str, '=');
-	new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
-	new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
-	free_str_pointer(result);
+	if (ft_strchr(str, '='))
+	{	
+		result = ft_split(str, '=');
+		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
+		new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
+		free_str_pointer(result);
+	}
+	else
+	{
+		new_elem->key = ft_substr(str, 0, ft_strlen(str));
+		new_elem->value = NULL;
+	}
 	return (new_elem);
 }
 

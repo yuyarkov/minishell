@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 21:06:00 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/25 20:52:40 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,12 +177,10 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
 	env = create_env(envp);//заполняю связный список значениями из envp
-	// printf_env(env);
 	while (one_time_launch && !is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
 								//Юра - надо будет менять условие для бесконечного цикла
 	{
 		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка
-		// printf_char_pointer(envp);
 		if (!str) //для разделения   запуске
 		{
 			str = readline("minishell$ ");//readline сама выводит строку приглашения
@@ -200,6 +198,8 @@ int	main(int argc, char **argv, char **envp)
 			str = NULL;
 		}
 //где-то здесь нужно освобождать структуры
+		// printf_char_pointer(envp);
+		// printf_env(env);
 		free_str_pointer(envp);// освобождаю массив строк
 	}
 	lstiter_env(env, free);//освобождаю поля в связном списке
