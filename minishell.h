@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 20:38:57 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/26 15:54:44 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ int		execute_export_command(t_list *cmd, char **envp, t_env *env);
 void	env_lstadd_back(t_env **list, t_env *new_elem);
 t_env	*env_create_elem(char *str);
 
-t_list	*execute_with_redirect(t_list *list, char **envp);
+t_list	*execute_with_pipe(t_list *list, char **envp);
 
 #endif

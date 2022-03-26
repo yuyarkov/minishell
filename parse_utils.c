@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 20:11:30 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/26 15:57:27 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,18 @@ char	*get_cmd_path(char *input_cmd, char **envp)
 	int		result;
 	char	*cmd;
 
+	input_cmd = ft_strtrim(input_cmd, SPACES);//будет утечка, устранить
 	if (input_cmd && *input_cmd != '\0')
 		cmd = ft_split(input_cmd, ' ')[0];//подумать, как освобождать память
 	//split лучше заменить на простую функцию get_first_word
 	else
 		cmd = input_cmd;
+	if (cmd == '\0')
+		return (cmd);
 	//printf("cmd before access: %s\n", cmd);
 	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
 		return (cmd);
 	if (is_builtin_command(cmd))
-		return (cmd);
-	if (*cmd == '\0')
 		return (cmd);
 	result = 0;
 	i = 0;
@@ -169,6 +170,7 @@ void	parse_limiters(char *s, t_info *info)
 		}
 		i++;
 	}
+	//printf("inside parse limiters\n");
 	info->limiters[j].sign = SEMICOLON;
 	info->limiters[j].index = ft_strlen(s);//для последнего команды ставлю параметры виртуального разделителя
 }
@@ -180,6 +182,7 @@ void	get_info_from_string(char *str, t_info *info)
 	char	*s;
 
 	s = ft_strtrim(str, SPACES);
+	//printf("after trim, \"%s\"\n", s);
 	i = 0;
 	num = 0;
 	while (s[i] && s[i + 1])
@@ -202,6 +205,7 @@ void	get_info_from_string(char *str, t_info *info)
 	{
 		info->limiters[0].sign = SEMICOLON; //костыль, когда команда одна, заполняю как будто ; в конце
 		info->limiters[0].index = ft_strlen(s);
-	}
 	//printf("num of commands: %d\n", info->num_of_commands);
+		
+	}
 }

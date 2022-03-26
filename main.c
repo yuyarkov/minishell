@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/25 20:52:40 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/26 17:14:29 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,12 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 	else
 	{
 		commands = malloc(sizeof(char *) * 2);
-		commands[0] = str; //и помечаю пустым последний элемент массива строк
-		commands[1] = NULL;
+		commands[0] = ft_strtrim(str, SPACES); //утечка
+		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
 	}
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
 	result = add_cmd_to_list(info, commands, envp);
+	//printf("before return from parse commands\n");
 	//добавить освобождение commands и строк
 	return (result);
 }
@@ -121,7 +122,7 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 		//	printf("iter->cmd: %s, iter->limiter: %d, iter->previous: %p\n", iter->cmd,
 		//		 iter->limiter, iter->previous);
 			if (iter->limiter == PIPE)
-				iter = execute_with_redirect(iter, envp);
+				iter = execute_with_pipe(iter, envp);
 			else
 			{
 				child = fork();
@@ -135,7 +136,8 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 				waitpid(child, &status, 0);
 			}
 		}
-		iter = iter->next;
+		if (iter)
+			iter = iter->next;
 	}
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 21:04:18 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/26 17:17:09 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	dup_child_pipe(t_list *cmd)
 void	child_pipex(int *fd, t_list *cmd, char **envp)
 {
 	(void) fd;
-	printf("inside child_pipex, cmd->cmd: %s, cmd->previous->cmd: %s\n", cmd->cmd, cmd->previous->cmd);
+	//printf("inside child_pipex, cmd->cmd: %s, cmd->previous->cmd: %s\n", cmd->cmd, cmd->previous->cmd);
 	if (!cmd->previous)
 	{
 		close(cmd->end[0]);
@@ -44,7 +44,7 @@ void	child_pipex(int *fd, t_list *cmd, char **envp)
 	}
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
-	exit(EXIT_FAILURE);
+	exit(EXIT_FAILURE);//тут видимо надо поменять код exit
 }
 
 void	close_parent_pipes(t_list *iter)
@@ -60,7 +60,7 @@ void	close_parent_pipes(t_list *iter)
 		close(iter->previous->end[1]);
 }
 
-t_list	*execute_with_redirect(t_list *list, char **envp)
+t_list	*execute_with_pipe(t_list *list, char **envp)
 {
 	int		status;
 	pid_t	child;
@@ -70,11 +70,12 @@ t_list	*execute_with_redirect(t_list *list, char **envp)
 	fd[0] = 1;
 	fd[1] = 0;
 	iter = list;
+	//printf("inside execute_with_pipe, iter: %p\n", iter);
 	// if (list->redirect)
 	// 	pipe_for_heredoc(list, &(fd[0]));//это было для ввода с heredoc
-	while (iter->limiter == PIPE || iter->previous->limiter == PIPE)
+	while (iter && (iter->limiter == PIPE || (iter->previous && iter->previous->limiter == PIPE)))
 	{
-	printf("inside execute_with_redirect, iter->cmd: %s, iter->prev: %p\n", iter->cmd, iter->previous);
+	//printf("inside execute_with_redirect, iter->cmd: %s, iter->prev: %p\n", iter->cmd, iter->previous);
 		if (iter->next)
 			pipe(iter->end);
 		child = fork();

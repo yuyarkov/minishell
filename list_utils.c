@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/23 21:07:11 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/26 16:47:16 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,22 @@ t_list	*create_elem(char *str, char **envp)
 {
 	t_list	*new_elem;
 
+	//printf("inside create elem\n");
 	new_elem = malloc(sizeof(t_list));
 	if (NULL == new_elem)
 		return (NULL);
 	new_elem->next = NULL;
 	new_elem->previous = NULL;
-	if (is_builtin_command(str))
+	if (is_builtin_command(str) || *str == '\0')
 		new_elem->cmd = str;
 	else
 		new_elem->cmd = get_cmd_path(str, envp);
 	//printf("new_elem->cmd: %s\n", new_elem->cmd);
 	if (!new_elem->cmd)
+	{
 		print_cmd_error(str);
+		return (NULL);//здесь выполнение команды должно прерваться и возвращаемся в строку приглашения
+	}
 	new_elem->arguments = ft_split(str, ' ');
 	new_elem->end[0] = 0;//для пайпов пригодится
 	new_elem->end[1] = 0;
@@ -63,7 +67,10 @@ t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp)
 
 	new_elem = NULL;
 	list = create_elem(commands[0], envp);
+	if (!list)
+		return (NULL);
 	list->limiter = info->limiters[0].sign;
+	//printf("inside add_cmd\n");
 	i = 1;
 	while (i < info->num_of_commands)
 	{
@@ -71,6 +78,8 @@ t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp)
 		// if (temp)
 		// {	
 			new_elem = create_elem(commands[i], envp);
+			if (!new_elem)
+				return (NULL);//добавить очищение списка, т.к. будут утечки
 			new_elem->limiter = info->limiters[i].sign;
 			ft_double_list_add_back(&list, new_elem);
 		// }
