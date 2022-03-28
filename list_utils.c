@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/26 16:47:16 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/28 20:25:14 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	ft_double_list_add_back(t_list **list, t_list *new_elem)
 	else
 		*list = new_elem;
 }
-
 
 t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp)
 {

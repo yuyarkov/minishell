@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/03/20 18:38:35 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/28 17:36:59 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ void	lstiter_env(t_env *list, void (*f)(void *))
 {
 	while (list)
 	{
-		f(list->key);
-		f(list->value);
+		if (list->key)
+			f(list->key);
+		if (list->value)
+			f(list->value);
 		list = list->next;
 	}
 }

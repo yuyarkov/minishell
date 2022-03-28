@@ -6,18 +6,43 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/25 20:49:56 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/28 20:40:39 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	search_path(char **envp)
+{
+	int	iterator;
+
+	iterator = 0;
+	while (envp[iterator])
+	{
+		if (!ft_strncmp(envp[iterator], "PATH=", 5))
+			return (1); //если есть PATH
+		iterator++;
+	}
+	return (0); //если нет PATH
+}
+
 int	execute_env_command(t_list *cmd, char **envp)
 {
+	int	result;
+
 	(void) cmd;
-	while (*envp)
-		ft_putendl_fd(*(envp++), 1);
-	return (0);
+	if (search_path(envp))
+	{
+		while (*envp)
+			ft_putendl_fd(*(envp++), 1);
+		result = 0;
+	}
+	else
+	{
+		ft_putendl_fd("minishell: env: No such file or directory", 1);
+		result = 127;
+	}
+	return (result);
 }
 
 char	*env_strjoin(char const *s1, char const *s2)
@@ -49,26 +74,29 @@ char	**return_env_to_char(t_env *env)
 {
 	int		size;
 	int		index;
-	char	**new_env;
+	char	**new_envp;
 	t_env	*tmp;
 
 	size = 0;
 	tmp = env;
 	while (tmp)
 	{
+		if (tmp->value)
+			size++;
 		tmp = tmp->next;
-		size++;
 	}
-	new_env = (char **)malloc(sizeof(char *) * (size + 1));
+	new_envp = (char **)malloc(sizeof(char *) * (size + 1));
 	index = 0;
 	while (index < size)
 	{
-		new_env[index] = env_strjoin(env->key, env->value);
+		while (!env->value && env)
+			env = env->next;
+		new_envp[index] = env_strjoin(env->key, env->value);
 		env = env->next;
 		index++;
 	}
-	new_env[index] = NULL;
-	return (new_env);
+	new_envp[index] = NULL;
+	return (new_envp);
 }
 
 void	env_lstadd_back(t_env **list, t_env *new_elem)
@@ -99,7 +127,8 @@ t_env	*env_create_elem(char *str)
 	{	
 		result = ft_split(str, '=');
 		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
-		new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
+		if (result[1])
+			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
 		free_str_pointer(result);
 	}
 	else
