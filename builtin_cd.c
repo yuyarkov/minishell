@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jg <jg@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 12:58:46 by jg                #+#    #+#             */
-/*   Updated: 2022/03/20 15:03:43 by jg               ###   ########.fr       */
+/*   Updated: 2022/03/29 20:36:41 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,18 @@ char	*search_home(char **envp)
 	return (NULL);
 }
 
-char	*search_oldpwd(char **envp)
+int	search_oldpwd(t_env *env)
+{
+	while (env)
+	{
+		if (!ft_strncmp((env)->key, "OLDPWD", 6))
+			return (1);//если есть OLDPWD
+		env = (env)->next;
+	}
+	return (0);//если нет OLDPWD
+}
+
+char	*search_pwd(char **envp)
 {
 	int	iterator;
 
@@ -45,22 +56,35 @@ void	change_pwd(t_env **env, char *oldpwd)
 {
 	t_env	*tmp;
 	char	pwd[1024];
+	t_env	*new_elem;
+	char	*first_oldpwd;
 
 	tmp = *env;
-	getcwd(pwd, 1024);
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->key, "PWD", ft_strlen(tmp->key)) == 0)
 		{
 			free(tmp->value);
-			tmp->value = ft_substr(pwd, 0, ft_strlen(pwd));
+			getcwd(pwd, 1024);
+			tmp->value = ft_substr(pwd, 0, ft_strlen(pwd));// может вернуть NULL
 		}
 		if (ft_strncmp(tmp->key, "OLDPWD", ft_strlen(tmp->key)) == 0)
 		{
 			free(tmp->value);
-			tmp->value = ft_substr(oldpwd, 0, ft_strlen(oldpwd));
+			tmp->value = ft_substr(oldpwd, 0, ft_strlen(oldpwd));// может вернуть NULL
 		}
 		tmp = tmp->next;
+	}
+	if (!search_oldpwd(*env))// если нет олдпвд
+	{
+		first_oldpwd = ft_strjoin("OLDPWD=", oldpwd);// может вернуть NULL
+		if (!first_oldpwd)//если память не выделена добавить обработку ошибки
+			printf("first_oldpwd == NULL, return ERROR\n");//perror()?
+		new_elem = env_create_elem(first_oldpwd);// может вернуть NULL
+		if (!new_elem)//если память не выделена добавить обработку ошибки
+			printf("new_elem == NULL, return ERROR\n");//perror()?
+		env_lstadd_back(env, new_elem);
+		free(first_oldpwd);
 	}
 	*env = tmp;
 }
@@ -81,7 +105,7 @@ int	execute_cd_command(t_list *cmd, char **envp, t_env *env)
 		path = cmd->arguments[1];
 	if (chdir(path) == 0)// при каждом корректном вызове cd
 	{
-		oldpwd = search_oldpwd(envp);
+		oldpwd = search_pwd(envp);
 		change_pwd(&env, oldpwd);
 	}
 	else//иначе - выводи ошибку

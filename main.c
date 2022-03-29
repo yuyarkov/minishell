@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/28 20:37:56 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:40:56 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int	execute_builtin(t_list *cmd, char **envp, t_env **env)
 		return (execute_echo_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
 		return (execute_pwd_command(cmd, envp));
-	if (ft_strncmp(cmd->cmd, "env\0", 4) == 0)
-		return (execute_env_command(cmd, envp));
+	// if (ft_strncmp(cmd->cmd, "env\0", 4) == 0)
+	// 	return (execute_env_command(cmd, envp));
 	if (ft_strncmp(cmd->cmd, "unset\0", 6) == 0)
 		return (execute_unset_command(cmd, envp, *env));
 	if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
@@ -178,11 +178,11 @@ int	main(int argc, char **argv, char **envp)
 	}
 	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
 	using_history();    /* initialize history */
-	env = create_env(envp);//заполняю связный список значениями из envp
+	env = create_env(envp);//заполняю связный список значениями из envp // может вернуть NULL
 	while (one_time_launch && !is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
-								//Юра - надо будет менять условие для бесконечного цикла
+													//Юра - надо будет менять условие для бесконечного цикла
 	{
-		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка
+		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка // может вернуть NULL
 		if (!str) //для разделения   запуске
 		{
 			str = readline("minishell$ ");//readline сама выводит строку приглашения
@@ -191,9 +191,8 @@ int	main(int argc, char **argv, char **envp)
 		else
 			one_time_launch = 0;
 		get_info_from_string(str, &info);
-		commands = parse_commands(str, &info, envp);// Артём - если перед командой, после команды и между командой и аргументом есть пробелы, парсер должен их отрезать (см. bash).
-													//Сейчас ругается ошибкой "Could not execve: Permission denied" (пример "    cd    ..    ")
-						// print_commands_list(commands);
+		commands = parse_commands(str, &info, envp);
+		// print_commands_list(commands);
 		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
 			status = execute_commands(commands, envp, &env);

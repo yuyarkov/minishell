@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/28 20:38:01 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:32:12 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	is_builtin_command(char *s)
 		return (1);
 	if (ft_strncmp(s, "pwd", 3) == 0)
 		return (1);
-	if (ft_strncmp(s, "env\0", 4) == 0)
-		return (1);
-	if (ft_strncmp(s, "unset\0", 6) == 0)// (cmd->cmd, "unset\0", 7)
+	// if (ft_strncmp(s, "env\0", 4) == 0)
+	// 	return (1);
+	if (ft_strncmp(s, "unset\0", 6) == 0)
 		return (1);
 	if (ft_strncmp(s, "export\0", 7) == 0)
 		return (1);

@@ -6,44 +6,44 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/28 20:40:39 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/29 20:39:49 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	search_path(char **envp)
-{
-	int	iterator;
+// int	search_path(char **envp)
+// {
+// 	int	iterator;
 
-	iterator = 0;
-	while (envp[iterator])
-	{
-		if (!ft_strncmp(envp[iterator], "PATH=", 5))
-			return (1); //если есть PATH
-		iterator++;
-	}
-	return (0); //если нет PATH
-}
+// 	iterator = 0;
+// 	while (envp[iterator])
+// 	{
+// 		if (!ft_strncmp(envp[iterator], "PATH=", 5))//нужно искать в PATH user/bin
+// 			return (1); //если есть PATH
+// 		iterator++;
+// 	}
+// 	return (0); //если нет PATH
+// }
 
-int	execute_env_command(t_list *cmd, char **envp)
-{
-	int	result;
+// int	execute_env_command(t_list *cmd, char **envp)
+// {
+// 	int	result;
 
-	(void) cmd;
-	if (search_path(envp))
-	{
-		while (*envp)
-			ft_putendl_fd(*(envp++), 1);
-		result = 0;
-	}
-	else
-	{
-		ft_putendl_fd("minishell: env: No such file or directory", 1);
-		result = 127;
-	}
-	return (result);
-}
+// 	(void) cmd;
+// 	if (search_path(envp))
+// 	{
+// 		while (*envp)
+// 			ft_putendl_fd(*(envp++), 1);
+// 		result = 0;
+// 	}
+// 	else
+// 	{
+// 		ft_putendl_fd("minishell: env: No such file or directory", 2);
+// 		result = 127;
+// 	}
+// 	return (result);
+// }
 
 char	*env_strjoin(char const *s1, char const *s2)
 {
@@ -85,13 +85,13 @@ char	**return_env_to_char(t_env *env)
 			size++;
 		tmp = tmp->next;
 	}
-	new_envp = (char **)malloc(sizeof(char *) * (size + 1));
+	new_envp = (char **)malloc(sizeof(char *) * (size + 1));// может вернуть NULL
 	index = 0;
 	while (index < size)
 	{
 		while (!env->value && env)
 			env = env->next;
-		new_envp[index] = env_strjoin(env->key, env->value);
+		new_envp[index] = env_strjoin(env->key, env->value);// может вернуть NULL
 		env = env->next;
 		index++;
 	}
@@ -126,14 +126,14 @@ t_env	*env_create_elem(char *str)
 	if (ft_strchr(str, '='))
 	{	
 		result = ft_split(str, '=');
-		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
+		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));// может вернуть NULL
 		if (result[1])
-			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
+			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));// может вернуть NULL
 		free_str_pointer(result);
 	}
 	else
 	{
-		new_elem->key = ft_substr(str, 0, ft_strlen(str));
+		new_elem->key = ft_substr(str, 0, ft_strlen(str));// может вернуть NULL
 		new_elem->value = NULL;
 	}
 	return (new_elem);
@@ -146,11 +146,11 @@ t_env	*create_env(char **envp)
 	t_env	*list;
 
 	new_elem = NULL;
-	list = env_create_elem(envp[0]);
+	list = env_create_elem(envp[0]);// может вернуть NULL
 	iterator = 1;
 	while (envp[iterator])
 	{
-		new_elem = env_create_elem(envp[iterator]);
+		new_elem = env_create_elem(envp[iterator]);// может вернуть NULL
 		env_lstadd_back(&list, new_elem);
 		iterator++;
 	}

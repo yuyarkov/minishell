@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:53:52 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/03/28 21:42:47 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:55:56 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,24 @@ t_env	*export_create_elem(char *str)
 	t_env	*new_elem;
 	char	**result;
 
-	new_elem = malloc(sizeof(t_env));
+	new_elem = malloc(sizeof(t_env));// может вернуть NULL
 	if (NULL == new_elem)
 		return (NULL);
 	new_elem->next = NULL;
+	// printf("str = %s\n", str);
 	if (ft_strchr(str, '='))//если есть =
 	{
-		result = ft_split(str, '=');
-		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
+		result = ft_split(str, '=');// может вернуть NULL
+		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));//substr может вернуть NULL
 		if (!result[1])// нет value
-			new_elem->value = ft_substr("\0", 0, 1);
+			new_elem->value = ft_substr("\0", 0, 1);//substr может вернуть NULL
 		else// есть value
-			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
+			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));//substr может вернуть NULL
 		free_str_pointer(result);
 	}
-	else //если нет =
+	else//если нет =
 	{
-		new_elem->key = ft_substr(str, 0, ft_strlen(str));
+		new_elem->key = ft_substr(str, 0, ft_strlen(str));//substr может вернуть NULL
 		new_elem->value = NULL;
 	}
 	return (new_elem);
@@ -67,21 +68,23 @@ int	find_argument_in_env(char *argument, t_env **env)
 	char	*return_strchr;
 	t_env	*tmp;
 	int		result;
+	int		max_strlen;
 
 	tmp = *env;
-	split_argument = ft_split(argument, '=');
+	split_argument = ft_split(argument, '=');//split может вернуть NULL
 	result = 0;
 	while (tmp)
 	{
-		return_strncmp = ft_strncmp(tmp->key, split_argument[0], ft_strlen(tmp->key));
+		max_strlen = find_max_strlen(split_argument[0], tmp->key);
+		return_strncmp = ft_strncmp(split_argument[0], tmp->key, max_strlen);
 		return_strchr = ft_strchr(argument, '=');
 		if (!return_strncmp && return_strchr)//аргумент уже есть в енв и подан С =
 		{
 			free(tmp->value);
 			if(split_argument[1])
-				tmp->value = ft_substr(split_argument[1], 0, ft_strlen(split_argument[1]));
+				tmp->value = ft_substr(split_argument[1], 0, ft_strlen(split_argument[1]));//substr может вернуть NULL
 			else
-				tmp->value = ft_substr("\0", 0, 1);
+				tmp->value = ft_substr("\0", 0, 1);//substr может вернуть NULL
 			result = 1;
 		}
 		else if (!return_strncmp && !return_strchr)//аргумент уже есть в енв и подан БЕЗ =
@@ -96,7 +99,7 @@ int	add_arguments(t_list *cmd, t_env **env)
 {
 	int		iterator;
 	int		result;
-	// t_env	*new_elem;
+	t_env	*new_elem;
 
 	result = 0;
 	iterator = 1;
@@ -106,14 +109,13 @@ int	add_arguments(t_list *cmd, t_env **env)
 		{
 			if (!find_argument_in_env(cmd->arguments[iterator], env))
 			{//если аргумента нет в env
-				// printf("cmd->arguments[iterator] = %s\n", cmd->arguments[iterator]);
-				env_lstadd_back(env, export_create_elem(cmd->arguments[iterator]));//или без проверки на NULL
+				new_elem = env_create_elem(cmd->arguments[iterator]);// может вернуть NULL
+				if (!new_elem)//если память не выделена добавить обработку ошибки
+					printf("new_elem == NULL, return ERROR\n");//perror()?
+				env_lstadd_back(env, new_elem);
 			}
 			// {
-			// 	new_elem = env_create_elem(cmd->arguments[iterator]);
-			// 	if (!new_elem)//если память не выделена добавить обработку ошибки
-			// 		printf("new_elem == NULL, return ERROR\n");//perror()? нужна ли эта проверка?
-			// 	env_lstadd_back(env, new_elem);
+			// 	env_lstadd_back(env, export_create_elem(cmd->arguments[iterator]));//или без проверки на NULL
 			// }
 		}
 		else

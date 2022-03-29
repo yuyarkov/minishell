@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/26 15:54:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/03/29 12:42:48 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,20 @@ char	**return_env_to_char(t_env *env);
 void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_str_pointer(char **str);//перенести в другой раздел
+
+void	execute_cmd(t_list *cmd, char **envp);
+
 // builtin's //
 int		execute_cd_command(t_list *cmd, char **envp, t_env *env);
 int		execute_exit_command(t_list *cmd, char **envp);
 int		execute_echo_command(t_list *cmd, char **envp);
 int		execute_pwd_command(t_list *cmd, char **envp);
-int		execute_env_command(t_list *cmd, char **envp);
+// int		execute_env_command(t_list *cmd, char **envp);
 int		execute_unset_command(t_list *cmd, char **envp, t_env *env);
 int		execute_export_command(t_list *cmd, char **envp, t_env *env);
 void	env_lstadd_back(t_env **list, t_env *new_elem);
 t_env	*env_create_elem(char *str);
+int		find_max_strlen(char *str1, char *str2);
 
 t_list	*execute_with_pipe(t_list *list, char **envp);
 
