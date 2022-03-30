@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/29 12:42:48 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/30 21:06:39 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ int		is_exit_command(char *str);
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
-t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
+t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp, int *stat);
 char	*get_cmd_name(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
-void	print_cmd_error(char *argv);
+int		print_cmd_error(char *argv);
 
 t_env	*create_env(char **envp);
 char	**return_env_to_char(t_env *env);

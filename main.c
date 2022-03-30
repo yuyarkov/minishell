@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/29 20:40:56 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/30 21:13:27 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	return (result);
 }
 
-t_list	*parse_commands(char *str, t_info *info, char **envp)
+t_list	*parse_commands(char *str, t_info *info, char **envp, int *status)
 {
 	char	**commands;
 	t_list	*result;
@@ -72,7 +72,7 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
 	}
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
-	result = add_cmd_to_list(info, commands, envp);
+	result = add_cmd_to_list(info, commands, envp, status);
 	//printf("before return from parse commands\n");
 	//добавить освобождение commands и строк
 	return (result);
@@ -191,11 +191,12 @@ int	main(int argc, char **argv, char **envp)
 		else
 			one_time_launch = 0;
 		get_info_from_string(str, &info);
-		commands = parse_commands(str, &info, envp);
+		commands = parse_commands(str, &info, envp, &status);
 		// print_commands_list(commands);
 		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
 			status = execute_commands(commands, envp, &env);
+			printf("status = %d\n", status);
 			str = NULL;
 		}
 //где-то здесь нужно освобождать структуры

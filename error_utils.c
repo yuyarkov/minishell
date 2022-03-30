@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/29 15:31:26 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/30 21:02:19 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ void	print_file_error(char *file_name)
 	exit (EXIT_FAILURE);
 }
 
-void	print_cmd_error(char *argv)
+int	print_cmd_error(char *argv)// должна изменять статус выхода
 {
-	ft_putstr_fd("minishell: command not found: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(get_cmd_name(argv), 2);
-	ft_putstr_fd("\n", 2);
+	ft_putendl_fd(": No such file or directory", 2);
+	return (127);
 }
