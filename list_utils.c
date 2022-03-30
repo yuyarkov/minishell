@@ -6,13 +6,13 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/30 21:11:34 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/30 21:18:30 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*create_elem(char *str, char **envp, int *status)
+t_list	*create_elem(char *str, char **envp)
 {
 	t_list	*new_elem;
 
@@ -29,7 +29,7 @@ t_list	*create_elem(char *str, char **envp, int *status)
 	//printf("new_elem->cmd: %s\n", new_elem->cmd);
 	if (!new_elem->cmd)
 	{
-		*status = print_cmd_error(str);// должна изменять статус выхода на 127
+		print_cmd_error(str);// должна изменять статус выхода
 		return (NULL);//здесь выполнение команды должно прерваться и возвращаемся в строку приглашения
 	}
 	new_elem->arguments = ft_split(str, ' ');
@@ -57,7 +57,7 @@ void	ft_double_list_add_back(t_list **list, t_list *new_elem)
 		*list = new_elem;
 }
 
-t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp, int *stat)
+t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp)
 {
 	int		i;
 	t_list	*new_elem;
@@ -65,7 +65,7 @@ t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp, int *stat)
 	//char	*temp;
 
 	new_elem = NULL;
-	list = create_elem(commands[0], envp, stat);
+	list = create_elem(commands[0], envp);
 	if (!list)
 		return (NULL);
 	list->limiter = info->limiters[0].sign;
@@ -76,7 +76,7 @@ t_list	*add_cmd_to_list(t_info *info, char **commands, char **envp, int *stat)
 		// temp = get_cmd_path(commands[i], envp);
 		// if (temp)
 		// {	
-			new_elem = create_elem(commands[i], envp, stat);
+			new_elem = create_elem(commands[i], envp);
 			if (!new_elem)
 				return (NULL);//добавить очищение списка, т.к. будут утечки
 			new_elem->limiter = info->limiters[i].sign;

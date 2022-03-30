@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/30 21:13:27 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/30 21:29:53 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	return (result);
 }
 
-t_list	*parse_commands(char *str, t_info *info, char **envp, int *status)
+t_list	*parse_commands(char *str, t_info *info, char **envp)
 {
 	char	**commands;
 	t_list	*result;
@@ -72,7 +72,7 @@ t_list	*parse_commands(char *str, t_info *info, char **envp, int *status)
 		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
 	}
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
-	result = add_cmd_to_list(info, commands, envp, status);
+	result = add_cmd_to_list(info, commands, envp);
 	//printf("before return from parse commands\n");
 	//добавить освобождение commands и строк
 	return (result);
@@ -116,7 +116,10 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 	while (iter)
 	{
 		if (is_builtin_command(iter->cmd))
+		{
 			status = execute_builtin(iter, envp, env);
+			// printf("1 status = %d\n", status);
+		}
 		else if (iter->cmd && *iter->cmd != '\0')
 		{
 		//	printf("iter->cmd: %s, iter->limiter: %d, iter->previous: %p\n", iter->cmd,
@@ -133,12 +136,14 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 				}
 				if (child == 0)
 					execute_cmd(iter, envp);
+				// printf("2 status = %d\n", status);
 				waitpid(child, &status, 0);
 			}
 		}
 		if (iter)
 			iter = iter->next;
 	}
+	// printf("3 status = %d\n", status);
 	return (status);
 }
 
@@ -191,12 +196,11 @@ int	main(int argc, char **argv, char **envp)
 		else
 			one_time_launch = 0;
 		get_info_from_string(str, &info);
-		commands = parse_commands(str, &info, envp, &status);
+		commands = parse_commands(str, &info, envp);
 		// print_commands_list(commands);
 		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
-			status = execute_commands(commands, envp, &env);
-			printf("status = %d\n", status);
+			status = execute_commands(commands, envp, &env);//всегда возвращает статус 0!!! хотя для неверной команды статус д.б. 127
 			str = NULL;
 		}
 //где-то здесь нужно освобождать структуры
