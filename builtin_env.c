@@ -6,44 +6,11 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/30 20:04:56 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/31 17:05:51 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	search_path(char **envp)
-// {
-// 	int	iterator;
-
-// 	iterator = 0;
-// 	while (envp[iterator])
-// 	{
-// 		if (!ft_strncmp(envp[iterator], "PATH=", 5))//нужно искать в PATH user/bin
-// 			return (1); //если есть PATH
-// 		iterator++;
-// 	}
-// 	return (0); //если нет PATH
-// }
-
-// int	execute_env_command(t_list *cmd, char **envp)
-// {
-// 	int	result;
-
-// 	(void) cmd;
-// 	if (search_path(envp))
-// 	{
-// 		while (*envp)
-// 			ft_putendl_fd(*(envp++), 1);
-// 		result = 0;
-// 	}
-// 	else
-// 	{
-// 		ft_putendl_fd("minishell: env: No such file or directory", 2);
-// 		result = 127;
-// 	}
-// 	return (result);
-// }
 
 char	*env_strjoin(char const *s1, char const *s2)
 {

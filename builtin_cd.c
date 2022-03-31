@@ -6,26 +6,11 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 12:58:46 by jg                #+#    #+#             */
-/*   Updated: 2022/03/29 20:36:41 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/31 18:17:11 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*search_home(char **envp)
-{
-	int	iterator;
-
-	iterator = 0;
-	while (envp[iterator])
-	{
-		if (!ft_memcmp(envp[iterator], "HOME=", 5))
-			return (envp[iterator] + 5);
-		iterator++;
-	}//если нет HOME bash возвращает "bash: cd: HOME not set" и 1
-	ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-	return (NULL);
-}
 
 int	search_oldpwd(t_env *env)
 {
@@ -49,15 +34,28 @@ char	*search_pwd(char **envp)
 			return (envp[iterator] + 4);
 		iterator++;
 	}
-	return ("\0");//если нет PWD
+	return (" \0");//если нет PWD
+}
+
+void	make_oldpwd(char *oldpwd, t_env **env)
+{
+	char	*first_oldpwd;
+	t_env	*new_elem;
+
+	first_oldpwd = ft_strjoin("OLDPWD=", oldpwd);// может вернуть NULL
+	if (!first_oldpwd)//если память не выделена добавить обработку ошибки
+		printf("first_oldpwd == NULL, return ERROR\n");//perror()?
+	new_elem = env_create_elem(first_oldpwd);// может вернуть NULL
+	if (!new_elem)//если память не выделена добавить обработку ошибки
+		printf("new_elem == NULL, return ERROR\n");//perror()?
+	env_lstadd_back(env, new_elem);
+	free(first_oldpwd);
 }
 
 void	change_pwd(t_env **env, char *oldpwd)
 {
 	t_env	*tmp;
 	char	pwd[1024];
-	t_env	*new_elem;
-	char	*first_oldpwd;
 
 	tmp = *env;
 	while (tmp)
@@ -76,16 +74,7 @@ void	change_pwd(t_env **env, char *oldpwd)
 		tmp = tmp->next;
 	}
 	if (!search_oldpwd(*env))// если нет олдпвд
-	{
-		first_oldpwd = ft_strjoin("OLDPWD=", oldpwd);// может вернуть NULL
-		if (!first_oldpwd)//если память не выделена добавить обработку ошибки
-			printf("first_oldpwd == NULL, return ERROR\n");//perror()?
-		new_elem = env_create_elem(first_oldpwd);// может вернуть NULL
-		if (!new_elem)//если память не выделена добавить обработку ошибки
-			printf("new_elem == NULL, return ERROR\n");//perror()?
-		env_lstadd_back(env, new_elem);
-		free(first_oldpwd);
-	}
+		make_oldpwd(oldpwd, env);
 	*env = tmp;
 }
 

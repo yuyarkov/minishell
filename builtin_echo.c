@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 13:02:20 by jg                #+#    #+#             */
-/*   Updated: 2022/03/21 18:28:53 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/03/31 17:04:51 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ int	execute_echo_command(t_list *cmd, char **envp)
 	}
 	if (ft_strncmp(cmd->arguments[1], "-n\0", 3) != 0)//если нет -n пиши перевод каретки
 		ft_putchar_fd('\n', 1);
-	//printf("==inside execute_echo\n");
-	return (0);//добавить обработку ошибок и обработать флаг -nnnnnnnn (должен работать как -n)
+	return (0);
 }
