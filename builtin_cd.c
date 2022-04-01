@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 12:58:46 by jg                #+#    #+#             */
-/*   Updated: 2022/03/31 18:17:11 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:26:40 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ int	search_oldpwd(t_env *env)
 	return (0);//если нет OLDPWD
 }
 
-char	*search_pwd(char **envp)
+char	*search_home(char **envp)
 {
 	int	iterator;
 
 	iterator = 0;
 	while (envp[iterator])
 	{
-		if (!ft_strncmp(envp[iterator], "PWD=", 4))
-			return (envp[iterator] + 4);
+		if (!ft_memcmp(envp[iterator], "HOME=", 5))
+			return (envp[iterator] + 5);
 		iterator++;
 	}
-	return (" \0");//если нет PWD
+	ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	return (NULL);
 }
 
 void	make_oldpwd(char *oldpwd, t_env **env)
@@ -81,7 +82,7 @@ void	change_pwd(t_env **env, char *oldpwd)
 int	execute_cd_command(t_list *cmd, char **envp, t_env *env)
 {
 	char	*path;
-	char	*oldpwd;
+	char	oldpwd[1024];
 
 	(void)env;
 	if (!cmd->arguments[1])//если после cd нет ничего
@@ -92,11 +93,9 @@ int	execute_cd_command(t_list *cmd, char **envp, t_env *env)
 	}
 	else
 		path = cmd->arguments[1];
+	getcwd(oldpwd, 1024);
 	if (chdir(path) == 0)// при каждом корректном вызове cd
-	{
-		oldpwd = search_pwd(envp);
 		change_pwd(&env, oldpwd);
-	}
 	else//иначе - выводи ошибку
 	{
 		ft_putstr_fd("minishell: cd: ", 2);

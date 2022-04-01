@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/31 16:58:44 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:25:50 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int		execute_echo_command(t_list *cmd, char **envp);
 int		execute_pwd_command(t_list *cmd, char **envp);
 int		execute_unset_command(t_list *cmd, char **envp, t_env *env);
 int		execute_export_command(t_list *cmd, char **envp, t_env *env);
-char	*search_home(char **envp);
 void	env_lstadd_back(t_env **list, t_env *new_elem);
 t_env	*env_create_elem(char *str);
 int		find_max_strlen(char *str1, char *str2);

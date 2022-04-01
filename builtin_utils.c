@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 12:42:00 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/03/31 18:24:01 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:25:32 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,4 @@ int	find_max_strlen(char *str1, char *str2)
 		return (s1);
 	else
 		return (s2);
-}
-
-char	*search_home(char **envp)
-{
-	int	iterator;
-
-	iterator = 0;
-	while (envp[iterator])
-	{
-		if (!ft_memcmp(envp[iterator], "HOME=", 5))
-			return (envp[iterator] + 5);
-		iterator++;
-	}
-	ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-	return (NULL);
 }
