@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/01 19:14:30 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/01 20:42:04 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,10 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 	int		status;
 	t_list	*iter;
 
-	status = 0;
+	if (commands)
+		status = 0;
+	else
+		status = 127; //разобраться почему 127 и заменить на константу
 	iter = commands;
 	while (iter)
 	{

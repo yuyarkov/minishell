@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/30 20:06:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/01 19:42:25 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void	get_info_from_string(char *str, t_info *info)
 			num++;
 		if (ft_strncmp(&s[i], "&&", 2) == 0 || ft_strncmp(&s[i], "||", 2) == 0)
 			num++;
-		i++;			
+		i++;
 	}
 	if (num == 0)
 		info->num_of_commands = 1;
