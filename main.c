@@ -6,15 +6,24 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/01 20:42:04 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/06 22:36:55 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+	// struct termios	silence;
+	// tcgetattr(STDIN_FILENO, &silence);
+	// silence.c_lflag &= ~ECHOCTL;
+	// tcsetattr(STDIN_FILENO, TCSANOW, &silence);
+
 void	handler(int num)
 {
-	printf("got the signal code: %d\n", num);
+	(void)num;
+	ft_putstr_fd("\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	print_commands_list(t_list *cmd)
@@ -184,7 +193,9 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(argv[1], "-c", 3) == 0)
 			str = argv[2];
 	}
-	signal(SIGINT, handler);//вот тут-то я ловлю сигнал ctrl+C, ctrl+D и ctrl+/
+	signal(SIGINT, &handler);//вот тут-то я ловлю сигнал ctrl+C
+	// signal(EOF, &handler);//вот тут-то я ловлю сигнал ctrl+D
+	signal(SIGQUIT, SIG_IGN);/* вот тут-то я ловлю сигнал ctrl+\ */
 	using_history();    /* initialize history */
 	env = create_env(envp);//заполняю связный список значениями из envp // может вернуть NULL
 	while (one_time_launch && !is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса

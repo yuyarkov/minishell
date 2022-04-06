@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 12:58:46 by jg                #+#    #+#             */
-/*   Updated: 2022/04/01 19:37:30 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/05 21:16:36 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	execute_cd_command(t_list *cmd, char **envp, t_env *env)
 	char	*path;
 	char	oldpwd[1024];
 
-	(void)env;
+	(void)envp;
 	if (!cmd->arguments[1])//если после cd нет ничего
 	{
 		path = search_home(envp);// нужно взять путь из envp HOME
