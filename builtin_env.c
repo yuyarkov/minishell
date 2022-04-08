@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/31 17:05:51 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:37:38 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_env	*env_create_elem(char *str)
 		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));// может вернуть NULL
 		if (result[1])
 			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));// может вернуть NULL
-		free_str_pointer(result);
+		free_string_array(result);
 	}
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/08 17:35:16 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 20:59:30 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		is_builtin_command(char *s);
 int		get_info_from_string(char *s, t_info *info);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
-char	*get_cmd_name(char *cmd);
+char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
 
@@ -60,7 +60,10 @@ t_env	*create_env(char **envp);
 char	**return_env_to_char(t_env *env);
 void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
-void	free_str_pointer(char **str);//перенести в другой раздел
+void	free_string_array(char **str);//перенести в другой раздел
+void	clear_info(t_info *info, t_list *commands);//зачаток общей функции, которая чистит всё
+void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
+
 
 void	execute_cmd(t_list *cmd, char **envp);
 

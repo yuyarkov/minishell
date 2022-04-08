@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:53:52 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/03/31 16:03:35 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:39:26 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_env	*export_create_elem(char *str)
 			new_elem->value = ft_substr("\0", 0, 1);//substr может вернуть NULL
 		else// есть value
 			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));//substr может вернуть NULL
-		free_str_pointer(result);
+		free_string_array(result);
 	}
 	else//если нет =
 	{
@@ -91,7 +91,7 @@ int	find_argument_in_env(char *argument, t_env **env)
 			result = 1;
 		tmp = tmp->next;
 	}
-	free_str_pointer(split_argument);
+	free_string_array(split_argument);
 	return (result);
 }
 

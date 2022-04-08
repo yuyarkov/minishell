@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/08 19:24:25 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 21:15:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 	//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
 	result = add_cmd_to_list(info, commands, envp);
 	//printf("before return from parse commands\n");
+	free_string_array(commands);
 	//добавить освобождение commands и строк
 	return (result);
 }
@@ -208,11 +209,11 @@ int	main(int argc, char **argv, char **envp)
 			add_history(str);
 		}
 		else
-			one_time_launch = 0;// что это?
+			one_time_launch = 0;
 		// printf("str = %s\n", str);
 		if (get_info_from_string(str, &info))// если 1, то выхожу из цикла. это будет лексер
 		{
-			free_str_pointer(envp);
+			free_string_array(envp);
 			break ;
 		}
 		commands = parse_commands(str, &info, envp);
@@ -225,11 +226,13 @@ int	main(int argc, char **argv, char **envp)
 //где-то здесь нужно освобождать структуры
 		// printf_char_pointer(envp);
 		// printf_env(env);
-		free_str_pointer(envp);// освобождаю массив строк
+		free_string_array(envp);// освобождаю массив строк
 	}
-	// if (envp)
-	// 	free_str_pointer(envp);
+
+	rl_clear_history();
 	lstiter_env(env, free);//освобождаю поля в связном списке
-	clear_env(env);//освобождаю память связного списка
+	clear_list_env(env);
+	//clear_env(env);//освобождаю память связного списка - эти функции можно объединить
+	clear_info(&info, commands);
 	return (status);
 }

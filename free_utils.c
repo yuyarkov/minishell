@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/03/28 17:36:59 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 21:00:06 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_str_pointer(char **str)
+void	free_string_array(char **str)
 {
 	int	iterator;
 
@@ -47,18 +47,37 @@ void	clear_env(t_env *list)
 	}
 }
 
-// void	ft_lstclear(t_list **list, void (*del)(void *))
-// {
-// 	t_list	*temp;
+void	clear_list_env(t_env *env)//зачаток общей функции, которая чистит всё
+{
+	t_env	*iter;
+	t_env	*temp;
+	
+	iter = env;
+	while (iter)
+	{
+		temp = iter;
+		iter = iter->next;
+		free(temp);		
+	}
+}
 
-// 	while (*list)
-// 	{
-// 		temp = (*list)->next;
-// 		ft_lstdelone(*list, del);
-// 		*list = temp;
-// 	}
-// 	*list = NULL;
-// }
+void	clear_info(t_info *info, t_list *commands)//зачаток общей функции, которая чистит всё
+{
+	t_list	*iter;
+	t_list	*temp;
+	
+	if (info->limiters)
+		free(info->limiters);
+	iter = commands;
+	while (iter)
+	{
+		free(iter->cmd);
+		free_string_array(iter->arguments);
+		temp = iter;
+		iter = iter->next;
+		free(temp);		
+	}
+}
 
 // void	ft_lstadd_front(t_list **list, t_list *new_elem)
 // {

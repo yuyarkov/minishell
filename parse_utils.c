@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/08 17:34:27 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 20:43:01 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	is_builtin_command(char *s)
 	return (0);
 }
 
-char	*get_cmd_name(char *cmd)
+char	*get_first_word(char *cmd)
 {
 	char	*result;
 	int		i;
@@ -67,33 +67,39 @@ char	*find_cmd_path(char *cmd, char *path)
 {
 	char	**dirs;
 	char	*temp;
+	char	*temp_cmd;
 	int		i;
 	char	*result;
 
 	dirs = ft_split(path, ':');
 	i = 0;
 	result = NULL;
-	temp = get_cmd_name(cmd);
+	temp = get_first_word(cmd);
 	if (cmd[0] != '/') //похоже на костыль, чтобы не добавлять второй / 
-		cmd = ft_strjoin("/", temp);
+		temp_cmd = ft_strjoin("/", temp);
+	else
+		temp_cmd = cmd;
 	//printf("get_cmd_name: %s\n", cmd);
 	free(temp);
 	while (dirs[i] && !result)
 	{
-		if (ft_strncmp(dirs[i], cmd, ft_strlen(dirs[i])) != 0)//ещё костыль, чтобы учесть команды, где уже указан полный путь
-			temp = ft_strjoin(dirs[i], cmd);
+		if (ft_strncmp(dirs[i], temp_cmd, ft_strlen(dirs[i])) != 0)//ещё костыль, чтобы учесть команды, где уже указан полный путь
+			temp = ft_strjoin(dirs[i], temp_cmd);
 		else
-			temp = ft_strdup(cmd);
+			temp = ft_strdup(temp_cmd);
 		if (access(temp, 1 << 0) == 0)
 			result = ft_strdup(temp);
 		free(temp);
-		free(dirs[i]);
 		i++;
 	}
-	while (dirs[i])
-		free(dirs[i++]);
-	free(dirs);
-	free(cmd);
+	free_string_array(dirs);
+	if (cmd == temp_cmd)
+		free(temp_cmd);
+	else
+	{
+		free(cmd);
+		free(temp_cmd);
+	}
 	//printf("результат из find_cmd_path: %s\n", result);
 	return (result);
 }
@@ -105,10 +111,15 @@ char	*get_cmd_path(char *input_cmd, char **envp)
 	char	start[5];
 	int		result;
 	char	*cmd;
+	char	**temp_string_array;
 
 	input_cmd = ft_strtrim(input_cmd, SPACES);//будет утечка, устранить
 	if (input_cmd && *input_cmd != '\0')
-		cmd = ft_split(input_cmd, ' ')[0];//подумать, как освобождать память
+	{
+		temp_string_array = ft_split(input_cmd, ' ');
+		cmd = ft_strdup(temp_string_array[0]);
+		free_string_array(temp_string_array);
+	}
 	//split лучше заменить на простую функцию get_first_word
 	else
 		cmd = input_cmd;
@@ -212,5 +223,6 @@ int	get_info_from_string(char *str, t_info *info)
 		info->limiters[0].index = ft_strlen(s);
 	//printf("num of commands: %d\n", info->num_of_commands);
 	}
+	free(s);
 	return (0);
 }

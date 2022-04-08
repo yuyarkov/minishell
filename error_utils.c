@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/30 21:17:55 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 20:40:18 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ void	print_file_error(char *file_name)
 void	print_cmd_error(char *argv)// должна изменять статус выхода
 {
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(get_cmd_name(argv), 2);
+	ft_putstr_fd(get_first_word(argv), 2);
 	ft_putendl_fd(": No such file or directory", 2);
 }
