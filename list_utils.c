@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/30 21:18:30 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 17:08:30 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_list	*create_elem(char *str, char **envp)
 	t_list	*new_elem;
 
 	//printf("inside create elem\n");
+	// if (!str)// если передан ctrl D
+	// 	return (NULL);
 	new_elem = malloc(sizeof(t_list));
 	if (NULL == new_elem)
 		return (NULL);

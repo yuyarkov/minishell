@@ -6,7 +6,7 @@
 #    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/04/06 19:11:20 by fdarkhaw         ###   ########.fr        #
+#    Updated: 2022/04/08 19:17:30 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,14 +40,16 @@ INC_DIR 	= ./includes/
 LDLIBS = -lreadline
 
 RL_INC_DIR	:=	$(HOMEBREW_PREFIX)/opt/readline/include
+# RL_INC_DIR	:=	$(HOMEBREW_PREFIX)/Cellar/readline/8.1.2/include
 
 RL_LIB_DIR	:=	$(HOMEBREW_PREFIX)/opt/readline/lib
+# RL_LIB_DIR	:=	$(HOMEBREW_PREFIX)/Cellar/readline/8.1.2/lib
 
 CPPFLAGS 	= -I$(INC_DIR) -I$(RL_INC_DIR)
 
 LDFLAGS 	= -L$(RL_LIB_DIR)
 
-CFLAGS 		= -MMD -Wall -Wextra -Werror -g3
+CFLAGS 		= -MMD -Wall -Wextra -Werror -g
 
 all		:	libmake $(NAME)
 

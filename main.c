@@ -6,16 +6,11 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/06 22:36:55 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:24:25 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-	// struct termios	silence;
-	// tcgetattr(STDIN_FILENO, &silence);
-	// silence.c_lflag &= ~ECHOCTL;
-	// tcsetattr(STDIN_FILENO, TCSANOW, &silence);
 
 void	handler(int num)
 {
@@ -183,8 +178,13 @@ int	main(int argc, char **argv, char **envp)
 	int		status;
 	t_info	info;
 	t_env	*env;
-	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
+	struct termios	silence;
+	// rl_catch_signals = 0;
 
+	tcgetattr(STDIN_FILENO, &silence);
+	silence.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &silence);
+	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
 	str = NULL;
 	one_time_launch = 1;
 	status = 0; //возвращать статус из дочерних процессов
@@ -193,9 +193,9 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(argv[1], "-c", 3) == 0)
 			str = argv[2];
 	}
-	signal(SIGINT, &handler);//вот тут-то я ловлю сигнал ctrl+C
-	// signal(EOF, &handler);//вот тут-то я ловлю сигнал ctrl+D
-	signal(SIGQUIT, SIG_IGN);/* вот тут-то я ловлю сигнал ctrl+\ */
+	signal(SIGINT, &handler);//вот тут я ловлю сигнал ctrl+C
+	// signal(EOF, &handler);//вот тут я ловлю сигнал ctrl+D
+	signal(SIGQUIT, SIG_IGN);/* вот тут я ловлю сигнал ctrl+\ */
 	using_history();    /* initialize history */
 	env = create_env(envp);//заполняю связный список значениями из envp // может вернуть NULL
 	while (one_time_launch && !is_exit_command(str))//Артём - не надо менять, потому что логика верная - после exit без аргумента статус выхода сохраняется от предыдущего процесса
@@ -208,13 +208,18 @@ int	main(int argc, char **argv, char **envp)
 			add_history(str);
 		}
 		else
-			one_time_launch = 0;
-		get_info_from_string(str, &info);
+			one_time_launch = 0;// что это?
+		// printf("str = %s\n", str);
+		if (get_info_from_string(str, &info))// если 1, то выхожу из цикла. это будет лексер
+		{
+			free_str_pointer(envp);
+			break ;
+		}
 		commands = parse_commands(str, &info, envp);
 		// print_commands_list(commands);
 		if (!is_exit_command(str))//ничего поизящнее не придумал
 		{
-			status = execute_commands(commands, envp, &env);//всегда возвращает статус 0!!! хотя для неверной команды статус д.б. 127
+			status = execute_commands(commands, envp, &env);
 			str = NULL;
 		}
 //где-то здесь нужно освобождать структуры
@@ -222,6 +227,8 @@ int	main(int argc, char **argv, char **envp)
 		// printf_env(env);
 		free_str_pointer(envp);// освобождаю массив строк
 	}
+	// if (envp)
+	// 	free_str_pointer(envp);
 	lstiter_env(env, free);//освобождаю поля в связном списке
 	clear_env(env);//освобождаю память связного списка
 	return (status);

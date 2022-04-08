@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/01 20:45:08 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/08 17:34:27 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,12 +175,17 @@ void	parse_limiters(char *s, t_info *info)
 	info->limiters[j].index = ft_strlen(s);//для последнего команды ставлю параметры виртуального разделителя
 }
 
-void	get_info_from_string(char *str, t_info *info)
+int	get_info_from_string(char *str, t_info *info)
 {
 	int		i;
 	int		num;
 	char	*s;
 
+	if (!str)// если передан ctrl D
+	{
+		ft_putendl_fd("exit", 1);
+		return (1);
+	}
 	s = ft_strtrim(str, SPACES);
 	//printf("after trim, \"%s\"\n", s);
 	i = 0;
@@ -198,7 +203,7 @@ void	get_info_from_string(char *str, t_info *info)
 	else
 		info->num_of_commands = num + 1;
 	info->limiters = malloc(sizeof(t_limiter) * info->num_of_commands);
-	if (NULL == info->limiters)
+	if (NULL == info->limiters)// при таком выходе не очищаются структуры
 		exit(EXIT_FAILURE);
 	parse_limiters(s, info);
 	if (num == 0)
@@ -206,6 +211,6 @@ void	get_info_from_string(char *str, t_info *info)
 		info->limiters[0].sign = SEMICOLON; //костыль, когда команда одна, заполняю как будто ; в конце
 		info->limiters[0].index = ft_strlen(s);
 	//printf("num of commands: %d\n", info->num_of_commands);
-		
 	}
+	return (0);
 }
