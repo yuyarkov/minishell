@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/04/08 21:00:06 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/09 16:52:33 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,12 @@ void	clear_info(t_info *info, t_list *commands)//зачаток общей фу�
 	iter = commands;
 	while (iter)
 	{
-		free(iter->cmd);
-		free_string_array(iter->arguments);
+		if (iter->cmd)
+			free(iter->cmd);
+		if (iter->arguments)
+			free_string_array(iter->arguments);
 		temp = iter;
 		iter = iter->next;
 		free(temp);		
 	}
 }
-
-// void	ft_lstadd_front(t_list **list, t_list *new_elem)
-// {
-// 	if (*list)
-// 	{
-// 		new_elem->next = *list;
-// 		*list = new_elem;
-// 	}
-// 	else
-// 		*list = new_elem;
-// }

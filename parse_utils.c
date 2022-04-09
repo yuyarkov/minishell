@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/08 20:43:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/09 17:44:25 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,3 +226,55 @@ int	get_info_from_string(char *str, t_info *info)
 	free(s);
 	return (0);
 }
+
+
+
+char	**split_commands_by_limiters(char *str, t_info *info)
+{
+	char	**result;
+	char	*temp;
+	int		length;
+	int		index;
+	int		i;
+
+	result = malloc(sizeof(char *) * (info->num_of_commands + 1));
+	if (NULL == result)
+		exit(EXIT_FAILURE);
+	result[0] = ft_strtrim(ft_substr(str, 0, info->limiters[0].index), SPACES);//подумать над освобождением строк после trim и substr
+	//printf("result[0]: %s\n", result[0]);
+	i = 1;
+	while (i < info->num_of_commands)
+	{
+		index = info->limiters[i - 1].index + (info->limiters[i - 1].sign % 2 + 1);
+		length = info->limiters[i].index - index;
+		temp = ft_substr(str, index, length);
+		result[i] = ft_strtrim(temp, SPACES);
+		free(temp);
+		//printf("result[%d]: %s\n", i, result[i]);
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
+}
+
+t_list	*parse_commands(char *str, t_info *info, char **envp)
+{
+	char	**commands;
+	t_list	*result;
+
+	if (info->num_of_commands > 1) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
+		commands = split_commands_by_limiters(str, info);
+	else
+	{
+		commands = malloc(sizeof(char *) * 2);
+		commands[0] = ft_strtrim(str, SPACES); //утечка
+		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
+	}
+	
+					//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
+	result = add_cmd_to_list(info, commands, envp);
+					//printf("before return from parse commands, cmd: %s\n", result->cmd);
+	free_string_array(commands);
+	return (result);
+}
+

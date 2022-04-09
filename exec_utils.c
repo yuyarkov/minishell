@@ -3,90 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/28 20:24:58 by fdarkhaw         ###   ########.fr       */
+/*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
+/*   Updated: 2022/04/09 17:04:29 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	dup_child_pipe(t_list *cmd)
+void	execute_cmd(t_list *cmd, char **envp)
 {
-	close(cmd->end[0]);
-	if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
-		perror ("Could not dup2 STDIN");
-	if (dup2(cmd->end[1], STDOUT_FILENO) < 0)
-		perror ("Could not dup2 STDOUT");
-}
-
-void	child_pipex(int *fd, t_list *cmd, char **envp)
-{
-	(void) fd;
-	//printf("inside child_pipex, cmd->cmd: %s, cmd->previous->cmd: %s\n", cmd->cmd, cmd->previous->cmd);
-	if (!cmd->previous)
-	{
-		close(cmd->end[0]);
-		// if (dup2(fd[0], STDIN_FILENO) < 0)
-		// 	perror ("Could not dup2 STDIN");
-		if (dup2(cmd->end[1], STDOUT_FILENO) < 0)
-			perror ("Could not dup2 STDOUT");
-	}
-	else if (cmd->next)
-		dup_child_pipe(cmd);
-	else
-	{
-		if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
-			perror ("Could not dup2 STDIN");
-		// if (dup2(fd[1], STDOUT_FILENO) < 0)
-		// 	perror ("Could not dup2 STDOUT");
-	}
+	//printf("вот такую команду исполняю: %s\n", cmd->cmd);
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
-	exit(EXIT_FAILURE);//тут видимо надо поменять код exit
+	exit(EXIT_SUCCESS);//подумать, как брать корректный код выхода из execve
 }
 
-void	close_parent_pipes(t_list *iter)
+int	execute_builtin(t_list *cmd, char **envp, t_env **env)
 {
-	if (!iter->previous)
-		close(iter->end[1]);
-	else if (iter->next)
-	{
-		close(iter->end[1]);
-		close(iter->previous->end[0]);
-	}
-	else
-		close(iter->previous->end[1]);
+	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
+		return (execute_cd_command(cmd, envp, *env));
+	if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
+		return (execute_exit_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
+		return (execute_echo_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
+		return (execute_pwd_command(cmd, envp));
+	// if (ft_strncmp(cmd->cmd, "env\0", 4) == 0)
+	// 	return (execute_env_command(cmd, envp));
+	if (ft_strncmp(cmd->cmd, "unset\0", 6) == 0)
+		return (execute_unset_command(cmd, envp, *env));
+	if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
+		return (execute_export_command(cmd, envp, *env));
+	return (0);
 }
 
-t_list	*execute_with_pipe(t_list *list, char **envp)
+int	execute_commands(t_list *commands, char **envp, t_env **env)
 {
-	int		status;
 	pid_t	child;
+	int		status;
 	t_list	*iter;
-	int		fd[2];//пока заглушка для fd, закинуть инфу о файлах в общую структуру
 
-	fd[0] = 1;
-	fd[1] = 0;
-	iter = list;
-	//printf("inside execute_with_pipe, iter: %p\n", iter);
-	// if (list->redirect)
-	// 	pipe_for_heredoc(list, &(fd[0]));//это было для ввода с heredoc
-	while (iter && (iter->limiter == PIPE || (iter->previous && iter->previous->limiter == PIPE)))
+	if (commands)
+		status = 0;
+	else
+		status = 127; //разобраться почему 127 и заменить на константу
+	iter = commands;
+	while (iter)
 	{
-	//printf("inside execute_with_redirect, iter->cmd: %s, iter->prev: %p\n", iter->cmd, iter->previous);
-		if (iter->next)
-			pipe(iter->end);
-		child = fork();
-		if (child < 0)
-			exit(EXIT_FAILURE);//придумать корректный выход
-			//return (perror("Fork: "));
-		if (child == 0)
-			child_pipex(fd, iter, envp);
-		close_parent_pipes(iter);
-		waitpid(child, &status, 0);
-		iter = iter->next;
+		if (is_builtin_command(iter->cmd))
+		{
+			status = execute_builtin(iter, envp, env);
+			// printf("1 status = %d\n", status);
+		}
+		else if (iter->cmd && *iter->cmd != '\0')
+		{
+		//	printf("iter->cmd: %s, iter->limiter: %d, iter->previous: %p\n", iter->cmd,
+		//		 iter->limiter, iter->previous);
+			if (iter->limiter == PIPE)
+				iter = execute_with_pipe(iter, envp);
+			else
+			{
+				child = fork();
+				if (child < 0)
+				{
+					perror("Fork: ");
+					return (-1);//подумать, какой правильный код возвращать
+				}
+				if (child == 0)
+					execute_cmd(iter, envp);
+				// printf("2 status = %d\n", status);
+				waitpid(child, &status, 0);
+			}
+		}
+		if (iter)
+			iter = iter->next;
 	}
-	return (iter);
+	// printf("3 status = %d\n", status);
+	return (status);
 }

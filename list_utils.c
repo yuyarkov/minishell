@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 19:45:15 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/08 20:47:27 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/09 17:42:54 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,20 @@ t_list	*create_elem(char *str, char **envp)
 {
 	t_list	*new_elem;
 
-	//printf("inside create elem\n");
-	// if (!str)// если передан ctrl D
-	// 	return (NULL);
 	new_elem = malloc(sizeof(t_list));
 	if (NULL == new_elem)
 		return (NULL);
 	new_elem->next = NULL;
 	new_elem->previous = NULL;
 	if (is_builtin_command(str) || *str == '\0')
-		new_elem->cmd = str;
+		new_elem->cmd = ft_strdup(str);
 	else
 		new_elem->cmd = get_cmd_path(str, envp);
-	//printf("new_elem->cmd: %s\n", new_elem->cmd);
+							//printf("new_elem->cmd: %s\n", new_elem->cmd);
 	if (!new_elem->cmd)
 	{
-		print_cmd_error(str);// должна изменять статус выхода
-		return (NULL);//здесь выполнение команды должно прерваться и возвращаемся в строку приглашения
+		print_cmd_error(str);			// должна изменять статус выхода
+		return (NULL);					//здесь выполнение команды должно прерваться и возвращаемся в строку приглашения
 	}
 	new_elem->arguments = ft_split(str, ' ');
 	new_elem->end[0] = 0;//для пайпов пригодится

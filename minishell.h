@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/08 20:59:30 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/09 17:31:39 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int		is_exit_command(char *str);
 int		is_builtin_command(char *s);
 int		get_info_from_string(char *s, t_info *info);
 
+t_list	*parse_commands(char *str, t_info *info, char **envp);
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
@@ -65,6 +66,7 @@ void	clear_info(t_info *info, t_list *commands);//зачаток общей фу
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 
 
+int		execute_commands(t_list *commands, char **envp, t_env **env);
 void	execute_cmd(t_list *cmd, char **envp);
 
 // builtin's //
@@ -79,5 +81,10 @@ t_env	*env_create_elem(char *str);
 int		find_max_strlen(char *str1, char *str2);
 
 t_list	*execute_with_pipe(t_list *list, char **envp);
+
+void	handler(int num);
+
+void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
+
 
 #endif
