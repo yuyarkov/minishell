@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/09 17:31:39 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/09 21:53:55 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ int		find_max_strlen(char *str1, char *str2);
 
 t_list	*execute_with_pipe(t_list *list, char **envp);
 
-void	handler(int num);
+void	ft_signal(void);
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
-
-
 #endif

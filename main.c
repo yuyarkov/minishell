@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/09 17:44:50 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/09 21:51:58 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,8 @@ int	main(int argc, char **argv, char **envp)
 	t_info	info;
 	t_env	*env;
 	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
-	struct termios	silence;
-	// rl_catch_signals = 0;
 
-	rl_outstream = stderr;
-	tcgetattr(STDIN_FILENO, &silence);
-	silence.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &silence);
+	rl_outstream = stderr;//что это?
 	str = NULL;
 	one_time_launch = 1;
 	status = 0; //возвращать статус из дочерних процессов
@@ -35,13 +30,9 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(argv[1], "-c", 3) == 0)
 			str = argv[2];
 	}
-	signal(SIGINT, &handler);//вот тут я ловлю сигнал ctrl+C
-	// signal(EOF, &handler);//вот тут я ловлю сигнал ctrl+D
-	signal(SIGQUIT, SIG_IGN);/* вот тут я ловлю сигнал ctrl+\ */
+	ft_signal();
 	using_history();    /* initialize history */
 	env = create_env(envp);
-
-	
 	while (one_time_launch && !is_exit_command(str))
 	{
 		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка // может вернуть NULL
@@ -68,7 +59,6 @@ int	main(int argc, char **argv, char **envp)
 		// printf_env(env);
 		free_string_array(envp);
 	}
-
 	rl_clear_history();
 	lstiter_env(env, free);//освобождаю поля в связном списке
 	clear_list_env(env);
