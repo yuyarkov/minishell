@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/09 17:04:29 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/11 20:32:36 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	execute_cmd(t_list *cmd, char **envp)
 {
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	//printf("вот такую команду исполняю: %s\n", cmd->cmd);
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
@@ -71,6 +73,8 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 					perror("Fork: ");
 					return (-1);//подумать, какой правильный код возвращать
 				}
+				signal(SIGINT, SIG_IGN);
+				signal(SIGQUIT, SIG_IGN);
 				if (child == 0)
 					execute_cmd(iter, envp);
 				// printf("2 status = %d\n", status);

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/09 21:51:58 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/11 20:09:57 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(argv[1], "-c", 3) == 0)
 			str = argv[2];
 	}
-	ft_signal();
 	using_history();    /* initialize history */
 	env = create_env(envp);
 	while (one_time_launch && !is_exit_command(str))
 	{
+		ft_signal();
 		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка // может вернуть NULL
 		if (!str) //для разделения   запуске
 		{

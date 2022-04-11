@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/09 17:44:25 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/11 19:28:44 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int	get_info_from_string(char *str, t_info *info)
 
 	if (!str)// если передан ctrl D
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("\rexit", 1);
 		return (1);
 	}
 	s = ft_strtrim(str, SPACES);
