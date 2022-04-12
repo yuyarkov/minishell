@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/09 21:53:55 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/12 20:09:51 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	free_string_array(char **str);//перенести в другой разд
 void	clear_info(t_info *info, t_list *commands);//зачаток общей функции, которая чистит всё
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 
-
 int		execute_commands(t_list *commands, char **envp, t_env **env);
 void	execute_cmd(t_list *cmd, char **envp);
 
@@ -82,7 +81,7 @@ int		find_max_strlen(char *str1, char *str2);
 
 t_list	*execute_with_pipe(t_list *list, char **envp);
 
-void	ft_signal(void);
+void	ft_signal(int i);
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
 #endif

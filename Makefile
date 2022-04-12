@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/04/09 17:32:51 by dirony           ###   ########.fr        #
+#    Updated: 2022/04/12 20:46:38 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,11 +41,11 @@ INC_DIR 	= ./includes/
 
 LDLIBS = -lreadline
 
-RL_INC_DIR	:=	$(HOMEBREW_PREFIX)/opt/readline/include
-# RL_INC_DIR	:=	$(HOMEBREW_PREFIX)/Cellar/readline/8.1.2/include
+# RL_INC_DIR	:=	$(HOMEBREW_PREFIX)/opt/readline/include
+RL_INC_DIR	:=	$(HOMEBREW_PREFIX)/Cellar/readline/8.1.2/include
 
-RL_LIB_DIR	:=	$(HOMEBREW_PREFIX)/opt/readline/lib
-# RL_LIB_DIR	:=	$(HOMEBREW_PREFIX)/Cellar/readline/8.1.2/lib
+# RL_LIB_DIR	:=	$(HOMEBREW_PREFIX)/opt/readline/lib
+RL_LIB_DIR	:=	$(HOMEBREW_PREFIX)/Cellar/readline/8.1.2/lib
 
 CPPFLAGS 	= -I$(INC_DIR) -I$(RL_INC_DIR)
 

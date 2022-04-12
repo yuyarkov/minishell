@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/11 20:09:57 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/12 21:30:04 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ int	main(int argc, char **argv, char **envp)
 	env = create_env(envp);
 	while (one_time_launch && !is_exit_command(str))
 	{
-		ft_signal();
 		envp = return_env_to_char(env);// заполняю массив строк значениями из связного списка // может вернуть NULL
 		if (!str) //для разделения   запуске
 		{
+			ft_signal(1);
 			str = readline("minishell$ ");
+			// ft_signal(2);
 			add_history(str);
 		}
 		else
