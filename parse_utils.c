@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/11 19:28:44 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/13 21:38:59 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,17 +186,12 @@ void	parse_limiters(char *s, t_info *info)
 	info->limiters[j].index = ft_strlen(s);//для последнего команды ставлю параметры виртуального разделителя
 }
 
-int	get_info_from_string(char *str, t_info *info)
+void	get_info_from_string(char *str, t_info *info)
 {
 	int		i;
 	int		num;
 	char	*s;
 
-	if (!str)// если передан ctrl D
-	{
-		ft_putendl_fd("\rexit", 1);
-		return (1);
-	}
 	s = ft_strtrim(str, SPACES);
 	//printf("after trim, \"%s\"\n", s);
 	i = 0;
@@ -224,7 +219,6 @@ int	get_info_from_string(char *str, t_info *info)
 	//printf("num of commands: %d\n", info->num_of_commands);
 	}
 	free(s);
-	return (0);
 }
 
 

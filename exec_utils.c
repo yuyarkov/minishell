@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/12 22:10:38 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/13 20:19:07 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	execute_commands(t_list *commands, char **envp, t_env **env)
 				if (child == 0)
 					execute_cmd(iter, envp);
 				waitpid(child, &status, WUNTRACED);
-				if (WIFSIGNALED(status))
+				if (WIFSIGNALED(status))//если во время дочернего процесса (cat или grep) передан сигнал
 				{
 					if (WTERMSIG(status) == 3)
-						ft_putstr_fd("Quit: 3\n", 1);
+						ft_putstr_fd("Quit: 3\n", 1);// back slash
 					else
-						ft_putstr_fd("\n", 1);
+						ft_putstr_fd("\n", 1);// ^C
 				}
 			}
 		}

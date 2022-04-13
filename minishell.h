@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/12 20:09:51 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/13 21:38:23 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_info
 
 int		is_exit_command(char *str);
 int		is_builtin_command(char *s);
-int		get_info_from_string(char *s, t_info *info);
+void	get_info_from_string(char *s, t_info *info);
 
 t_list	*parse_commands(char *str, t_info *info, char **envp);
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);

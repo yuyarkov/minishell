@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/12 21:30:04 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/13 21:42:11 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,20 @@ int	main(int argc, char **argv, char **envp)
 		if (!str) //для разделения   запуске
 		{
 			ft_signal(1);
-			str = readline("minishell$ ");
+			str = readline("minishell$ ");// str нужно фришить (17:58)
 			// ft_signal(2);
-			add_history(str);
+			if (str)
+				add_history(str);
+			else// если передан ctrl D
+			{
+				free_string_array(envp);
+				ft_putendl_fd("exit", 1);
+				break ;
+			}
 		}
 		else
 			one_time_launch = 0;
-		if (get_info_from_string(str, &info))// если 1, то выхожу из цикла. это будет лексер
-		{
-			free_string_array(envp);
-			break ;
-		}
+		get_info_from_string(str, &info);
 		commands = parse_commands(str, &info, envp);
 			 //print_commands_list(commands);
 		if (!is_exit_command(str))
