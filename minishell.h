@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/13 21:38:23 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/16 17:02:35 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,22 @@
 # include <signal.h>
 
 # define SPACES " \n\t\v\f\r"
+# define SPECIAL_SYMBOLS ";|\'\"><()\\$"
 # define SEMICOLON 202
 # define PIPE 204
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
 # define OR_SIGN 203
+# define WORD 205
+# define QOUTE 206
+# define DOUBLE_QOUTE 207
+# define REDIRECT_OUT 208
+# define REDIRECT_IN 209
+# define REDIRECT_APPEND 210
+# define REDIRECT_HEREDOC 211
+# define LEFT_PARENTHESIS 212
+# define RIGHT_PARENTHESIS 213
+# define BACKSLASH 214
+# define DOLLAR_SIGN 215
 
 typedef struct s_limiter
 {
@@ -37,9 +49,17 @@ typedef struct s_limiter
 	int	index;
 }	t_limiter;
 
+typedef struct s_token
+{
+	int		type;
+	char	*value;
+}	t_token;
+
 typedef struct s_info
 {
 	int			num_of_commands;
+	t_token		*tokens;
+	int			num_of_tokens;
 	t_limiter	*limiters;
 	int			in_redirect;
 	int			out_redirect;
@@ -47,7 +67,11 @@ typedef struct s_info
 	t_list		*commands;
 }	t_info;
 
+
 int		is_exit_command(char *str);
+
+void	get_tokens_from_string(char *s, t_info *info);
+
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
@@ -62,6 +86,7 @@ char	**return_env_to_char(t_env *env);
 void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);//перенести в другой раздел
+void	clear_tokens(t_info *info);
 void	clear_info(t_info *info, t_list *commands);//зачаток общей функции, которая чистит всё
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 
@@ -84,4 +109,6 @@ t_list	*execute_with_pipe(t_list *list, char **envp);
 void	ft_signal(int i);
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
+void	print_tokens(t_info *info);//для дебага, убрать перед сдачей
+
 #endif

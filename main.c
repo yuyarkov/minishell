@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/14 20:08:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/16 17:02:54 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 			one_time_launch = 0;
+		get_tokens_from_string(str, &info);
 		get_info_from_string(str, &info);
+		print_tokens(&info);
 		commands = parse_commands(str, &info, envp);
 			 //print_commands_list(commands);
 		if (!is_exit_command(str))
@@ -61,6 +63,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
+		clear_tokens(&info);
 		free_string_array(envp);
 	}
 	rl_clear_history();

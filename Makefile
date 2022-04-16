@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
+#    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/04/12 20:46:38 by fdarkhaw         ###   ########.fr        #
+#    Updated: 2022/04/16 13:24:33 by dirony           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS = 	main.c						parse_utils.c\
 		builtin_pwd.c				free_utils.c\
 		builtin_export.c			builtin_utils.c\
 		exec_pipe_utils.c			handler_utils.c\
+		lexer_utils.c\
 		print_utils_delete.c #delete before check
 	
 LIBDIR =   ./libft/
