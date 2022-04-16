@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 19:08:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/16 22:07:23 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ void	get_tokens_from_string(char *s, t_info *info)
 	int		i;
 	int		k;
 	t_token	*result;
-	
+
 	result = malloc(sizeof(t_token) * ft_strlen(s));
 	if (NULL == result)
-		exit(EXIT_FAILURE);//выход из некорректного маллока
+		exit(EXIT_FAILURE);//Юра - выход из некорректного маллока
 	i = 0;
 	k = 0;
 	while (s[i])
@@ -106,4 +106,3 @@ void	get_tokens_from_string(char *s, t_info *info)
 	info->tokens = result;
 	info->num_of_tokens = k;
 }
-

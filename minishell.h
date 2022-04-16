@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 18:59:23 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/16 21:45:18 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@
 # define BACKSLASH 214
 # define DOLLAR_SIGN 215
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_limiter
 {
 	int	sign;
@@ -65,8 +72,8 @@ typedef struct s_info
 	int			out_redirect;
 	int			err_redirect;
 	t_list		*commands;
+	t_env		*env;
 }	t_info;
-
 
 int		is_exit_command(char *str);
 
@@ -75,7 +82,7 @@ void	get_tokens_from_string(char *s, t_info *info);
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
-t_list	*parse_commands(char *str, t_info *info, char **envp);
+void	parse_commands(char *str, t_info *info, char **envp);
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
@@ -87,7 +94,7 @@ void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);//перенести в другой раздел
 void	clear_tokens(t_info *info);
-void	clear_info(t_info *info, t_list *commands);//зачаток общей функции, которая чистит всё
+void	clear_info(t_info info);//, t_list *commands);//зачаток общей функции, которая чистит всё
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 
 int		execute_commands(t_list *commands, char **envp, t_env **env);

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/13 21:38:59 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/16 21:06:21 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,8 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	return (result);
 }
 
-t_list	*parse_commands(char *str, t_info *info, char **envp)
+// t_list	*parse_commands(char *str, t_info *info, char **envp)
+void	parse_commands(char *str, t_info *info, char **envp)
 {
 	char	**commands;
 	t_list	*result;
@@ -264,11 +265,10 @@ t_list	*parse_commands(char *str, t_info *info, char **envp)
 		commands[0] = ft_strtrim(str, SPACES); //утечка
 		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
 	}
-	
 					//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
 	result = add_cmd_to_list(info, commands, envp);
 					//printf("before return from parse commands, cmd: %s\n", result->cmd);
 	free_string_array(commands);
-	return (result);
+	// return (result);
+	info->commands = result;
 }
-

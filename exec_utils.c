@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/14 20:09:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/16 22:12:12 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	execute_cmd(t_list *cmd, char **envp)
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
 	// exit(EXIT_SUCCESS);//подумать, как брать корректный код выхода из execve
-	exit(EXIT_FAILURE);//При успешном завершении execve() не возвращает управление
+	exit(EXIT_FAILURE);//При успешном завершении execve() не возвращает управление - EXIT_FAILURE
 }
 
 int	execute_builtin(t_list *cmd, char **envp, t_env **env)

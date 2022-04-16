@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/04/16 18:32:11 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/16 22:02:09 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,57 +27,41 @@ void	free_string_array(char **str)
 
 void	lstiter_env(t_env *list, void (*f)(void *))
 {
+	t_env	*temp;
+
 	while (list)
 	{
 		if (list->key)
 			f(list->key);
 		if (list->value)
 			f(list->value);
+		temp = list;
 		list = list->next;
+		f(temp);
 	}
 }
 
-void	clear_env(t_env *list)
-{
-	if (list)
-	{
-		clear_env(list->next);
-		free(list);
-		list = NULL;
-	}
-}
-
-void	clear_list_env(t_env *env)//зачаток общей функции, которая чистит всё
-{
-	t_env	*iter;
-	t_env	*temp;
-	
-	iter = env;
-	while (iter)
-	{
-		temp = iter;
-		iter = iter->next;
-		free(temp);		
-	}
-}
-
-void	clear_info(t_info *info, t_list *commands)//зачаток общей функции, которая чистит всё
+void	clear_info(t_info info)//зачаток общей функции, которая чистит всё
 {
 	t_list	*iter;
 	t_list	*temp;
-	
-	if (info->limiters)
-		free(info->limiters);
-	iter = commands;
-	while (iter)
+
+	if (info.limiters)//тут происходила лишняя очистка, т.к. структура не была обнулена
+		free(info.limiters);
+	lstiter_env(info.env, free);//освобождаю сам связный список и его поля
+	if (info.commands)
 	{
-		if (iter->cmd)
-			free(iter->cmd);
-		if (iter->arguments)
-			free_string_array(iter->arguments);
-		temp = iter;
-		iter = iter->next;
-		free(temp);		
+		iter = info.commands;
+		while (iter)
+		{
+			if (iter->cmd)
+				free(iter->cmd);
+			if (iter->arguments)
+				free_string_array(iter->arguments);
+			temp = iter;
+			iter = iter->next;
+			free(temp);
+		}
 	}
 }
 

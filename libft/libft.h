@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/01 19:58:02 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/16 20:46:13 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
 
 typedef struct s_list
 {
