@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 17:02:35 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/16 18:59:23 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <signal.h>
 
 # define SPACES " \n\t\v\f\r"
-# define SPECIAL_SYMBOLS ";|\'\"><()\\$"
+# define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
 # define SEMICOLON 202
 # define PIPE 204
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя

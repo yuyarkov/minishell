@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 17:45:03 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/16 19:08:01 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,52 @@ int	put_word_token(char *s, t_token *token)
 	return (i);	
 }
 
+int	has_double_special_symbol(char *s)
+{
+	if (ft_strncmp(s, "&&", 2) == 0)
+		return (1);
+	if (ft_strncmp(s, "||", 2) == 0)
+		return (1);
+	if (ft_strncmp(s, ">>", 2) == 0)
+		return (1);
+	if (ft_strncmp(s, "<<", 2) == 0)
+		return (1);
+	return (0);
+}
+
+int	put_double_special_token(char *s, t_token *token)
+{
+	if (ft_strncmp(s, "&&", 2) == 0)
+		token->type = AND_SIGN;
+	if (ft_strncmp(s, "||", 2) == 0)
+		token->type = OR_SIGN;
+	if (ft_strncmp(s, ">>", 2) == 0)
+		token->type = REDIRECT_APPEND;
+	if (ft_strncmp(s, "<<", 2) == 0)
+		token->type = REDIRECT_HEREDOC;	
+	return (2);
+}
+
 int	put_special_token(char *s, t_token *token)
 {
 	token->value = NULL;
-	
-	if (*s == '\'')
-		token->type = QOUTE;
+	if (has_double_special_symbol(s))
+		return put_double_special_token(s, token);
 	if (*s == '|')
 		token->type = PIPE;
-
-	return (1);//выдавать либо 1 либо 2 в зависимости от длины спецкоманды
+	if (*s == '\'')
+		token->type = QOUTE;
+	if (*s == '\"')
+		token->type = DOUBLE_QOUTE;
+	if (*s == '(')
+		token->type = LEFT_PARENTHESIS;
+	if (*s == ')')
+		token->type = RIGHT_PARENTHESIS;
+	if (*s == '\\')
+		token->type = BACKSLASH;
+	if (*s == '$')
+		token->type = DOLLAR_SIGN;
+	return (1);
 }
 
 void	get_tokens_from_string(char *s, t_info *info)
@@ -57,7 +93,7 @@ void	get_tokens_from_string(char *s, t_info *info)
 	k = 0;
 	while (s[i])
 	{
-		while (ft_strchr(SPACES, s[i]))
+		while (s[i] && ft_strchr(SPACES, s[i]))
 			i++;
 		if (s[i])
 		{
@@ -71,28 +107,3 @@ void	get_tokens_from_string(char *s, t_info *info)
 	info->num_of_tokens = k;
 }
 
-void	clear_tokens(t_info *info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info->num_of_tokens)
-	{
-		free(info->tokens[i].value);
-		i++;
-	}
-	free(info->tokens);
-}
-
-void	print_tokens(t_info *info)
-{
-	int	i;
-
-	printf("Num of tokens: %d\n", info->num_of_tokens);
-	i = 0;
-	while (i < info->num_of_tokens)
-	{
-		printf("token %d\ttype: %d,\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
-		i++;
-	}
-}

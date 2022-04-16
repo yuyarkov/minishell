@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/04/09 16:52:33 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/16 18:32:11 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,17 @@ void	clear_info(t_info *info, t_list *commands)//зачаток общей фу�
 		iter = iter->next;
 		free(temp);		
 	}
+}
+
+void	clear_tokens(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->num_of_tokens)
+	{
+		free(info->tokens[i].value);
+		i++;
+	}
+	free(info->tokens);
 }

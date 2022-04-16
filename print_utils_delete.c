@@ -29,3 +29,16 @@ void	printf_char_pointer(char **str)
 	while (str[i])
 		printf("our envp = %s\n", str[i++]);
 }
+
+void	print_tokens(t_info *info)
+{
+	int	i;
+
+	printf("Num of tokens: %d\n", info->num_of_tokens);
+	i = 0;
+	while (i < info->num_of_tokens)
+	{
+		printf("token %d\ttype: %d,\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
+		i++;
+	}
+}
