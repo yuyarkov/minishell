@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/04/16 13:24:33 by dirony           ###   ########.fr        #
+#    Updated: 2022/04/18 19:41:47 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ DEP	=	$(SRCS:%.c=%.d)
 CC = cc
 
 HOMEBREW_PREFIX := $(shell test -n "$$(which brew)" \
-                        && brew config | grep HOMEBREW_PREFIX | cut -d' ' -f2)
+					&& brew config | grep HOMEBREW_PREFIX | cut -d' ' -f2)
 
 RM = rm -f
 

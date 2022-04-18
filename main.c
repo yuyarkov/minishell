@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 22:13:35 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/18 21:29:07 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(argv[1], "-c", 3) == 0)// проверить это условие в сабже
 			str = argv[2];
 	}
-	using_history();    /* initialize history */
+	using_history();/* initialize history */
 	info.env = create_env(envp);
 	while (one_time_launch && !is_exit_command(str))
 	{
@@ -37,12 +37,14 @@ int	main(int argc, char **argv, char **envp)
 		if (!str) //для разделения   запуске
 		{
 			ft_signal(1);
-			str = readline("minishell$ ");// str нужно фришить (17:58)
+			str = readline(SHELL);// str нужно фришить (17:58)
 			if (str)
 				add_history(str);
 			else// если передан ctrl D
 			{
 				free_string_array(envp);
+				ft_putstr_fd("\x1b[1F", 1);
+				ft_putstr_fd(SHELL, 1);
 				ft_putendl_fd("exit", 1);
 				break ;
 			}
@@ -51,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 			one_time_launch = 0;
 		get_tokens_from_string(str, &info);//лексер?
 		get_info_from_string(str, &info);//парсер?
-		// print_tokens(&info);
+		print_tokens(&info);
 		// commands = parse_commands(str, &info, envp);
 		parse_commands(str, &info, envp);
 			 //print_commands_list(commands);
