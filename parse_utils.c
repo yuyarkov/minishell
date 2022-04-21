@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 21:06:21 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/19 21:10:12 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,6 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	return (result);
 }
 
-// t_list	*parse_commands(char *str, t_info *info, char **envp)
 void	parse_commands(char *str, t_info *info, char **envp)
 {
 	char	**commands;

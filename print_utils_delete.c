@@ -38,7 +38,7 @@ void	print_tokens(t_info *info)
 	i = 0;
 	while (i < info->num_of_tokens)
 	{
-		printf("token %d\ttype: %d,\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
+		printf("token %d\ttype: %d\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
 		i++;
 	}
 }

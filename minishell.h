@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/18 21:27:06 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/21 20:20:45 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
 # define OR_SIGN 203
 # define WORD 205
-# define QOUTE 206
-# define DOUBLE_QOUTE 207
+# define QUOTE 206
+# define DOUBLE_QUOTE 207
 # define REDIRECT_OUT 208
 # define REDIRECT_IN 209
 # define REDIRECT_APPEND 210
@@ -72,6 +72,7 @@ typedef struct s_info
 	int			in_redirect;
 	int			out_redirect;
 	int			err_redirect;
+	int			status;
 	t_list		*commands;
 	t_env		*env;
 }	t_info;
@@ -83,6 +84,7 @@ void	get_tokens_from_string(char *s, t_info *info);
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
+int		check_bad_syntax(char *str, t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);
@@ -95,7 +97,7 @@ void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);//перенести в другой раздел
 void	clear_tokens(t_info *info);
-void	clear_info(t_info info);//, t_list *commands);//зачаток общей функции, которая чистит всё
+void	clear_info(t_info info);//зачаток общей функции, которая чистит всё
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 
 int		execute_commands(t_list *commands, char **envp, t_env **env);

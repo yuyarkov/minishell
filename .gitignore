@@ -55,3 +55,6 @@ dkms.conf
 main.c
 old*
 minishell
+
+# Directory
+.vscode

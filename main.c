@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/18 21:29:07 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/21 20:54:46 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char 	*str;
-	int		status;
 	t_info	info;
 	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
 
@@ -23,7 +22,6 @@ int	main(int argc, char **argv, char **envp)
 	info = (t_info){};//зануляет структуру - подсказка от Николая
 	str = NULL;
 	one_time_launch = 1;
-	status = 0; //возвращать статус из дочерних процессов
 	if (argc >= 3) //если при запуске в аргументах что-то есть - берем команду из них. Для тестов и для чеклиста
 	{
 		if (ft_strncmp(argv[1], "-c", 3) == 0)// проверить это условие в сабже
@@ -51,24 +49,26 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 			one_time_launch = 0;
-		get_tokens_from_string(str, &info);//лексер?
-		get_info_from_string(str, &info);//парсер?
-		print_tokens(&info);
-		// commands = parse_commands(str, &info, envp);
-		parse_commands(str, &info, envp);
-			 //print_commands_list(commands);
-		if (!is_exit_command(str))
+		get_tokens_from_string(str, &info);//лексер
+		if (!check_bad_syntax(str, &info))
 		{
-			status = execute_commands(info.commands, envp, &info.env);
-			str = NULL;
+			get_info_from_string(str, &info);//парсер
+			// print_tokens(&info);
+			// commands = parse_commands(str, &info, envp);
+			parse_commands(str, &info, envp);
+				 //print_commands_list(commands);
+			if (!is_exit_command(str))
+				info.status = execute_commands(info.commands, envp, &info.env);
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
 		clear_tokens(&info);
 		free_string_array(envp);
 		free(str);//эта строка не влияет на колво утечек(
+		str = NULL;
 	}
 	rl_clear_history();
 	clear_info(info);//зачаток общей функции, которая чистит всё
-	return (status);
+	// printf("%d\n", info.status);
+	return (info.status);
 }

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 22:07:23 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/21 20:51:21 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	put_word_token(char *s, t_token *token)
 {
 	char	*word;
 	int		i;
-	
+
 	word = malloc(ft_strlen(s) + 1);
 	if (NULL == word)
 		exit(EXIT_FAILURE);//выход из некорректного маллока
@@ -29,7 +29,7 @@ int	put_word_token(char *s, t_token *token)
 	word[i] = '\0';
 	token->type = WORD;
 	token->value = word;
-	return (i);	
+	return (i);
 }
 
 int	has_double_special_symbol(char *s)
@@ -66,9 +66,9 @@ int	put_special_token(char *s, t_token *token)
 	if (*s == '|')
 		token->type = PIPE;
 	if (*s == '\'')
-		token->type = QOUTE;
+		token->type = QUOTE;
 	if (*s == '\"')
-		token->type = DOUBLE_QOUTE;
+		token->type = DOUBLE_QUOTE;
 	if (*s == '(')
 		token->type = LEFT_PARENTHESIS;
 	if (*s == ')')
@@ -91,18 +91,22 @@ void	get_tokens_from_string(char *s, t_info *info)
 		exit(EXIT_FAILURE);//Юра - выход из некорректного маллока
 	i = 0;
 	k = 0;
-	while (s[i])
+	// printf("s[0] = %c\n", s[i]);
+	if (s[i])
 	{
-		while (s[i] && ft_strchr(SPACES, s[i]))
-			i++;
-		if (s[i])
+		while (s[i])
 		{
-			if (!ft_strchr(SPECIAL_SYMBOLS, s[i]))
-				i = i + put_word_token(&s[i], &result[k++]);
-			else
-				i = i + put_special_token(&s[i], &result[k++]);
+			while (s[i] && ft_strchr(SPACES, s[i]))
+				i++;
+			if (s[i])
+			{
+				if (!ft_strchr(SPECIAL_SYMBOLS, s[i]))
+					i = i + put_word_token(&s[i], &result[k++]);
+				else
+					i = i + put_special_token(&s[i], &result[k++]);
+			}
 		}
+		info->tokens = result;
+		info->num_of_tokens = k;
 	}
-	info->tokens = result;
-	info->num_of_tokens = k;
 }
