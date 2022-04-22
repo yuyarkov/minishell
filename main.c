@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/22 20:02:08 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/22 20:23:20 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,22 @@ int	main(int argc, char **argv, char **envp)
 		get_tokens_from_string(str, &info);//лексер
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
-		if (!check_bad_syntax(str, &info))
+		if (!check_bad_syntax(str, &info))//если синтаксис хороший
 		{
 			get_info_from_string(str, &info);//парсер
-			 print_tokens(&info);
-			// commands = parse_commands(str, &info, envp);
+			// print_tokens(&info);
 			parse_commands(str, &info, envp);
 				 //print_commands_list(commands);
 			if (!is_exit_command(str))
 				info.status = execute_commands(info.commands, envp, &info.env);
+			else
+				break ;
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
 		clear_tokens(&info);
 		free_string_array(envp);
-		free(str);//эта строка не влияет на колво утечек(
+		// free(str);//эта строка не влияет на колво утечек(
 		str = NULL;
 	}
 	rl_clear_history();
