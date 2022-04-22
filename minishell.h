@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/21 20:20:45 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/22 20:01:43 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_token
 {
 	int		type;
 	char	*value;
+	int		level;
+	int		group_id;
 }	t_token;
 
 typedef struct s_info
@@ -86,6 +88,10 @@ void	get_info_from_string(char *s, t_info *info);
 
 int		check_bad_syntax(char *str, t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
+
+void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
+void	put_group_id_marks(t_info *info);
+
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);

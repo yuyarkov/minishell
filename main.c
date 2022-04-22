@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/21 20:54:46 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/22 20:02:08 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ int	main(int argc, char **argv, char **envp)
 		else
 			one_time_launch = 0;
 		get_tokens_from_string(str, &info);//лексер
+		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
+		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		if (!check_bad_syntax(str, &info))
 		{
 			get_info_from_string(str, &info);//парсер
-			// print_tokens(&info);
+			 print_tokens(&info);
 			// commands = parse_commands(str, &info, envp);
 			parse_commands(str, &info, envp);
 				 //print_commands_list(commands);
