@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/21 20:51:21 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/23 20:58:23 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	put_special_token(char *s, t_token *token)
 {
 	token->value = NULL;
 	if (has_double_special_symbol(s))
-		return put_double_special_token(s, token);
+		return (put_double_special_token(s, token));
 	if (*s == '|')
 		token->type = PIPE;
 	if (*s == '\'')
@@ -77,6 +77,10 @@ int	put_special_token(char *s, t_token *token)
 		token->type = BACKSLASH;
 	if (*s == '$')
 		token->type = DOLLAR_SIGN;
+	if (*s == '>')
+		token->type = REDIRECT_OUT;
+	if (*s == '<')
+		token->type = REDIRECT_IN;
 	return (1);
 }
 

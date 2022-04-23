@@ -50,3 +50,16 @@ void	print_tokens(t_info *info)
 		i++;
 	}
 }
+
+// void	print_tokens(t_info *info)// Не удаляй плз, мне для отладки нажна эта версия
+// {
+// 	int	i;
+
+// 	printf("Num of tokens: %d\n", info->num_of_tokens);
+// 	i = 0;
+// 	while (i < info->num_of_tokens)
+// 	{
+// 		printf("token %d\ttype: %d,\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
+// 		i++;
+// 	}
+// }
