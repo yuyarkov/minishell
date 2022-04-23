@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/22 20:28:18 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/23 17:11:11 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	main(int argc, char **argv, char **envp)
 		get_tokens_from_string(str, &info);//лексер
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
+		put_tree_marks(&info);
 		if (!check_bad_syntax(str, &info))//если синтаксис хороший
 		{
 			get_info_from_string(str, &info);//парсер

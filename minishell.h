@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/23 15:12:12 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/23 17:10:44 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	parse_commands(char *str, t_info *info, char **envp);
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
 void	put_tree_marks(t_info *info);
-int		is_marked_tree(t_info *info);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);
