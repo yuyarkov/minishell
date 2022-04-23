@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/22 20:01:43 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/23 15:12:12 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,13 @@ typedef struct s_limiter
 
 typedef struct s_token
 {
-	int		type;
-	char	*value;
-	int		level;
-	int		group_id;
+	int				type;
+	char			*value;
+	int				level;
+	int				group_id;
+	struct s_token	*left;
+	struct s_token	*right;
+	struct s_token	*root;
 }	t_token;
 
 typedef struct s_info
@@ -91,6 +94,8 @@ void	parse_commands(char *str, t_info *info, char **envp);
 
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
+void	put_tree_marks(t_info *info);
+int		is_marked_tree(t_info *info);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);

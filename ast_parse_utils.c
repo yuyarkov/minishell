@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/22 20:01:23 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/23 15:12:50 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	is_limiter(t_token t)
 {
-	if (t.type == LEFT_PARENTHESIS || t.type == RIGHT_PARENTHESIS
-			|| t.type == AND_SIGN || t.type == OR_SIGN || t.type == PIPE)
+	if (t.type == AND_SIGN || t.type == OR_SIGN || t.type == PIPE)
 		return (1);
 	else
 		return (0);
@@ -43,18 +42,56 @@ void	put_tree_level_marks(t_info *info)//подумать нужен ли int и
 
 void	put_group_id_marks(t_info *info)
 {
-	t_token	*tokens;
+	t_token	*t;
 	int		i;
 	int		group_id;
 	
-	tokens = info->tokens;
+	t = info->tokens;
 	i = 0;
 	group_id = 0;
-	while (tokens && i < info->num_of_tokens)
+	while (t && i < info->num_of_tokens)
 	{
-		if (is_limiter(tokens[i]))
+		if (is_limiter(t[i]))
 			group_id++;
-		tokens[i].group_id = group_id;
+		if (t[i].type != LEFT_PARENTHESIS && t[i].type != RIGHT_PARENTHESIS)
+			t[i].group_id = group_id;
+		else
+			t[i].group_id = -1;
+		if (is_limiter(t[i]))
+			group_id++;
 		i++;
 	}	
+}
+
+int	is_marked_tree(t_info *info)
+{
+	t_token	*t;
+	int		i;
+
+	t = info->tokens;
+	i = 0;
+	while (i < info->num_of_tokens)
+	{
+		if (is_limiter(t[i]))
+		{
+			if (!t[i].left || !t[i].right)
+				return (0);
+		}
+		i++;
+	}
+	return (1);	
+}
+
+void	put_tree_marks(t_info *info)
+{
+	t_token	*t;
+	int		i;
+	int		current_level;
+
+	t = info->tokens;
+	i = 0;
+	while (i < info->num_of_tokens)
+	{
+			
+	}
 }
