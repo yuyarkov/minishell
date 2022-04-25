@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/23 17:46:50 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/25 20:16:58 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	put_tree_level_marks(t_info *info)//подумать нужен ли int и
 	t_token	*tokens;
 	int		i;
 	int		level;
-	
+
 	tokens = info->tokens;//проверку на пустоту не делаю, до этого по идее всё проверили
 	i = 0;
 	level = 0;
@@ -36,7 +36,7 @@ void	put_tree_level_marks(t_info *info)//подумать нужен ли int и
 		if (tokens[i].type == RIGHT_PARENTHESIS)
 			level--;
 		tokens[i].level = level;
-		i++;		
+		i++;
 	}
 }
 
@@ -45,7 +45,7 @@ void	put_group_id_marks(t_info *info)
 	t_token	*t;
 	int		i;
 	int		group_id;
-	
+
 	t = info->tokens;
 	i = 0;
 	group_id = 0;
@@ -79,14 +79,14 @@ int	is_marked_tree(t_info *info)//возможно, ненужная функц�
 		}
 		i++;
 	}
-	return (1);	
+	return (1);
 }
 
 t_token	*get_next_limiter(int index, t_info *info)
 {
 	t_token	*t;
 	int		i;
-	
+
 	t = info->tokens;
 	i = index + 1;
 	while (i < info->num_of_tokens)
@@ -102,7 +102,7 @@ t_token	*get_group_start_point(int group_id, t_info *info)
 {
 	t_token	*t;
 	int		i;
-	
+
 	t = info->tokens;
 	i = 0;
 	while (i < info->num_of_tokens)
@@ -130,7 +130,7 @@ void	put_tree_marks(t_info *info)
 			t[i].left = get_group_start_point(t[i].group_id - 1, info);//указатель на начало предыдущей группы
 			t[i].right = get_group_start_point(t[i].group_id + 1, info);//указатель на начало следующей группы			
 		}
-		i++;			
+		i++;
 	}
 	i = 0;
 	while (i < info->num_of_tokens)//теперь второй раз прохожу по строке, чтобы проверить уровни и связать узлы в соответствии

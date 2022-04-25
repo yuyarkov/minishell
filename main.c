@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/23 20:46:34 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/25 21:33:56 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	using_history();/* initialize history */
 	info.env = create_env(envp);
-	while (one_time_launch && !is_exit_command(str))
+	while (one_time_launch)// && !is_exit_command(str))
 	{
 		envp = return_env_to_char(info.env);// заполняю массив строк значениями из связного списка // может вернуть NULL
 		if (!str) //для разделения   запуске
@@ -53,16 +53,16 @@ int	main(int argc, char **argv, char **envp)
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
-					print_tokens(&info);
+					// print_tokens(&info);
 		if (!check_bad_syntax(str, &info))//если синтаксис хороший
 		{
 			get_info_from_string(str, &info);//парсер
 			parse_commands(str, &info, envp);
 				 //print_commands_list(commands);
-			if (!is_exit_command(str))
-				info.status = execute_commands(info.commands, envp, &info.env);
-			else
+			if (is_exit_command(str))
 				break ;
+			else
+				info.status = execute_commands(info.commands, envp, &info.env);
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
@@ -73,6 +73,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	rl_clear_history();
 	clear_info(info);//зачаток общей функции, которая чистит всё
-	// printf("%d\n", info.status);
+	// printf("main_ret_status = %d\n", info.status);
 	return (info.status);
 }
