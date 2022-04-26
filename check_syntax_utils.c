@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/04/25 21:32:58 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:52:41 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 char	token_to_char(int token)
 {
-	if (token == 201)
+	if (token == 201)//and
 		return ('&');
+	if (token == 203)//or
+		return ('|');
+	if (token == 204)//pipe
+		return ('|');
 	if (token == 206)
 		return ('\'');
 	if (token == 207)
@@ -49,9 +53,18 @@ int	check_bad_limiter(t_info *info)
 	limiter = 0;
 	while (i < info->num_of_tokens)
 	{
-		if (is_limiter(info->tokens[i]) \
-								&& info->tokens[i - 1].type != WORD)
+		if (info->tokens[i].type == AND_SIGN \
+							&& (info->tokens[i - 1].type != WORD \
+							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS))
 			return (AND_SIGN);
+		if (info->tokens[i].type == OR_SIGN \
+							&& (info->tokens[i - 1].type != WORD \
+							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS))
+			return (OR_SIGN);
+		if (info->tokens[i].type == PIPE \
+							&& (info->tokens[i - 1].type != WORD \
+							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS))
+			return (PIPE);
 		i++;
 	}
 	return (0);
@@ -152,5 +165,6 @@ int	check_bad_syntax(char *str, t_info *info)
 	return (0);
 }
 
-//1) дописать обработку limiter'ов, if is_limiter -> то слева и справа не д.б. пусто
-// is_limiter не подходит потому что объединяет все лимитеры
+//1) дописать обработку limiter'ов, if limiter -> то слева и справа не д.б. пусто
+// дописать проверку пустоты справа от лимитера
+// дописать вывод двойных лимитеров

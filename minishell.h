@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/25 21:27:39 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:17:59 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ int		find_max_strlen(char *str1, char *str2);
 t_list	*execute_with_pipe(t_list *list, char **envp);
 
 void	ft_signal(int i);
-int		is_limiter(t_token t);
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
 void	print_tokens(t_info *info);//для дебага, убрать перед сдачей
