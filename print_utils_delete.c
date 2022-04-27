@@ -30,36 +30,36 @@ void	printf_char_pointer(char **str)
 		printf("our envp = %s\n", str[i++]);
 }
 
-// void	print_tokens(t_info *info)
-// {
-// 	int	i;
-// 	t_token	*t;
-
-// 	t = info->tokens;
-// 	printf("Num of tokens: %d\n", info->num_of_tokens);
-// 	i = 0;
-// 	while (i < info->num_of_tokens)
-// 	{
-// 		if (t[i].left && t[i].right)
-// 			printf("level: %d\tgroup_id: %d\tvalue: %s\tleft: %s, %d\tright: %s, %d\n", 
-// 			t[i].level, t[i].group_id, t[i].value, t[i].left->value, t[i].left->type,
-// 					 t[i].right->value, t[i].right->type);
-// 		else
-// 			printf("level: %d\tgroup_id: %d\tvalue: %s\n", 
-// 			t[i].level, t[i].group_id, t[i].value);
-// 		i++;
-// 	}
-// }
-
-void	print_tokens(t_info *info)// Не удаляй плз, мне для отладки нажна эта версия
+void	print_tokens(t_info *info)
 {
 	int	i;
+	t_token	*t;
 
+	t = info->tokens;
 	printf("Num of tokens: %d\n", info->num_of_tokens);
 	i = 0;
 	while (i < info->num_of_tokens)
 	{
-		printf("token %d\ttype: %d,\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
+		if (t[i].left && t[i].right)
+			printf("level: %d\tgroup_id: %d\tvalue: %s\tleft: %s, %d\tright: %s, %d\n", 
+			t[i].level, t[i].group_id, t[i].value, t[i].left->value, t[i].left->type,
+					 t[i].right->value, t[i].right->type);
+		else
+			printf("level: %d\tgroup_id: %d\tvalue: %s\n", 
+			t[i].level, t[i].group_id, t[i].value);
 		i++;
 	}
 }
+
+// void	print_tokens(t_info *info)// Не удаляй плз, мне для отладки нажна эта версия
+// {
+// 	int	i;
+
+// 	printf("Num of tokens: %d\n", info->num_of_tokens);
+// 	i = 0;
+// 	while (i < info->num_of_tokens)
+// 	{
+// 		printf("token %d\ttype: %d,\tvalue: %s\n", i, info->tokens[i].type, info->tokens[i].value);
+// 		i++;
+// 	}
+// }
