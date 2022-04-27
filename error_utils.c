@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/23 17:20:47 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/26 19:53:09 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_cmd_error(char *argv)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(get_first_word(argv), 2);
-	ft_putendl_fd(": command not found", 2);
+	ft_putendl_fd(": command not found - old message", 2);
 }
 
 // void	print_cmd_error(char *argv)
