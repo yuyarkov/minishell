@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/04/26 20:52:41 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/27 21:30:46 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,27 @@ int	print_error_token(t_info *info, int token)
 int	check_bad_limiter(t_info *info)
 {
 	int	i;
-	int	limiter;
 
 	i = 0;
-	limiter = 0;
 	while (i < info->num_of_tokens)
 	{
 		if (info->tokens[i].type == AND_SIGN \
-							&& (info->tokens[i - 1].type != WORD \
-							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS))
+							&& ((info->tokens[i - 1].type != WORD \
+							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
+							|| (info->tokens[i + 1].type != WORD \
+							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (AND_SIGN);
 		if (info->tokens[i].type == OR_SIGN \
-							&& (info->tokens[i - 1].type != WORD \
-							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS))
+							&& ((info->tokens[i - 1].type != WORD \
+							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
+							|| (info->tokens[i + 1].type != WORD \
+							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (OR_SIGN);
 		if (info->tokens[i].type == PIPE \
-							&& (info->tokens[i - 1].type != WORD \
-							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS))
+							&& ((info->tokens[i - 1].type != WORD \
+							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
+							|| (info->tokens[i + 1].type != WORD \
+							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (PIPE);
 		i++;
 	}
