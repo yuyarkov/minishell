@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/25 20:16:58 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/27 20:10:33 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,41 +63,6 @@ void	put_group_id_marks(t_info *info)
 	}	
 }
 
-int	is_marked_tree(t_info *info)//возможно, ненужная функция
-{
-	t_token	*t;
-	int		i;
-
-	t = info->tokens;
-	i = 0;
-	while (i < info->num_of_tokens)
-	{
-		if (is_limiter(t[i]))
-		{
-			if (!t[i].left || !t[i].right)
-				return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-t_token	*get_next_limiter(int index, t_info *info)
-{
-	t_token	*t;
-	int		i;
-
-	t = info->tokens;
-	i = index + 1;
-	while (i < info->num_of_tokens)
-	{
-		if (is_limiter(t[i]))
-			return (&t[i]);
-		i++;
-	}
-	return (NULL);
-}
-
 t_token	*get_group_start_point(int group_id, t_info *info)
 {
 	t_token	*t;
@@ -137,7 +102,7 @@ void	put_tree_marks(t_info *info)
 	{
 		if (is_limiter(t[i]))
 		{
-			next = get_next_limiter(i, info);
+			next = get_next_limiter(&t[i], info);
 			if (next && next->level > t[i].level)
 				t[i].right = next;
 			if (next && next->level < t[i].level)

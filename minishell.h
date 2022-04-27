@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/26 20:17:59 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/27 21:09:29 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define RIGHT_PARENTHESIS 213
 # define BACKSLASH 214
 # define DOLLAR_SIGN 215
+# define NEVER_EXECUTED -500
 
 typedef struct s_env
 {
@@ -63,9 +64,10 @@ typedef struct s_token
 	char			*value;
 	int				level;
 	int				group_id;
+	int				status;//по умолчанию будем присваивать NEVER_EXECUTED
 	struct s_token	*left;
 	struct s_token	*right;
-	struct s_token	*root;
+	struct s_token	*root;//пока непонятно, нужен ли
 }	t_token;
 
 typedef struct s_info
@@ -95,6 +97,8 @@ void	parse_commands(char *str, t_info *info, char **envp);
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
 void	put_tree_marks(t_info *info);
+t_token	*get_next_limiter(t_token *token, t_info *info);
+int		parse_and_execute_tree(t_info *info);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);

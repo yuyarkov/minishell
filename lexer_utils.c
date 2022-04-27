@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/23 20:58:23 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:10:25 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,13 @@ void	get_tokens_from_string(char *s, t_info *info)
 	result = malloc(sizeof(t_token) * ft_strlen(s));
 	if (NULL == result)
 		exit(EXIT_FAILURE);//Юра - выход из некорректного маллока
+	i = 0;
+	while (s[i])
+	{
+		result[i] = (t_token){};//зануляет структуру - подсказка от Николая
+		result[i].status = NEVER_EXECUTED;
+		i++;
+	}
 	i = 0;
 	k = 0;
 	// printf("s[0] = %c\n", s[i]);
