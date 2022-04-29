@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/27 21:09:42 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/29 20:13:42 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 	info.env = create_env(envp);
 	while (one_time_launch)// && !is_exit_command(str))
 	{
-		envp = return_env_to_char(info.env);// заполняю массив строк значениями из связного списка // может вернуть NULL
+		info.envp = return_env_to_char(info.env);// заполняю массив строк значениями из связного списка // может вернуть NULL
 		if (!str) //для разделения   запуске
 		{
 			ft_signal(1);
@@ -54,6 +54,7 @@ int	main(int argc, char **argv, char **envp)
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
 					print_tokens(&info);
+		parse_and_execute_tree(&info);
 		if (!check_bad_syntax(str, &info))//если синтаксис хороший
 		{
 			get_info_from_string(str, &info);//парсер
@@ -67,7 +68,7 @@ int	main(int argc, char **argv, char **envp)
 		// printf_char_pointer(envp);
 		// printf_env(env);
 		clear_tokens(&info);
-		free_string_array(envp);
+		free_string_array(info.envp);
 		// free(str);//эта строка не влияет на колво утечек(
 		str = NULL;
 	}

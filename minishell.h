@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/27 21:09:29 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/29 20:43:32 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define SHELL "minishell$ "
 # define SPACES " \n\t\v\f\r"
 # define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
+# define END_OF_TOKENS -600
+# define ARGV 303
 # define SEMICOLON 202
 # define PIPE 204
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
@@ -36,7 +38,9 @@
 # define QUOTE 206
 # define DOUBLE_QUOTE 207
 # define REDIRECT_OUT 208
+# define OUTPUT_FILE 300
 # define REDIRECT_IN 209
+# define INPUT_FILE 301
 # define REDIRECT_APPEND 210
 # define REDIRECT_HEREDOC 211
 # define LEFT_PARENTHESIS 212
@@ -82,6 +86,7 @@ typedef struct s_info
 	int			status;
 	t_list		*commands;
 	t_env		*env;
+	char		**envp;
 }	t_info;
 
 int		is_exit_command(char *str);
@@ -97,6 +102,7 @@ void	parse_commands(char *str, t_info *info, char **envp);
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
 void	put_tree_marks(t_info *info);
+int		is_limiter(t_token t);
 t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
 

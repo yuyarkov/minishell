@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/26 20:10:25 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/29 18:59:21 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	get_tokens_from_string(char *s, t_info *info)
 	int		k;
 	t_token	*result;
 
-	result = malloc(sizeof(t_token) * ft_strlen(s));
+	result = malloc(sizeof(t_token) * ft_strlen(s) + 1);
 	if (NULL == result)
 		exit(EXIT_FAILURE);//Юра - выход из некорректного маллока
 	i = 0;
@@ -117,6 +117,7 @@ void	get_tokens_from_string(char *s, t_info *info)
 					i = i + put_special_token(&s[i], &result[k++]);
 			}
 		}
+		result[k].type = END_OF_TOKENS;
 		info->tokens = result;
 		info->num_of_tokens = k;
 	}

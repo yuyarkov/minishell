@@ -38,15 +38,15 @@ void	print_tokens(t_info *info)
 	t = info->tokens;
 	printf("Num of tokens: %d\n", info->num_of_tokens);
 	i = 0;
-	while (i < info->num_of_tokens)
+	while (i <= info->num_of_tokens)
 	{
 		if (t[i].left && t[i].right)
 			printf("level: %d\tgroup_id: %d\tvalue: %s\tleft: %s, %d\tright: %s, %d\n", 
 			t[i].level, t[i].group_id, t[i].value, t[i].left->value, t[i].left->type,
 					 t[i].right->value, t[i].right->type);
 		else
-			printf("level: %d\tgroup_id: %d\tvalue: %s\n", 
-			t[i].level, t[i].group_id, t[i].value);
+			printf("level: %d\tgroup_id: %d\tvalue: %s,\ttype: %d\n", 
+			t[i].level, t[i].group_id, t[i].value, t[i].type);
 		i++;
 	}
 }
