@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/29 20:13:42 by dirony           ###   ########.fr       */
+/*   Updated: 2022/04/29 22:26:12 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 	t_info	info;
 	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
 
-	rl_outstream = stderr;//что это?
+	rl_outstream = stderr;
 	info = (t_info){};//зануляет структуру - подсказка от Николая
 	str = NULL;
 	one_time_launch = 1;
@@ -40,7 +40,8 @@ int	main(int argc, char **argv, char **envp)
 				add_history(str);
 			else// если передан ctrl D
 			{
-				free_string_array(envp);
+				free(str);
+				clear_tokens(&info);
 				ft_putstr_fd("\x1b[1F", 1);
 				ft_putstr_fd(SHELL, 1);
 				ft_putendl_fd("exit", 1);
@@ -58,18 +59,21 @@ int	main(int argc, char **argv, char **envp)
 		if (!check_bad_syntax(str, &info))//если синтаксис хороший
 		{
 			get_info_from_string(str, &info);//парсер
-			parse_commands(str, &info, envp);
+			parse_commands(str, &info, info.envp);
 				 //print_commands_list(commands);
 			if (is_exit_command(str))
+			{
+				free(str);
 				break ;
+			}
 			else
-				info.status = execute_commands(info.commands, envp, &info.env);
+				info.status = execute_commands(info.commands, info.envp, &info.env);
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
 		clear_tokens(&info);
 		free_string_array(info.envp);
-		// free(str);//эта строка не влияет на колво утечек(
+		free(str);
 		str = NULL;
 	}
 	rl_clear_history();

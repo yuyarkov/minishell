@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/04/27 21:30:46 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/29 23:05:40 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,31 @@ int	print_error_token(t_info *info, int token)
 	return (1);
 }
 
+int	check_bad_dollar(t_info *info, char *str)
+{
+	int	i;
+
+	(void)info;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			printf("here\n");
+		}
+		i++;
+	}
+	// i = 0;
+	// while (i < info->num_of_tokens)
+	// {
+	// 	if (info->tokens[i].type == DOLLAR_SIGN \
+	// 							&& info->tokens[i + 1].type == REDIRECT_OUT)
+	// 		return (DOLLAR_SIGN);
+	// 	i++;
+	// }
+	return (0);
+}
+
 int	check_bad_limiter(t_info *info)
 {
 	int	i;
@@ -77,10 +102,8 @@ int	check_bad_limiter(t_info *info)
 int	check_bad_redirect(t_info *info)
 {
 	int	i;
-	int	redirect;
 
 	i = 0;
-	redirect = 0;
 	while (i < info->num_of_tokens)
 	{
 		if (info->tokens[i].type == REDIRECT_APPEND \
@@ -152,12 +175,14 @@ int	check_bad_syntax(char *str, t_info *info)
 	int	ret_qoutes;
 	int	ret_redirect;
 	int	ret_limiter;
+	// int	ret_dollar;
 
 	(void)str;
 	ret_parenthesis = check_bad_parenthesis(info);
 	ret_qoutes = check_bad_qoutes(info);
 	ret_redirect = check_bad_redirect(info);
 	ret_limiter = check_bad_limiter(info);
+	// ret_dollar = check_bad_dollar(info, str);
 	if (ret_parenthesis)
 		return (print_error_token(info, ret_parenthesis));
 	if (ret_qoutes)
@@ -166,9 +191,12 @@ int	check_bad_syntax(char *str, t_info *info)
 		return (print_error_token(info, ret_redirect));
 	if (ret_limiter)
 		return (print_error_token(info, ret_limiter));
+	// if (ret_dollar)
+	// 	return (print_error_token(info, ret_dollar));
 	return (0);
 }
 
 //1) дописать обработку limiter'ов, if limiter -> то слева и справа не д.б. пусто
-// дописать проверку пустоты справа от лимитера
+// дописать проверку пустоты справа от лимитера - done
+// 
 // дописать вывод двойных лимитеров

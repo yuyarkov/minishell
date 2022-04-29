@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/04/16 22:02:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/04/29 22:15:07 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,19 @@ void	lstiter_env(t_env *list, void (*f)(void *))
 	}
 }
 
+void	clear_tokens(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->num_of_tokens)
+	{
+		free(info->tokens[i].value);
+		i++;
+	}
+	free(info->tokens);
+}
+
 void	clear_info(t_info info)//зачаток общей функции, которая чистит всё
 {
 	t_list	*iter;
@@ -63,17 +76,6 @@ void	clear_info(t_info info)//зачаток общей функции, кото
 			free(temp);
 		}
 	}
-}
-
-void	clear_tokens(t_info *info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info->num_of_tokens)
-	{
-		free(info->tokens[i].value);
-		i++;
-	}
-	free(info->tokens);
+	if (info.envp)
+		free_string_array(info.envp);
 }
