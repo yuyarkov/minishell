@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/29 20:43:32 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/02 11:24:01 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define SPACES " \n\t\v\f\r"
 # define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
 # define END_OF_TOKENS -600
+# define CMD 305
 # define ARGV 303
 # define SEMICOLON 202
 # define PIPE 204

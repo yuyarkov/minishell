@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 20:46:13 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/02 12:02:06 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,13 @@ typedef struct s_list
 	void			*content;
 	char			*cmd;// сама команда, например ls или cat
 	char			**arguments;//вся строка с командой и аргументами, например "ls -la"
-	//int				single_quot;
-	//int				double_quot;//для парсинга кавычек, флаги загораются при открытии кавычки и гаснут при закрытии
 	int				limiter; //коды int SEMICOLON, AND_SIGN и т.д.
 	int				end[2];//заполняется, если есть pipe
-	int				redirect;//тут наверно помимо флага нужно ещё поле для пути файла
-	int				exit_code; //с каким кодом завершилась команда
-	// int				return_value; //сюда будем записывать значения выполнения билтинов
-	// t_env			*env;
+	int				redirect_in;
+	char			*redirect_in_file;
+	int				redirect_out;
+	char			*redirect_out_file;
+	int				exit_code;
 	struct s_list	*next;
 	struct s_list	*previous;//сделаем двусвязный, как в пайпексе
 }	t_list;

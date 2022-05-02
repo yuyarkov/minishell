@@ -6,13 +6,13 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/29 20:49:22 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/02 12:52:35 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*get_next_limiter(t_token *token, t_info *info)//здесь порочная практика с поиском от индекса. Надо потом сдвинутый индекс как-то передать наверх
+t_token	*get_next_limiter(t_token *token, t_info *info)
 {
 	t_token	*t;
 	int		i;
@@ -63,7 +63,7 @@ char	*get_command_from_token(t_token *t, t_info *info)
 	if (t[i].type == WORD && t[i].group_id == group_id)
 	{
 		result = get_cmd_path(t[i].value, info->envp);//пока оставил вызов готовой костыльной функции с утечками
-	printf("inside get_command_from_token, i: %d\n", i);
+		t[i].type = CMD;
 	}
 	return (result);
 }
@@ -72,18 +72,58 @@ char	**get_argv_from_token(t_token *t, t_info *info)
 {
 	int		group_id;
 	int		i;
+	int		k;
 	char	**result;
 
 	result = malloc(sizeof(char *) * (info->num_of_tokens + 1));
 	group_id = t->group_id;
 	i = 0;
-	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type == ARGV)
+	k = 0;
+	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
 	{
-		result[i] = t[i].value;
+		if (t[i].type == WORD)
+		{
+			result[k] = t[i].value;
+			t[i].type = ARGV;
+			k++;
+		}
 		i++;
 	}
-	result[i] = NULL;
+	result[k] = NULL;
 	return (result);
+}
+
+void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
+{
+	int		group_id;
+	int		i;
+
+	(void) info; //пока не пригодилось, может убрать аргумент
+	group_id = t->group_id;
+	i = 0;
+	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+	{
+		if (t[i].type == REDIRECT_IN)
+		{
+			if (t[i + 1].type == WORD)
+			{
+				t[i + 1].type = INPUT_FILE;//чтобы следующие парсеры не путались
+				cmd->redirect_in = REDIRECT_IN;
+				cmd->redirect_in_file = t[i].value;//тут нужно делать проверку на валидность файла
+			}			
+		}
+		if (t[i].type == REDIRECT_OUT)
+		{
+			if (t[i + 1].type == WORD)
+			{
+				t[i + 1].type = OUTPUT_FILE;//чтобы следующие парсеры не путались
+				cmd->redirect_out = REDIRECT_OUT;
+				cmd->redirect_out_file = t[i].value;
+			}	
+		}
+		i++;
+	}
+	//отдельной функцией добавить heredoc и append
 }
 
 t_list	*parse_token_group(t_token *t, t_info *info)
@@ -98,14 +138,20 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 	group_id = t->group_id;
 	i = 0;
 	//здесь должна быть функция парсер, которая пройдётся по токенам и присвоит тип
+	get_redirect_from_token(t, info, cmd);
 	cmd->cmd = get_command_from_token(t, info);
 	cmd->arguments = get_argv_from_token(t, info);
+	
 	// while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
 	// {
 	// 	if (t[i].)
 	// }	
-	printf("parsing token group, command: %s\n", cmd->cmd);
-	(void) info;
+				printf("parsing token group, command: %s\n", cmd->cmd);
+				while (cmd->arguments[i])
+				{
+					printf("argv[%d]: %s\n", i, cmd->arguments[i]);
+					i++;
+				}
 
 	return (cmd);
 }
