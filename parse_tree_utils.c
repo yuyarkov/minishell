@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/02 12:52:35 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/03 14:57:56 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем след�
 	return (NULL);
 }
 
-char	*get_command_from_token(t_token *t, t_info *info)
+void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 {
 	int		group_id;
 	int		i;
@@ -65,10 +65,10 @@ char	*get_command_from_token(t_token *t, t_info *info)
 		result = get_cmd_path(t[i].value, info->envp);//пока оставил вызов готовой костыльной функции с утечками
 		t[i].type = CMD;
 	}
-	return (result);
+	cmd->cmd = result;
 }
 
-char	**get_argv_from_token(t_token *t, t_info *info)
+void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 {
 	int		group_id;
 	int		i;
@@ -76,9 +76,12 @@ char	**get_argv_from_token(t_token *t, t_info *info)
 	char	**result;
 
 	result = malloc(sizeof(char *) * (info->num_of_tokens + 1));
+	if (NULL == result)
+		exit(EXIT_FAILURE);
 	group_id = t->group_id;
+	result[0] = cmd->cmd;
 	i = 0;
-	k = 0;
+	k = 1;
 	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
 	{
 		if (t[i].type == WORD)
@@ -90,7 +93,7 @@ char	**get_argv_from_token(t_token *t, t_info *info)
 		i++;
 	}
 	result[k] = NULL;
-	return (result);
+	cmd->arguments = result;
 }
 
 void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
@@ -109,7 +112,8 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 			{
 				t[i + 1].type = INPUT_FILE;//чтобы следующие парсеры не путались
 				cmd->redirect_in = REDIRECT_IN;
-				cmd->redirect_in_file = t[i].value;//тут нужно делать проверку на валидность файла
+				cmd->redirect_in_file = t[i + 1].value;//тут нужно делать проверку на валидность файла
+				//printf("inside parser, redirect_in_file: %s\n", cmd->redirect_in_file);
 			}			
 		}
 		if (t[i].type == REDIRECT_OUT)
@@ -118,7 +122,7 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 			{
 				t[i + 1].type = OUTPUT_FILE;//чтобы следующие парсеры не путались
 				cmd->redirect_out = REDIRECT_OUT;
-				cmd->redirect_out_file = t[i].value;
+				cmd->redirect_out_file = t[i + 1].value;
 			}	
 		}
 		i++;
@@ -135,19 +139,16 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 	cmd = malloc(sizeof(t_list));
 	if (NULL == cmd)
 		exit(EXIT_FAILURE);
+	*cmd = (t_list){};
 	group_id = t->group_id;
 	i = 0;
 	//здесь должна быть функция парсер, которая пройдётся по токенам и присвоит тип
 	get_redirect_from_token(t, info, cmd);
-	cmd->cmd = get_command_from_token(t, info);
-	cmd->arguments = get_argv_from_token(t, info);
+	get_command_from_token(t, info, cmd);
+	get_argv_from_token(t, info, cmd);
 	
-	// while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
-	// {
-	// 	if (t[i].)
-	// }	
 				printf("parsing token group, command: %s\n", cmd->cmd);
-				while (cmd->arguments[i])
+				while (cmd->arguments && cmd->arguments[i])
 				{
 					printf("argv[%d]: %s\n", i, cmd->arguments[i]);
 					i++;
@@ -160,6 +161,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 {
 	t_list	*cmd;
 
+	cmd = NULL;
 	if (t->status == NEVER_EXECUTED)
 	{
 		printf("=====executing group: %d, t.value: %s=====\n", t->group_id, t->value);
@@ -168,7 +170,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 	}
 	else
 		printf("======not executing group: %d, t.value: %s=====\n", t->group_id, t->value);
-	t->status = 0;//подставить сюда исполнение
+	t->status = execute_group(cmd, info->envp, &info->env);//подставить сюда исполнение
 	return (t->status);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 22:12:12 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/03 13:46:10 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 void	execute_cmd(t_list *cmd, char **envp)
 {
+	int	i;
+	
 	ft_signal(2);
-	//printf("вот такую команду исполняю: %s\n", cmd->cmd);
+	printf("вот такую команду исполняю: %s, argv: %p\n", cmd->cmd, cmd->arguments);
+	i = 0;
+	while (cmd->arguments && cmd->arguments[i])
+		{
+			printf("argv[%d]: %s\n", i, cmd->arguments[i]);
+			i++;
+		}
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
 	// exit(EXIT_SUCCESS);//подумать, как брать корректный код выхода из execve
-	exit(EXIT_FAILURE);//При успешном завершении execve() не возвращает управление - EXIT_FAILURE
+	exit(EXIT_SUCCESS);//При успешном завершении execve() не возвращает управление - EXIT_FAILURE
 }
 
 int	execute_builtin(t_list *cmd, char **envp, t_env **env)

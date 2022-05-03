@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/02 11:24:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/03 14:42:32 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <termios.h> 
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <histedit.h>
@@ -106,11 +107,14 @@ void	put_tree_marks(t_info *info);
 int		is_limiter(t_token t);
 t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
+int		execute_group(t_list *cmd, char **envp, t_env **env);
+int		execute_builtin(t_list *cmd, char **envp, t_env **env);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
+void	print_file_error(char *file_name);
 
 t_env	*create_env(char **envp);
 char	**return_env_to_char(t_env *env);

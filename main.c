@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/29 22:26:12 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/03 14:03:49 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ int	main(int argc, char **argv, char **envp)
 		parse_and_execute_tree(&info);
 		if (!check_bad_syntax(str, &info))//если синтаксис хороший
 		{
-			get_info_from_string(str, &info);//парсер
-			parse_commands(str, &info, info.envp);
-				 //print_commands_list(commands);
+			// get_info_from_string(str, &info);//парсер
+			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск
+				// print_commands_list(commands);
 			if (is_exit_command(str))
 			{
 				free(str);
 				break ;
 			}
-			else
-				info.status = execute_commands(info.commands, info.envp, &info.env);
+			// else 
+			// 	info.status = execute_commands(info.commands, info.envp, &info.env);
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
@@ -78,6 +78,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	rl_clear_history();
 	clear_info(info);//зачаток общей функции, которая чистит всё
-	// printf("main_ret_status = %d\n", info.status);
 	return (info.status);
 }
