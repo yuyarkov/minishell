@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 19:30:24 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 20:34:08 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef struct s_list
 	char			**arguments;//вся строка с командой и аргументами, например "ls -la"
 	int				limiter; //коды int SEMICOLON, AND_SIGN и т.д.
 	int				fd[2];//сюда клады дескрипторы файлов, если есть редирект
+	int				pipe_in;
+	int				pipe_out;
 	int				end[2];//заполняется, если есть pipe
 	int				redirect_in;
 	char			*redirect_in_file;

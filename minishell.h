@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 19:29:34 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 21:05:01 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int		execute_group(t_list *cmd, char **envp, t_env **env);
 int		execute_builtin(t_list *cmd, char **envp, t_env **env);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
+void	ft_double_list_add_back(t_list **list, t_list *new_elem);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);
