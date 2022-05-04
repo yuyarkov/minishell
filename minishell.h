@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/03 14:42:32 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 21:26:22 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@
 # define SPACES " \n\t\v\f\r"
 # define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
 # define END_OF_TOKENS -600
-# define CMD 305
-# define ARGV 303
-# define SEMICOLON 202
-# define PIPE 204
+# define NEVER_EXECUTED -500
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
+# define SEMICOLON 202// ;
 # define OR_SIGN 203
+# define PIPE 204
 # define WORD 205
 # define QUOTE 206
 # define DOUBLE_QUOTE 207
-# define REDIRECT_OUT 208
-# define OUTPUT_FILE 300
-# define REDIRECT_IN 209
-# define INPUT_FILE 301
-# define REDIRECT_APPEND 210
-# define REDIRECT_HEREDOC 211
+# define REDIRECT_OUT 208// >
+# define REDIRECT_IN 209// <
+# define REDIRECT_APPEND 210// >>
+# define REDIRECT_HEREDOC 211// <<
 # define LEFT_PARENTHESIS 212
 # define RIGHT_PARENTHESIS 213
-# define BACKSLASH 214
 # define DOLLAR_SIGN 215
-# define NEVER_EXECUTED -500
+# define BACKSLASH 214
+# define OUTPUT_FILE 300
+# define INPUT_FILE 301
+# define ARGV 303
+# define CMD 305
 
 typedef struct s_env
 {
@@ -100,6 +100,7 @@ void	get_info_from_string(char *s, t_info *info);
 
 int		check_bad_syntax(char *str, t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
+int		dollar_processing(t_info info);
 
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);

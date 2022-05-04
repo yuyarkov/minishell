@@ -6,39 +6,49 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/04/29 23:05:40 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/04 20:59:47 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	token_to_char(int token)
+void	write_token_to_char(int token)
 {
-	if (token == 201)//and
-		return ('&');
-	if (token == 203)//or
-		return ('|');
-	if (token == 204)//pipe
-		return ('|');
-	if (token == 206)
-		return ('\'');
-	if (token == 207)
-		return ('\"');
-	if (token == 208)
-		return ('>');
-	if (token == 209)
-		return ('<');
-	if (token == 212)
-		return ('(');
-	if (token == 213)
-		return (')');
-	return ('\0');
+	if (token == 204)
+		ft_putchar_fd('|', 2);
+	else if (token == 206)
+		ft_putchar_fd('\'', 2);
+	else if (token == 207)
+		ft_putchar_fd('\"', 2);
+	else if (token == 208)
+		ft_putchar_fd('>', 2);
+	else if (token == 209)
+		ft_putchar_fd('<', 2);
+	else if (token == 212)
+		ft_putchar_fd('(', 2);
+	else if (token == 213)
+		ft_putchar_fd(')', 2);
+}
+
+void	write_token_to_str(int token)
+{
+	if (token == 201)
+		ft_putstr_fd("&&", 2);
+	else if (token == 203)
+		ft_putstr_fd("||", 2);
+	else if (token == 210)
+		ft_putstr_fd(">>", 2);
+	else if (token == 211)
+		ft_putstr_fd("<<", 2);
 }
 
 int	print_error_token(t_info *info, int token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token \'", 2);
-	ft_putchar_fd(token_to_char(token), 2);
+	if (token == 201 || token == 203 || token == 210 || token == 211)//двусимвольный
+		write_token_to_str(token);
+	else//односимвольный
+		write_token_to_char(token);
 	ft_putendl_fd("\'", 2);
 	info->status = 258;
 	return (1);
@@ -196,7 +206,4 @@ int	check_bad_syntax(char *str, t_info *info)
 	return (0);
 }
 
-//1) дописать обработку limiter'ов, if limiter -> то слева и справа не д.б. пусто
-// дописать проверку пустоты справа от лимитера - done
-// 
-// дописать вывод двойных лимитеров
+// дописать вывод двойных лимитеров - done
