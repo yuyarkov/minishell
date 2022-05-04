@@ -6,13 +6,13 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:57:31 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/04 21:26:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/04 21:32:53 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	dollar_processing(t_info info)
+int	dollar_processing(t_info *info)
 {
 	(void)info;
 	return (0);

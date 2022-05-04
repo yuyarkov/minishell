@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/03 14:57:56 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 21:20:44 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем след�
 		return (NULL);
 	while (t)
 	{
-		if (t->level == level)
+		if (t->level == level && t->status == NEVER_EXECUTED)
 			return (t);
 		t = get_next_limiter(t, info);
 	}
@@ -82,7 +82,7 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	result[0] = cmd->cmd;
 	i = 0;
 	k = 1;
-	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
 	{
 		if (t[i].type == WORD)
 		{
@@ -104,24 +104,33 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 	(void) info; //пока не пригодилось, может убрать аргумент
 	group_id = t->group_id;
 	i = 0;
-	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
 	{
 		if (t[i].type == REDIRECT_IN)
 		{
 			if (t[i + 1].type == WORD)
 			{
 				t[i + 1].type = INPUT_FILE;//чтобы следующие парсеры не путались
-				cmd->redirect_in = REDIRECT_IN;
+				cmd->redirect_in = t[i].type;
 				cmd->redirect_in_file = t[i + 1].value;//тут нужно делать проверку на валидность файла
 				//printf("inside parser, redirect_in_file: %s\n", cmd->redirect_in_file);
 			}			
 		}
-		if (t[i].type == REDIRECT_OUT)
+		if (t[i].type == REDIRECT_HEREDOC)
+		{
+			if (t[i + 1].type == WORD)
+			{
+				t[i + 1].type = HEREDOC_EOF;//чтобы следующие парсеры не путались
+				cmd->redirect_in = t[i].type;
+				cmd->heredoc_eof = t[i + 1].value;
+			}			
+		}
+		if (t[i].type == REDIRECT_OUT || t[i].type == REDIRECT_APPEND)
 		{
 			if (t[i + 1].type == WORD)
 			{
 				t[i + 1].type = OUTPUT_FILE;//чтобы следующие парсеры не путались
-				cmd->redirect_out = REDIRECT_OUT;
+				cmd->redirect_out = t[i].type;
 				cmd->redirect_out_file = t[i + 1].value;
 			}	
 		}
@@ -130,31 +139,51 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 	//отдельной функцией добавить heredoc и append
 }
 
-t_list	*parse_token_group(t_token *t, t_info *info)
+t_list	*create_elem_cmd(t_token *t, t_info *info)
 {
-	int		group_id;
-	int		i;
 	t_list	*cmd;
 
 	cmd = malloc(sizeof(t_list));
 	if (NULL == cmd)
 		exit(EXIT_FAILURE);
 	*cmd = (t_list){};
-	group_id = t->group_id;
-	i = 0;
-	//здесь должна быть функция парсер, которая пройдётся по токенам и присвоит тип
 	get_redirect_from_token(t, info, cmd);
 	get_command_from_token(t, info, cmd);
 	get_argv_from_token(t, info, cmd);
-	
-				printf("parsing token group, command: %s\n", cmd->cmd);
-				while (cmd->arguments && cmd->arguments[i])
-				{
-					printf("argv[%d]: %s\n", i, cmd->arguments[i]);
-					i++;
-				}
-
 	return (cmd);
+}
+
+t_list	*parse_token_group(t_token *t, t_info *info)
+{
+	int		group_id;
+	int		i;
+	t_list	*temp;
+	t_list	*first_elem;
+
+	first_elem = create_elem_cmd(t, info);
+	i = 0;
+	group_id = t->group_id;
+	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+	{
+		while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
+			i++;
+		if (t[i].type == PIPE)
+		{
+			temp = create_elem_cmd(&t[i], info);
+			ft_double_list_add_back(&first_elem, temp);
+			i++;
+		}
+		//i++;
+	}
+					printf("parsing token group, command: %s\n", first_elem->cmd);
+					i = 0;
+					while (first_elem->arguments && first_elem->arguments[i])
+					{
+						printf("argv[%d]: %s\n", i, first_elem->arguments[i]);
+						i++;
+					}
+	
+	return (first_elem);
 }
 
 int	parse_and_execute_group(t_token *t, t_info *info)//для листьев дерева
@@ -165,11 +194,10 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 	if (t->status == NEVER_EXECUTED)
 	{
 		printf("=====executing group: %d, t.value: %s=====\n", t->group_id, t->value);
-		cmd = parse_token_group(t, info);
-			
+		cmd = parse_token_group(t, info);			
 	}
 	else
-		printf("======not executing group: %d, t.value: %s=====\n", t->group_id, t->value);
+		return (t->status);
 	t->status = execute_group(cmd, info->envp, &info->env);//подставить сюда исполнение
 	return (t->status);
 }
@@ -177,7 +205,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 int	parse_and_execute_branch(t_token *t, t_info *info)//основная рекурсивная функция
 {
 	
-	printf("=====executing branch: %d, t.type: %d=====\n", t->group_id, t->type);
+	printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group_id, t->type, t->status);
 	if (!t->left && !t->right)
 		return (parse_and_execute_group(t, info));
 	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня
@@ -185,6 +213,7 @@ int	parse_and_execute_branch(t_token *t, t_info *info)//основная рек�
 	if ((t->status == 0 && t->type == AND_SIGN) ||
 			(t->status != 0 && t->type == OR_SIGN))
 		t->status = parse_and_execute_branch(t->right, info);
+	printf("inside parse_and_execute_branch, t->status: %d\n", t->status);
 	return (t->status);
 }
 

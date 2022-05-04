@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/27 20:10:33 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 20:36:01 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_limiter(t_token t)
 {
-	if (t.type == AND_SIGN || t.type == OR_SIGN || t.type == PIPE)
+	if (t.type == AND_SIGN || t.type == OR_SIGN)//убрал из условия пайп
 		return (1);
 	else
 		return (0);

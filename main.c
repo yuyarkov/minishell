@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 21:23:18 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/04 22:11:44 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 		put_tree_marks(&info);
 					print_tokens(&info);
 		parse_and_execute_tree(&info);
-		if (!check_bad_syntax(str, &info))//если синтаксис хороший
+		if (!check_bad_syntax(&info))//если синтаксис хороший
 		{
 			// get_info_from_string(str, &info);//парсер
 			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск
@@ -66,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 				free(str);
 				break ;
 			}
-			// else 
+			// else
 			// 	info.status = execute_commands(info.commands, info.envp, &info.env);
 		}
 		// printf_char_pointer(envp);
@@ -80,3 +80,6 @@ int	main(int argc, char **argv, char **envp)
 	clear_info(info);//зачаток общей функции, которая чистит всё
 	return (info.status);
 }
+
+// сега при вызове ctrl D после какой нибудь команды
+// сега если передать pwd |||||

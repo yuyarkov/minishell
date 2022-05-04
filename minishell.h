@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 21:26:22 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/04 22:08:45 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define BACKSLASH 214
 # define OUTPUT_FILE 300
 # define INPUT_FILE 301
+# define HEREDOC_EOF 302
 # define ARGV 303
 # define CMD 305
 
@@ -98,9 +99,9 @@ void	get_tokens_from_string(char *s, t_info *info);
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
 
-int		check_bad_syntax(char *str, t_info *info);
+int		check_bad_syntax(t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
-int		dollar_processing(t_info info);
+int		dollar_processing(t_info *info);
 
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
@@ -112,6 +113,7 @@ int		execute_group(t_list *cmd, char **envp, t_env **env);
 int		execute_builtin(t_list *cmd, char **envp, t_env **env);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
+void	ft_double_list_add_back(t_list **list, t_list *new_elem);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp);
 void	print_cmd_error(char *argv);

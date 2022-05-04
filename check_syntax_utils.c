@@ -6,13 +6,13 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/04 20:59:47 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/04 22:08:26 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	write_token_to_char(int token)
+void	write_token(int token)
 {
 	if (token == 204)
 		ft_putchar_fd('|', 2);
@@ -28,11 +28,7 @@ void	write_token_to_char(int token)
 		ft_putchar_fd('(', 2);
 	else if (token == 213)
 		ft_putchar_fd(')', 2);
-}
-
-void	write_token_to_str(int token)
-{
-	if (token == 201)
+	else if (token == 201)
 		ft_putstr_fd("&&", 2);
 	else if (token == 203)
 		ft_putstr_fd("||", 2);
@@ -45,16 +41,13 @@ void	write_token_to_str(int token)
 int	print_error_token(t_info *info, int token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token \'", 2);
-	if (token == 201 || token == 203 || token == 210 || token == 211)//двусимвольный
-		write_token_to_str(token);
-	else//односимвольный
-		write_token_to_char(token);
+	write_token(token);
 	ft_putendl_fd("\'", 2);
 	info->status = 258;
 	return (1);
 }
 
-int	check_bad_dollar(t_info *info, char *str)
+int	check_bad_dollar(t_info *info, char *str)// не нужна
 {
 	int	i;
 
@@ -87,21 +80,21 @@ int	check_bad_limiter(t_info *info)
 	while (i < info->num_of_tokens)
 	{
 		if (info->tokens[i].type == AND_SIGN \
-							&& ((info->tokens[i - 1].type != WORD \
+							&& ((info->tokens[i - 1].type != CMD \
 							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (info->tokens[i + 1].type != WORD \
+							|| (info->tokens[i + 1].type != CMD \
 							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (AND_SIGN);
 		if (info->tokens[i].type == OR_SIGN \
-							&& ((info->tokens[i - 1].type != WORD \
+							&& ((info->tokens[i - 1].type != CMD \
 							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (info->tokens[i + 1].type != WORD \
+							|| (info->tokens[i + 1].type != CMD \
 							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (OR_SIGN);
 		if (info->tokens[i].type == PIPE \
-							&& ((info->tokens[i - 1].type != WORD \
+							&& ((info->tokens[i - 1].type != CMD \
 							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (info->tokens[i + 1].type != WORD \
+							|| (info->tokens[i + 1].type != CMD \
 							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (PIPE);
 		i++;
@@ -179,7 +172,7 @@ int	check_bad_qoutes(t_info *info)
 	return (0);
 }
 
-int	check_bad_syntax(char *str, t_info *info)
+int	check_bad_syntax(t_info *info)
 {
 	int	ret_parenthesis;
 	int	ret_qoutes;
@@ -187,7 +180,6 @@ int	check_bad_syntax(char *str, t_info *info)
 	int	ret_limiter;
 	// int	ret_dollar;
 
-	(void)str;
 	ret_parenthesis = check_bad_parenthesis(info);
 	ret_qoutes = check_bad_qoutes(info);
 	ret_redirect = check_bad_redirect(info);
@@ -205,5 +197,3 @@ int	check_bad_syntax(char *str, t_info *info)
 	// 	return (print_error_token(info, ret_dollar));
 	return (0);
 }
-
-// дописать вывод двойных лимитеров - done
