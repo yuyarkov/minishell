@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/03 14:58:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 19:35:10 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ void	execute_cmd_from_group(t_list *cmd, char **envp)
 		if (cmd->fd[0] < 0)
 			print_file_error(cmd->redirect_in_file);
 		dup2(cmd->fd[0], STDIN_FILENO);
+	}
+	if (cmd->redirect_out)
+	{
+		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (cmd->fd[1] < 0)
+			print_file_error(cmd->redirect_out_file);
+		dup2(cmd->fd[1], STDOUT_FILENO);
 	}
 	if (cmd->redirect_out)
 	{
@@ -62,6 +69,8 @@ int	execute_group(t_list *cmd, char **envp, t_env **env)
 			}
 			signal(SIGINT, SIG_IGN);//сигнал SIGINT игнорируется
 			signal(SIGQUIT, SIG_IGN);//сигнал SIGQUIT игнорируется
+			// if (child == 0)
+			// 	prepare_files_and_pipes(cmd, )
 			if (child == 0)
 				execute_cmd_from_group(cmd, envp);
 			waitpid(child, &status, WUNTRACED);

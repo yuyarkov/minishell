@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/03 14:57:56 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 19:55:47 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем след�
 		return (NULL);
 	while (t)
 	{
-		if (t->level == level)
+		if (t->level == level && t->status == NEVER_EXECUTED)
 			return (t);
 		t = get_next_limiter(t, info);
 	}
@@ -111,17 +111,26 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 			if (t[i + 1].type == WORD)
 			{
 				t[i + 1].type = INPUT_FILE;//чтобы следующие парсеры не путались
-				cmd->redirect_in = REDIRECT_IN;
+				cmd->redirect_in = t[i].type;
 				cmd->redirect_in_file = t[i + 1].value;//тут нужно делать проверку на валидность файла
 				//printf("inside parser, redirect_in_file: %s\n", cmd->redirect_in_file);
 			}			
 		}
-		if (t[i].type == REDIRECT_OUT)
+		if (t[i].type == REDIRECT_HEREDOC)
+		{
+			if (t[i + 1].type == WORD)
+			{
+				t[i + 1].type = HEREDOC_EOF;//чтобы следующие парсеры не путались
+				cmd->redirect_in = t[i].type;
+				cmd->heredoc_eof = t[i + 1].value;
+			}			
+		}
+		if (t[i].type == REDIRECT_OUT || t[i].type == REDIRECT_APPEND)
 		{
 			if (t[i + 1].type == WORD)
 			{
 				t[i + 1].type = OUTPUT_FILE;//чтобы следующие парсеры не путались
-				cmd->redirect_out = REDIRECT_OUT;
+				cmd->redirect_out = t[i].type;
 				cmd->redirect_out_file = t[i + 1].value;
 			}	
 		}
@@ -169,7 +178,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 			
 	}
 	else
-		printf("======not executing group: %d, t.value: %s=====\n", t->group_id, t->value);
+		return (t->status);
 	t->status = execute_group(cmd, info->envp, &info->env);//подставить сюда исполнение
 	return (t->status);
 }
@@ -177,7 +186,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 int	parse_and_execute_branch(t_token *t, t_info *info)//основная рекурсивная функция
 {
 	
-	printf("=====executing branch: %d, t.type: %d=====\n", t->group_id, t->type);
+	printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group_id, t->type, t->status);
 	if (!t->left && !t->right)
 		return (parse_and_execute_group(t, info));
 	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня
@@ -185,6 +194,7 @@ int	parse_and_execute_branch(t_token *t, t_info *info)//основная рек�
 	if ((t->status == 0 && t->type == AND_SIGN) ||
 			(t->status != 0 && t->type == OR_SIGN))
 		t->status = parse_and_execute_branch(t->right, info);
+	printf("inside parse_and_execute_branch, t->status: %d\n", t->status);
 	return (t->status);
 }
 

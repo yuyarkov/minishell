@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/03 14:42:32 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 19:29:34 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define INPUT_FILE 301
 # define REDIRECT_APPEND 210
 # define REDIRECT_HEREDOC 211
+# define HEREDOC_EOF 302
 # define LEFT_PARENTHESIS 212
 # define RIGHT_PARENTHESIS 213
 # define BACKSLASH 214

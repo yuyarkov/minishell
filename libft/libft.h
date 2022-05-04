@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/03 14:38:30 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/04 19:30:24 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_list
 	int				end[2];//заполняется, если есть pipe
 	int				redirect_in;
 	char			*redirect_in_file;
+	char			*heredoc_eof;
 	int				redirect_out;
 	char			*redirect_out_file;
 	int				exit_code;
