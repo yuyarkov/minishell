@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 22:11:44 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/05 22:13:57 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ int	main(int argc, char **argv, char **envp)
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
 					print_tokens(&info);
+		// dollar_processing(&info);//WIP
 		parse_and_execute_tree(&info);
-		if (!check_bad_syntax(&info))//если синтаксис хороший
+		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			// get_info_from_string(str, &info);//парсер
 			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск
