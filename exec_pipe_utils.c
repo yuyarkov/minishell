@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   exec_pipe_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/03/28 20:24:58 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/06 19:58:53 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ void	dup_child_pipe(t_list *cmd)
 		perror ("Could not dup2 STDOUT");
 }
 
-void	child_pipex(int *fd, t_list *cmd, char **envp)
+void	child_pipex(int *fd, t_list *cmd, t_info *info)
 {
 	(void) fd;
 	//printf("inside child_pipex, cmd->cmd: %s, cmd->previous->cmd: %s\n", cmd->cmd, cmd->previous->cmd);
 	if (!cmd->previous)
 	{
+		printf("=== закрываю end[0] для команды %s\n", cmd->cmd);
 		close(cmd->end[0]);
 		// if (dup2(fd[0], STDIN_FILENO) < 0)
 		// 	perror ("Could not dup2 STDIN");
@@ -42,7 +43,9 @@ void	child_pipex(int *fd, t_list *cmd, char **envp)
 		// if (dup2(fd[1], STDOUT_FILENO) < 0)
 		// 	perror ("Could not dup2 STDOUT");
 	}
-	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
+	if (is_builtin_command(cmd->cmd))
+		execute_builtin(cmd, info->envp, info);
+	else if (execve(cmd->cmd, cmd->arguments, info->envp) == -1)
 		perror ("Could not execve");
 	exit(EXIT_FAILURE);//тут видимо надо поменять код exit
 }
@@ -60,7 +63,7 @@ void	close_parent_pipes(t_list *iter)
 		close(iter->previous->end[1]);
 }
 
-t_list	*execute_with_pipe(t_list *list, char **envp)
+t_list	*execute_with_pipe(t_list *list, t_info *info)
 {
 	int		status;
 	pid_t	child;
@@ -83,7 +86,7 @@ t_list	*execute_with_pipe(t_list *list, char **envp)
 			exit(EXIT_FAILURE);//придумать корректный выход
 			//return (perror("Fork: "));
 		if (child == 0)
-			child_pipex(fd, iter, envp);
+			child_pipex(fd, iter, info);
 		close_parent_pipes(iter);
 		waitpid(child, &status, 0);
 		iter = iter->next;

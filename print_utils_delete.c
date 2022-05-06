@@ -7,8 +7,8 @@ void	print_commands_list(t_list *cmd)
 	iterator = cmd;
 	while (iterator)
 	{
-		printf("print_commands_list. parsed command: %s\n", iterator->cmd);
-		printf("print_commands_list. previous command: %p\n", iterator->previous);
+		printf("print_commands_list. parsed command: %s, limiter: %d\n", iterator->cmd, iterator->limiter);
+		//printf("print_commands_list. previous command: %p\n", iterator->previous);
 		iterator = iterator->next;
 	}	
 }
@@ -38,7 +38,7 @@ void	print_tokens(t_info *info)
 	t = info->tokens;
 	printf("Num of tokens: %d\n", info->num_of_tokens);
 	i = 0;
-	while (i <= info->num_of_tokens)
+	while (t && i <= info->num_of_tokens)
 	{
 		if (t[i].left && t[i].right)
 			printf("level: %d\tgroup_id: %d\tvalue: %s\tleft: %s, %d\tright: %s, %d\n", 

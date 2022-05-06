@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 21:20:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/06 19:24:59 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем след�
 		return (NULL);
 	while (t)
 	{
-		if (t->level == level && t->status == NEVER_EXECUTED)
+		if (t->level == 0 && t->status == NEVER_EXECUTED)//убедиться, что у корневого элемента уровень всегда 0
 			return (t);
 		t = get_next_limiter(t, info);
 	}
@@ -80,7 +80,10 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 		exit(EXIT_FAILURE);
 	group_id = t->group_id;
 	result[0] = cmd->cmd;
-	i = 0;
+	if (t->type == PIPE)
+		i = 1;
+	else
+		i = 0;
 	k = 1;
 	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
 	{
@@ -92,6 +95,8 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 		}
 		i++;
 	}
+	if (t[i].type == PIPE)
+		cmd->limiter = PIPE;
 	result[k] = NULL;
 	cmd->arguments = result;
 }
@@ -173,15 +178,14 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 			ft_double_list_add_back(&first_elem, temp);
 			i++;
 		}
-		//i++;
 	}
-					printf("parsing token group, command: %s\n", first_elem->cmd);
-					i = 0;
-					while (first_elem->arguments && first_elem->arguments[i])
-					{
-						printf("argv[%d]: %s\n", i, first_elem->arguments[i]);
-						i++;
-					}
+					//printf("parsing token group, command: %s\n", first_elem->cmd);
+					// i = 0;
+					// while (first_elem->arguments && first_elem->arguments[i])
+					// {
+					// 	printf("argv[%d]: %s\n", i, first_elem->arguments[i]);
+					// 	i++;
+					// }
 	
 	return (first_elem);
 }
@@ -189,23 +193,27 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 int	parse_and_execute_group(t_token *t, t_info *info)//для листьев дерева
 {
 	t_list	*cmd;
+	int		i;
 
 	cmd = NULL;
 	if (t->status == NEVER_EXECUTED)
 	{
-		printf("=====executing group: %d, t.value: %s=====\n", t->group_id, t->value);
-		cmd = parse_token_group(t, info);			
+	//	printf("=====executing group: %d, t.value: %s=====\n", t->group_id, t->value);
+		i = 0;
+		while (t[i].type == LEFT_PARENTHESIS)//проматываю левые скобки в начале группы
+			i++;
+		cmd = parse_token_group(&t[i], info);			
 	}
 	else
 		return (t->status);
-	t->status = execute_group(cmd, info->envp, &info->env);//подставить сюда исполнение
+	t->status = execute_group(cmd, info->envp, info);//подставить сюда исполнение
 	return (t->status);
 }
 
 int	parse_and_execute_branch(t_token *t, t_info *info)//основная рекурсивная функция
 {
 	
-	printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group_id, t->type, t->status);
+	//printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group_id, t->type, t->status);
 	if (!t->left && !t->right)
 		return (parse_and_execute_group(t, info));
 	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня
@@ -213,7 +221,7 @@ int	parse_and_execute_branch(t_token *t, t_info *info)//основная рек�
 	if ((t->status == 0 && t->type == AND_SIGN) ||
 			(t->status != 0 && t->type == OR_SIGN))
 		t->status = parse_and_execute_branch(t->right, info);
-	printf("inside parse_and_execute_branch, t->status: %d\n", t->status);
+	//printf("inside parse_and_execute_branch, t->status: %d\n", t->status);
 	return (t->status);
 }
 
@@ -225,8 +233,8 @@ int	parse_and_execute_tree(t_info *info)
 	while (t)//основной большой цикл.
 	{
 		t = get_next_root_limiter(t, info);
-		if (t)
-			printf("next root limiter: %d\n", t->type);
+		// if (t)
+		// 	printf("next root limiter: %d\n", t->type);
 		if (!t)
 			return (parse_and_execute_group(info->tokens, info));//вырожденный случай, когда нет лимитеров в строке
 		if (t)

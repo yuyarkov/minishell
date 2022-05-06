@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/05 22:13:57 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/06 19:22:20 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int	main(int argc, char **argv, char **envp)
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
-					print_tokens(&info);
+					//print_tokens(&info);
 		// dollar_processing(&info);//WIP
 		parse_and_execute_tree(&info);
-		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
+		if (1)//!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			// get_info_from_string(str, &info);//парсер
 			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск
