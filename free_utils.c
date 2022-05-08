@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/04/29 22:15:07 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/08 12:45:06 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	clear_tokens(t_info *info)
 	int	i;
 
 	i = 0;
-	while (i < info->num_of_tokens)
+	while (info->tokens && i < info->num_of_tokens)
 	{
 		free(info->tokens[i].value);
 		i++;

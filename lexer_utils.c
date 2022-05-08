@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/29 18:59:21 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 12:41:55 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	get_tokens_from_string(char *s, t_info *info)
 	}
 	i = 0;
 	k = 0;
-	// printf("s[0] = %c\n", s[i]);
 	if (s[i])
 	{
 		while (s[i])
@@ -120,5 +119,10 @@ void	get_tokens_from_string(char *s, t_info *info)
 		result[k].type = END_OF_TOKENS;
 		info->tokens = result;
 		info->num_of_tokens = k;
+	}
+	else
+	{
+		info->tokens = NULL;
+		info->num_of_commands = 0;
 	}
 }

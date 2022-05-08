@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/06 19:58:53 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 12:27:09 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	child_pipex(int *fd, t_list *cmd, t_info *info)
 		dup_child_pipe(cmd);
 	else
 	{
+		close (cmd->end[1]);//добавил, почему-то раньше не было
 		if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
 			perror ("Could not dup2 STDIN");
 		// if (dup2(fd[1], STDOUT_FILENO) < 0)
@@ -73,7 +74,7 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 	fd[0] = 1;
 	fd[1] = 0;
 	iter = list;
-	//printf("inside execute_with_pipe, iter: %p\n", iter);
+	printf("inside execute_with_pipe, iter: %p\n", iter);
 	// if (list->redirect)
 	// 	pipe_for_heredoc(list, &(fd[0]));//это было для ввода с heredoc
 	while (iter && (iter->limiter == PIPE || (iter->previous && iter->previous->limiter == PIPE)))
@@ -88,7 +89,8 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 		if (child == 0)
 			child_pipex(fd, iter, info);
 		close_parent_pipes(iter);
-		waitpid(child, &status, 0);
+		if (!iter->next)//костыль (или нет). Родительский процесс будет ждать только после последней команды в цепочке пайпов
+			waitpid(child, &status, 0);
 		iter = iter->next;
 	}
 	return (iter);

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/04 20:36:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 12:44:02 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	put_tree_level_marks(t_info *info)//подумать нужен ли int и
 	int		i;
 	int		level;
 
-	tokens = info->tokens;//проверку на пустоту не делаю, до этого по идее всё проверили
+	tokens = info->tokens;
 	i = 0;
 	level = 0;
 	while (tokens && i < info->num_of_tokens)
@@ -88,7 +88,7 @@ void	put_tree_marks(t_info *info)
 
 	t = info->tokens;
 	i = 0;
-	while (i < info->num_of_tokens)
+	while (t && i < info->num_of_tokens)
 	{
 		if (is_limiter(t[i]))
 		{
@@ -98,7 +98,7 @@ void	put_tree_marks(t_info *info)
 		i++;
 	}
 	i = 0;
-	while (i < info->num_of_tokens)//теперь второй раз прохожу по строке, чтобы проверить уровни и связать узлы в соответствии
+	while (t && i < info->num_of_tokens)//теперь второй раз прохожу по строке, чтобы проверить уровни и связать узлы в соответствии
 	{
 		if (is_limiter(t[i]))
 		{
