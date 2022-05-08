@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 14:05:21 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 15:27:17 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 		exit(EXIT_FAILURE);
 	group_id = t->group_id;
 	result[0] = cmd->cmd;
-	if (t->type == PIPE)
+	if (t && t->type == PIPE)
 		i = 1;
 	else
 		i = 0;
 	k = 1;
-	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
+	while (t && t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
 	{
 		if (t[i].type == WORD)
 		{
@@ -95,9 +95,10 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 		}
 		i++;
 	}
-	if (t[i].type == PIPE)
+	if (t && t[i].type == PIPE)
 		cmd->limiter = PIPE;
-	result[k] = NULL;
+	if (result[0])
+		result[k] = NULL;
 	cmd->arguments = result;
 }
 

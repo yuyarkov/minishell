@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 14:01:18 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 15:58:53 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ void	dup_child_pipe(t_list *cmd)
 	close(cmd->end[0]);
 	if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
 		perror ("Could not dup2 STDIN");
+	close(cmd->previous->end[0]);
 	if (dup2(cmd->end[1], STDOUT_FILENO) < 0)
 		perror ("Could not dup2 STDOUT");
+	close (cmd->end[1]);
 }
 
 void	dup_redirect_in_for_cmd(t_list *cmd)
@@ -29,8 +31,11 @@ void	dup_redirect_in_for_cmd(t_list *cmd)
 		if (cmd->fd[0] < 0)
 			print_file_error(cmd->redirect_in_file);
 	}
-	dup2(cmd->fd[0], STDIN_FILENO);
-	//здесь отдельный вызов для heredoc	
+	if (cmd->redirect_in == REDIRECT_HEREDOC)
+		pipe_for_heredoc(cmd, cmd->fd);
+	if (dup2(cmd->fd[0], STDIN_FILENO) < 0)
+		perror ("Could not dup2 STDOUT");
+	close (cmd->fd[0]);
 }
 
 void	dup_redirect_out_for_cmd(t_list *cmd)
@@ -41,7 +46,9 @@ void	dup_redirect_out_for_cmd(t_list *cmd)
 		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_APPEND, 0644);	
 	if (cmd->fd[1] < 0)
 		print_file_error(cmd->redirect_out_file);
-	dup2(cmd->fd[1], STDOUT_FILENO);
+	if (dup2(cmd->fd[1], STDOUT_FILENO) < 0)
+		perror ("Could not dup2 STDOUT");
+	close (cmd->fd[1]);
 }
 
 void	child_pipex(t_list *cmd, t_info *info)
@@ -53,6 +60,7 @@ void	child_pipex(t_list *cmd, t_info *info)
 			dup_redirect_in_for_cmd(cmd);
 		if (dup2(cmd->end[1], STDOUT_FILENO) < 0)
 			perror ("Could not dup2 STDOUT");
+		close (cmd->end[1]);
 	}
 	else if (cmd->next)
 		dup_child_pipe(cmd);
@@ -61,6 +69,7 @@ void	child_pipex(t_list *cmd, t_info *info)
 		close (cmd->end[1]);//добавил, почему-то раньше не было
 		if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
 			perror ("Could not dup2 STDIN");
+		close (cmd->previous->end[0]);
 		if (cmd->redirect_out)
 			dup_redirect_out_for_cmd(cmd);
 	}

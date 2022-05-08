@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 12:41:55 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 17:15:47 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,29 @@ int	put_double_special_token(char *s, t_token *token)
 	return (2);
 }
 
+int put_token_from_quotes(char *s, t_token *t)//не забыть поменять тип токена, вернуть число пройденных символов
+{
+	int		i;
+	char	ch;
+	char	*result;
+
+	ch = s[0];
+	result = malloc(ft_strlen(s) + 1);
+	if (NULL == result)
+		exit(EXIT_FAILURE);
+	i = 1;
+	while (s[i] && s[i] != ch)
+	{
+		result[i - 1] = s[i];
+		i++;
+	}
+	result[i - 1] = '\0';
+	i++;
+	t->value = result;
+	t->type = WORD;
+	return (i);	
+}
+
 int	put_special_token(char *s, t_token *token)
 {
 	token->value = NULL;
@@ -65,10 +88,8 @@ int	put_special_token(char *s, t_token *token)
 		return (put_double_special_token(s, token));
 	if (*s == '|')
 		token->type = PIPE;
-	if (*s == '\'')
-		token->type = QUOTE;
-	if (*s == '\"')
-		token->type = DOUBLE_QUOTE;
+	if (*s == '\'' || *s == '\"')
+		return (put_token_from_quotes(s, token));
 	if (*s == '(')
 		token->type = LEFT_PARENTHESIS;
 	if (*s == ')')
@@ -123,6 +144,6 @@ void	get_tokens_from_string(char *s, t_info *info)
 	else
 	{
 		info->tokens = NULL;
-		info->num_of_commands = 0;
+		info->num_of_tokens = 0;
 	}
 }

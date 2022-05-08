@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 13:33:15 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 16:31:44 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <errno.h>
 # include <signal.h>
 
+# define BUFFER_SIZE 4096
 # define SHELL "minishell$ "
 # define SPACES " \n\t\v\f\r"
 # define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
@@ -79,7 +80,7 @@ typedef struct s_token
 
 typedef struct s_info
 {
-	int			num_of_commands;
+	int			num_of_commands;//не пригодилось, убрать, как уберу файл parse_utils
 	t_token		*tokens;
 	int			num_of_tokens;
 	t_limiter	*limiters;
@@ -91,6 +92,18 @@ typedef struct s_info
 	t_env		*env;
 	char		**envp;
 }	t_info;
+
+typedef struct s_line
+{
+	char			*string;
+	char			*buff;
+	size_t			buff_size;
+	int				fd;
+	int				bytes_read;
+	int				has_newline;
+	int				last_buff;
+	int				last_line;
+}	t_line;
 
 int		is_exit_command(char *str);
 
@@ -114,7 +127,9 @@ int		execute_builtin(t_list *cmd, char **envp, t_info *info);
 
 void	dup_redirect_in_for_cmd(t_list *cmd);
 void	dup_redirect_out_for_cmd(t_list *cmd);
-
+char	*get_next_line(int fd);
+int		read_from_heredoc(t_list *cmd, int *end);
+void	pipe_for_heredoc(t_list *iter, int *fd);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 void	ft_double_list_add_back(t_list **list, t_list *new_elem);
