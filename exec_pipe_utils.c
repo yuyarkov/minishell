@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 12:27:09 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 14:01:18 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,36 @@ void	dup_child_pipe(t_list *cmd)
 		perror ("Could not dup2 STDOUT");
 }
 
-void	child_pipex(int *fd, t_list *cmd, t_info *info)
+void	dup_redirect_in_for_cmd(t_list *cmd)
 {
-	(void) fd;
-	//printf("inside child_pipex, cmd->cmd: %s, cmd->previous->cmd: %s\n", cmd->cmd, cmd->previous->cmd);
+	if (cmd->redirect_in == REDIRECT_IN)
+	{
+		cmd->fd[0] = open(cmd->redirect_in_file, O_RDONLY);
+		if (cmd->fd[0] < 0)
+			print_file_error(cmd->redirect_in_file);
+	}
+	dup2(cmd->fd[0], STDIN_FILENO);
+	//здесь отдельный вызов для heredoc	
+}
+
+void	dup_redirect_out_for_cmd(t_list *cmd)
+{
+	if (cmd->redirect_out == REDIRECT_OUT)
+		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (cmd->redirect_out == REDIRECT_APPEND)
+		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_APPEND, 0644);	
+	if (cmd->fd[1] < 0)
+		print_file_error(cmd->redirect_out_file);
+	dup2(cmd->fd[1], STDOUT_FILENO);
+}
+
+void	child_pipex(t_list *cmd, t_info *info)
+{
 	if (!cmd->previous)
 	{
-		printf("=== закрываю end[0] для команды %s\n", cmd->cmd);
 		close(cmd->end[0]);
-		// if (dup2(fd[0], STDIN_FILENO) < 0)
-		// 	perror ("Could not dup2 STDIN");
+		if (cmd->redirect_in)
+			dup_redirect_in_for_cmd(cmd);
 		if (dup2(cmd->end[1], STDOUT_FILENO) < 0)
 			perror ("Could not dup2 STDOUT");
 	}
@@ -41,8 +61,8 @@ void	child_pipex(int *fd, t_list *cmd, t_info *info)
 		close (cmd->end[1]);//добавил, почему-то раньше не было
 		if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
 			perror ("Could not dup2 STDIN");
-		// if (dup2(fd[1], STDOUT_FILENO) < 0)
-		// 	perror ("Could not dup2 STDOUT");
+		if (cmd->redirect_out)
+			dup_redirect_out_for_cmd(cmd);
 	}
 	if (is_builtin_command(cmd->cmd))
 		execute_builtin(cmd, info->envp, info);
@@ -69,17 +89,10 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 	int		status;
 	pid_t	child;
 	t_list	*iter;
-	int		fd[2];//пока заглушка для fd, закинуть инфу о файлах в общую структуру
 
-	fd[0] = 1;
-	fd[1] = 0;
 	iter = list;
-	printf("inside execute_with_pipe, iter: %p\n", iter);
-	// if (list->redirect)
-	// 	pipe_for_heredoc(list, &(fd[0]));//это было для ввода с heredoc
 	while (iter && (iter->limiter == PIPE || (iter->previous && iter->previous->limiter == PIPE)))
 	{
-	//printf("inside execute_with_redirect, iter->cmd: %s, iter->prev: %p\n", iter->cmd, iter->previous);
 		if (iter->next)
 			pipe(iter->end);
 		child = fork();
@@ -87,7 +100,7 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 			exit(EXIT_FAILURE);//придумать корректный выход
 			//return (perror("Fork: "));
 		if (child == 0)
-			child_pipex(fd, iter, info);
+			child_pipex(iter, info);
 		close_parent_pipes(iter);
 		if (!iter->next)//костыль (или нет). Родительский процесс будет ждать только после последней команды в цепочке пайпов
 			waitpid(child, &status, 0);

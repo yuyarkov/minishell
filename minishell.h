@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/06 18:59:23 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 13:33:15 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
 int		execute_group(t_list *cmd, char **envp, t_info *info);
 int		execute_builtin(t_list *cmd, char **envp, t_info *info);
+
+void	dup_redirect_in_for_cmd(t_list *cmd);
+void	dup_redirect_out_for_cmd(t_list *cmd);
+
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 void	ft_double_list_add_back(t_list **list, t_list *new_elem);

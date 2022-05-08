@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/06 19:24:59 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/08 14:05:21 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 
 	(void) info; //пока не пригодилось, может убрать аргумент
 	group_id = t->group_id;
-	i = 0;
+	if (t[0].type == PIPE)
+		i = 1;
+	else
+		i = 0;
 	while (t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
 	{
 		if (t[i].type == REDIRECT_IN)
@@ -132,6 +135,7 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 		}
 		if (t[i].type == REDIRECT_OUT || t[i].type == REDIRECT_APPEND)
 		{
+			//	printf("inside parser, redirect_out_file: %s\n", t[i + 1].value);
 			if (t[i + 1].type == WORD)
 			{
 				t[i + 1].type = OUTPUT_FILE;//чтобы следующие парсеры не путались
@@ -179,14 +183,19 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 			i++;
 		}
 	}
-					//printf("parsing token group, command: %s\n", first_elem->cmd);
-					// i = 0;
-					// while (first_elem->arguments && first_elem->arguments[i])
-					// {
-					// 	printf("argv[%d]: %s\n", i, first_elem->arguments[i]);
-					// 	i++;
-					// }
-	
+	//debug
+				// temp = first_elem;
+				// while (temp)
+				// {
+				// 				printf("parsing token group, command: %s\n", temp->cmd);
+				// 				i = 0;
+				// 				while (temp->arguments && temp->arguments[i])
+				// 				{
+				// 					printf("argv[%d]: %s\n", i, temp->arguments[i]);
+				// 					i++;
+				// 				}
+				// 	temp = temp->next;
+				// }
 	return (first_elem);
 }
 
