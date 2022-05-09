@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 16:31:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/09 13:46:26 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define SHELL "minishell$ "
 # define SPACES " \n\t\v\f\r"
 # define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
+# define VALID_KEY_SYMBOLS ""
 # define END_OF_TOKENS -600
 # define NEVER_EXECUTED -500
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
@@ -46,6 +47,7 @@
 # define LEFT_PARENTHESIS 212
 # define RIGHT_PARENTHESIS 213
 # define DOLLAR_SIGN 215
+# define DOLLAR_KEY 216
 # define BACKSLASH 214
 # define OUTPUT_FILE 300
 # define INPUT_FILE 301
@@ -111,6 +113,7 @@ void	get_tokens_from_string(char *s, t_info *info);
 
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
+int 	put_dollar_key_to_token(char *s, t_token *t, int *k);
 
 int		check_bad_syntax(t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
@@ -146,6 +149,8 @@ void	free_string_array(char **str);//перенести в другой разд
 void	clear_tokens(t_info *info);
 void	clear_info(t_info info);//зачаток общей функции, которая чистит всё
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
+char	*get_dollar_value_from_env(char *s, t_info *info);
+
 
 int		execute_commands(t_list *commands, char **envp, t_env **env);
 void	execute_cmd(t_list *cmd, char **envp);

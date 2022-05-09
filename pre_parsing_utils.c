@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   pre_parsing_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:57:31 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/05 22:11:41 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/09 12:22:36 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*get_dollar_value_from_env(char *s, t_info *info)
+{
+	t_env	*iter;
+	char	*result;
+
+	result = NULL;
+	iter = info->env;
+	while (iter)
+	{
+		if (ft_strncmp(iter->key, s, ft_strlen(s)) == 0)
+			result = ft_strdup(iter->value);
+		iter = iter->next;
+	}
+	return (result);
+}
+
 
 int	dollar_processing(t_info *info)
 {

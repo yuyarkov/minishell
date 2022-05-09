@@ -6,13 +6,13 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 17:15:47 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/09 13:47:50 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	put_word_token(char *s, t_token *token)
+int	put_word_token(char *s, t_token *token, int *k)
 {
 	char	*word;
 	int		i;
@@ -29,6 +29,7 @@ int	put_word_token(char *s, t_token *token)
 	word[i] = '\0';
 	token->type = WORD;
 	token->value = word;
+	*k = *k + 1;
 	return (i);
 }
 
@@ -45,8 +46,9 @@ int	has_double_special_symbol(char *s)
 	return (0);
 }
 
-int	put_double_special_token(char *s, t_token *token)
+int	put_double_special_token(char *s, t_token *token, int *k)
 {
+	*k = *k + 1;
 	if (ft_strncmp(s, "&&", 2) == 0)
 		token->type = AND_SIGN;
 	if (ft_strncmp(s, "||", 2) == 0)
@@ -58,7 +60,7 @@ int	put_double_special_token(char *s, t_token *token)
 	return (2);
 }
 
-int put_token_from_quotes(char *s, t_token *t)//не забыть поменять тип токена, вернуть число пройденных символов
+int put_token_from_single_quotes(char *s, t_token *t, int *k)
 {
 	int		i;
 	char	ch;
@@ -78,18 +80,82 @@ int put_token_from_quotes(char *s, t_token *t)//не забыть поменят
 	i++;
 	t->value = result;
 	t->type = WORD;
+	*k = *k + 1;
 	return (i);	
 }
 
-int	put_special_token(char *s, t_token *token)
+int put_token_from_double_quotes(char *s, t_token *t, int *k)
+{
+	int		i;
+	int		j;
+	char	ch;
+	char	*result;
+
+	ch = s[0];
+	result = malloc(ft_strlen(s) + 1);
+	if (NULL == result)
+		exit(EXIT_FAILURE);
+	i = 1;
+	while (s[i] && s[i] != ch)
+	{
+		result = malloc(ft_strlen(s) + 1);
+		if (NULL == result)
+			exit(EXIT_FAILURE);
+		j = 0;
+		while (s[i] && s[i] != ch && s[i] != '$')
+		{
+			result[j] = s[i];
+			i++;
+			j++;
+		}
+		result[j] = '\0';
+		t->value = result;
+		t->type = WORD;
+		*k = *k + 1;
+		t = &t[1];
+		if (s[i] == '$')
+		{
+			i = i + put_dollar_key_to_token(&s[i], t, k);
+			*k = *k + 1;
+			t = &t[1];	
+		}
+		i++;
+	}
+	return (i);	
+}
+
+int put_dollar_key_to_token(char *s, t_token *t, int *k)
+{
+	char	*key;
+	int		i;
+
+	key = malloc(ft_strlen(s) + 1);
+	if (NULL == key)
+		exit(EXIT_FAILURE);
+	i = 1; // сам знак $ пропускаем и не будем записывать в токен
+	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_' ))
+	{
+		key[i - 1] = s[i];
+		i++;
+	}
+	key[i - 1] = '\0';
+	t->type = DOLLAR_KEY;
+	t->value = key;
+	*k = *k + 1;
+	return (i);
+}
+
+int	put_special_token(char *s, t_token *token, int *k)
 {
 	token->value = NULL;
 	if (has_double_special_symbol(s))
-		return (put_double_special_token(s, token));
+		return (put_double_special_token(s, token, k));
 	if (*s == '|')
 		token->type = PIPE;
-	if (*s == '\'' || *s == '\"')
-		return (put_token_from_quotes(s, token));
+	if (*s == '\'')
+		return (put_token_from_single_quotes(s, token, k));
+	if (*s == '\"')
+		return (put_token_from_double_quotes(s, token, k));
 	if (*s == '(')
 		token->type = LEFT_PARENTHESIS;
 	if (*s == ')')
@@ -97,11 +163,12 @@ int	put_special_token(char *s, t_token *token)
 	if (*s == '\\')
 		token->type = BACKSLASH;
 	if (*s == '$')
-		token->type = DOLLAR_SIGN;
+		return (put_dollar_key_to_token(s, token, k));
 	if (*s == '>')
 		token->type = REDIRECT_OUT;
 	if (*s == '<')
 		token->type = REDIRECT_IN;
+	*k = *k + 1;
 	return (1);
 }
 
@@ -111,7 +178,7 @@ void	get_tokens_from_string(char *s, t_info *info)
 	int		k;
 	t_token	*result;
 
-	result = malloc(sizeof(t_token) * ft_strlen(s) + 1);
+	result = malloc(sizeof(t_token) * (ft_strlen(s) + 1));
 	if (NULL == result)
 		exit(EXIT_FAILURE);//Юра - выход из некорректного маллока
 	i = 0;
@@ -132,9 +199,9 @@ void	get_tokens_from_string(char *s, t_info *info)
 			if (s[i])
 			{
 				if (!ft_strchr(SPECIAL_SYMBOLS, s[i]))
-					i = i + put_word_token(&s[i], &result[k++]);
+					i = i + put_word_token(&s[i], &result[k], &k);
 				else
-					i = i + put_special_token(&s[i], &result[k++]);
+					i = i + put_special_token(&s[i], &result[k], &k);
 			}
 		}
 		result[k].type = END_OF_TOKENS;

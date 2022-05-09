@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 15:27:17 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/09 12:55:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,25 @@ void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 	cmd->cmd = result;
 }
 
+void	check_and_replace_dollar(t_token *t, t_info *info)
+{
+	int		group_id;
+	int		i;
+
+	group_id = t->group_id;
+	i = 0;
+	while (t && t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+	{
+		if (t[i].type == DOLLAR_KEY)
+		{
+			//free(t[i].value);//здесь последний шанс освободить строку, занятую под KEY
+			t[i].value = get_dollar_value_from_env(t[i].value, info);//вот тут проблема - нужно присоединить к соседнему токену
+			t[i].type = WORD;
+		}
+		i++;
+	}
+}
+
 void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 {
 	int		group_id;
@@ -75,6 +94,7 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	int		k;
 	char	**result;
 
+	check_and_replace_dollar(t, info);
 	result = malloc(sizeof(char *) * (info->num_of_tokens + 1));
 	if (NULL == result)
 		exit(EXIT_FAILURE);
