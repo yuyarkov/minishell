@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/09 12:55:41 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/10 13:13:59 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,44 @@ void	check_and_replace_dollar(t_token *t, t_info *info)
 	{
 		if (t[i].type == DOLLAR_KEY)
 		{
-			//free(t[i].value);//здесь последний шанс освободить строку, занятую под KEY
+			//free(t[i].value);//здесь не надо освобождать, а где?
 			t[i].value = get_dollar_value_from_env(t[i].value, info);//вот тут проблема - нужно присоединить к соседнему токену
 			t[i].type = WORD;
 		}
 		i++;
 	}
+	
+}
+
+void	join_words_inside_quotes(t_token *t)
+{
+	int		group_id;
+	int		i;
+	int		k;
+	char	*result;
+
+	group_id = t->group_id;
+	i = 0;
+	result = NULL;
+	while (t && t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+	{
+		while (!t[i].inside_qoutes && t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+			i++;
+		if (t[i].inside_qoutes && t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+		{
+			k = i;
+			result = t[i].value;
+			i++;
+			while (t[i].inside_qoutes && t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
+			{
+				result = ft_strjoin(result, t[i].value);//сделать очистку утечек через temp
+				t[i].type = ARGV; //чтобы больше не попадало в аргументы
+				i++;
+			}
+			t[k].value = result;
+		}
+	}
+	
 }
 
 void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
@@ -95,6 +127,7 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	char	**result;
 
 	check_and_replace_dollar(t, info);
+	join_words_inside_quotes(t);
 	result = malloc(sizeof(char *) * (info->num_of_tokens + 1));
 	if (NULL == result)
 		exit(EXIT_FAILURE);
@@ -107,10 +140,11 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	k = 1;
 	while (t && t[i].type != END_OF_TOKENS && t[i].group_id == group_id && t[i].type != PIPE)
 	{
-		if (t[i].type == WORD)
+		if (t[i].type == WORD && t[i].value && *t[i].value != '\0')
 		{
 			result[k] = t[i].value;
 			t[i].type = ARGV;
+	//printf("inside get argv, t[%d].value = %s\n", i, t[i].value);
 			k++;
 		}
 		i++;

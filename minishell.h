@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/09 13:46:26 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/10 12:35:47 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_token
 	char			*value;
 	int				level;
 	int				group_id;
+	int				inside_qoutes;//чтобы объединять в один аргумент содержимое кавычек
 	int				status;//по умолчанию будем присваивать NEVER_EXECUTED
 	struct s_token	*left;
 	struct s_token	*right;

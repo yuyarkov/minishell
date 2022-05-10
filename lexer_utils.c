@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/09 13:47:50 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/10 13:13:40 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int put_token_from_double_quotes(char *s, t_token *t, int *k)
 	char	ch;
 	char	*result;
 
-	ch = s[0];
+	ch = '\"';
 	result = malloc(ft_strlen(s) + 1);
 	if (NULL == result)
 		exit(EXIT_FAILURE);
@@ -111,17 +111,20 @@ int put_token_from_double_quotes(char *s, t_token *t, int *k)
 		result[j] = '\0';
 		t->value = result;
 		t->type = WORD;
+		t->inside_qoutes = 1;
 		*k = *k + 1;
 		t = &t[1];
 		if (s[i] == '$')
 		{
+			t->inside_qoutes = 1;
 			i = i + put_dollar_key_to_token(&s[i], t, k);
 			*k = *k + 1;
-			t = &t[1];	
+			t = &t[1];
 		}
-		i++;
+	//	printf("inside put_token_from_double_qoutes, i: %d\n", i);
+		//i++;
 	}
-	return (i);	
+	return (i + 1);	
 }
 
 int put_dollar_key_to_token(char *s, t_token *t, int *k)

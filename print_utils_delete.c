@@ -45,8 +45,8 @@ void	print_tokens(t_info *info)
 			t[i].level, t[i].group_id, t[i].value, t[i].left->value, t[i].left->type,
 					 t[i].right->value, t[i].right->type);
 		else
-			printf("level: %d\tgroup_id: %d\tvalue: %s,\ttype: %d\n", 
-			t[i].level, t[i].group_id, t[i].value, t[i].type);
+			printf("level: %d\tgroup_id: %d\tvalue: \'%s\',\ttype: %d, \tinside_quotes: %d\n", 
+			t[i].level, t[i].group_id, t[i].value, t[i].type, t[i].inside_qoutes);
 		i++;
 	}
 }
