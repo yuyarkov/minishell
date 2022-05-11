@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:57:31 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/09 12:22:36 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/11 19:16:39 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*get_dollar_value_from_env(char *s, t_info *info)
 	t_env	*iter;
 	char	*result;
 
+	if (*s == '?')
+		return (ft_itoa(info->status));
 	result = NULL;
 	iter = info->env;
 	while (iter)

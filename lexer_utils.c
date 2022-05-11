@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/10 13:13:40 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/11 20:37:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,14 @@ int put_dollar_key_to_token(char *s, t_token *t, int *k)
 	if (NULL == key)
 		exit(EXIT_FAILURE);
 	i = 1; // сам знак $ пропускаем и не будем записывать в токен
+	if (s[1] && s[1] == '?')
+	{
+		key = "?";
+		t->type = DOLLAR_KEY;
+		t->value = key;
+		*k = *k + 1;
+		return (i + 1);
+	}
 	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_' ))
 	{
 		key[i - 1] = s[i];

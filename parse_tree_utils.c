@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/10 13:13:59 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/11 20:38:51 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,41 @@ t_token	*get_next_limiter(t_token *token, t_info *info)
 	return (NULL);
 }
 
+int	get_min_level(t_token *t)
+{
+	int		result;
+	int		i;
+
+	if (!t)
+		return (0);
+	i = 0;
+	while (t && t[i].type != END_OF_TOKENS)
+	{
+		if (t[i].type == AND_SIGN || t[i].type == OR_SIGN)
+			result = t[i].level;
+		i++;		
+	}
+	while (t && t[i].type != END_OF_TOKENS)
+	{
+		if ((t[i].type == AND_SIGN || t[i].type == OR_SIGN) && t[i].level < result)
+			result = t[i].level;
+		i++;
+	}
+	return (result);	
+}
+
 t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем следующий корень дерева
 {
 	t_token	*t;
 	int		level;
 
-	level = token->level;
+	level = get_min_level(token);
 	t = get_next_limiter(token, info);
 	if (!t)
 		return (NULL);
 	while (t)
 	{
-		if (t->level == 0 && t->status == NEVER_EXECUTED)//убедиться, что у корневого элемента уровень всегда 0
+		if (t->level == level && t->status == NEVER_EXECUTED)//убедиться, что у корневого элемента уровень всегда 0
 			return (t);
 		t = get_next_limiter(t, info);
 	}
@@ -80,7 +103,7 @@ void	check_and_replace_dollar(t_token *t, t_info *info)
 		if (t[i].type == DOLLAR_KEY)
 		{
 			//free(t[i].value);//здесь не надо освобождать, а где?
-			t[i].value = get_dollar_value_from_env(t[i].value, info);//вот тут проблема - нужно присоединить к соседнему токену
+			t[i].value = get_dollar_value_from_env(t[i].value, info);
 			t[i].type = WORD;
 		}
 		i++;

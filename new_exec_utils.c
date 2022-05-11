@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 13:37:59 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/11 19:44:25 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int	execute_group(t_list *commands, char **envp, t_info *info)
 		if (iter)
 			iter = iter->next;
 	}
+	info->status = status;
 	return (status);
 }
