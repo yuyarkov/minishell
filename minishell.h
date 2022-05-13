@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 19:54:11 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/13 20:56:13 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	pipe_for_heredoc(t_list *iter, int *fd);
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 void	ft_double_list_add_back(t_list **list, t_list *new_elem);
 char	*get_first_word(char *cmd);
-char	*get_cmd_path(char *cmd, char **envp);
+char	*get_cmd_path(char *cmd, char **envp, t_info *info);
 void	print_cmd_error(char *argv);
 void	print_file_error(char *file_name);
 

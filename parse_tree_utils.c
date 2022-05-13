@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/11 20:38:51 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/13 21:10:14 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 		i++;
 	if (t[i].type == WORD && t[i].group_id == group_id)
 	{
-		result = get_cmd_path(t[i].value, info->envp);//пока оставил вызов готовой костыльной функции с утечками
+		result = get_cmd_path(t[i].value, info->envp, info);//пока оставил вызов готовой костыльной функции с утечками
 		t[i].type = CMD;
 	}
 	cmd->cmd = result;
@@ -150,6 +150,7 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	char	**result;
 
 	check_and_replace_dollar(t, info);
+	//check_and_replace_asterisk(t, info); //замена звёздочки на строку
 	join_words_inside_quotes(t);
 	result = malloc(sizeof(char *) * (info->num_of_tokens + 1));
 	if (NULL == result)
@@ -289,7 +290,8 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 		i = 0;
 		while (t[i].type == LEFT_PARENTHESIS)//проматываю левые скобки в начале группы
 			i++;
-		cmd = parse_token_group(&t[i], info);			
+		cmd = parse_token_group(&t[i], info);
+		info->commands = cmd;			
 	}
 	else
 		return (t->status);

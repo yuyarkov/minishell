@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/11 20:39:08 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/13 20:48:16 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 					//print_tokens(&info);
 		// dollar_processing(&info);//WIP
 		parse_and_execute_tree(&info);
-		if (1)//!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
+		if (1)//(!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			// get_info_from_string(str, &info);//парсер
 			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск

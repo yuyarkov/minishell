@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/19 21:10:12 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/13 21:02:37 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,25 +104,16 @@ char	*find_cmd_path(char *cmd, char *path)
 	return (result);
 }
 
-char	*get_cmd_path(char *input_cmd, char **envp)
+char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 {
 	int		i;
 	int		j;
+	char	*cmd;
 	char	start[5];
 	int		result;
-	char	*cmd;
-	char	**temp_string_array;
 
-	input_cmd = ft_strtrim(input_cmd, SPACES);//будет утечка, устранить
-	if (input_cmd && *input_cmd != '\0')
-	{
-		temp_string_array = ft_split(input_cmd, ' ');
-		cmd = ft_strdup(temp_string_array[0]);
-		free_string_array(temp_string_array);
-	}
-	//split лучше заменить на простую функцию get_first_word
-	else
-		cmd = input_cmd;
+	(void) info;
+	cmd = ft_strdup(input_cmd);
 	if (cmd == '\0')
 		return (cmd);
 	//printf("cmd before access: %s\n", cmd);
@@ -251,23 +242,23 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	return (result);
 }
 
-void	parse_commands(char *str, t_info *info, char **envp)
-{
-	char	**commands;
-	t_list	*result;
+// void	parse_commands(char *str, t_info *info, char **envp)
+// {
+// 	char	**commands;
+// 	t_list	*result;
 
-	if (info->num_of_commands > 1) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
-		commands = split_commands_by_limiters(str, info);
-	else
-	{
-		commands = malloc(sizeof(char *) * 2);
-		commands[0] = ft_strtrim(str, SPACES); //утечка
-		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
-	}
-					//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
-	result = add_cmd_to_list(info, commands, envp);
-					//printf("before return from parse commands, cmd: %s\n", result->cmd);
-	free_string_array(commands);
-	// return (result);
-	info->commands = result;
-}
+// 	if (info->num_of_commands > 1) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
+// 		commands = split_commands_by_limiters(str, info);
+// 	else
+// 	{
+// 		commands = malloc(sizeof(char *) * 2);
+// 		commands[0] = ft_strtrim(str, SPACES); //утечка
+// 		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
+// 	}
+// 					//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
+// 	result = add_cmd_to_list(info, commands, envp);
+// 					//printf("before return from parse commands, cmd: %s\n", result->cmd);
+// 	free_string_array(commands);
+// 	// return (result);
+// 	info->commands = result;
+// }
