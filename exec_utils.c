@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/09 11:51:21 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/13 20:29:51 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ void	execute_cmd(t_list *cmd, char **envp)
 
 int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 {
+	if (cmd->redirect_in)
+		dup_redirect_in_for_cmd(cmd);
+	if (cmd->redirect_out)
+		dup_redirect_out_for_cmd(cmd);
 	//printf("\n=============inside execute_builtin========\n");
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
 		return (execute_cd_command(cmd, envp, info->env));
@@ -47,6 +51,7 @@ int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 		return (execute_unset_command(cmd, envp, info->env));
 	else if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
 		return (execute_export_command(cmd, envp, info->env));
+	//перед выходом обратно поставить редиректы на то, что было
 	return (0);
 }
 

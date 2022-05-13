@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 15:58:53 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/13 18:45:32 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 		close_parent_pipes(iter);
 		if (!iter->next)//костыль (или нет). Родительский процесс будет ждать только после последней команды в цепочке пайпов
 			waitpid(child, &status, 0);
+		info->status = status;
 		iter = iter->next;
 	}
 	return (iter);

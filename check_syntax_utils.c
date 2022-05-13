@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/04 22:08:26 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/13 19:53:32 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	print_error_token(t_info *info, int token)
 	ft_putstr_fd("minishell: syntax error near unexpected token \'", 2);
 	write_token(token);
 	ft_putendl_fd("\'", 2);
-	info->status = 258;
+	info->status = 25;//258;
 	return (1);
 }
 
