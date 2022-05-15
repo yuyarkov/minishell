@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/13 19:53:32 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 14:57:39 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,6 @@ int	print_error_token(t_info *info, int token)
 	return (1);
 }
 
-int	check_bad_dollar(t_info *info, char *str)// не нужна
-{
-	int	i;
-
-	(void)info;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			printf("here\n");
-		}
-		i++;
-	}
-	// i = 0;
-	// while (i < info->num_of_tokens)
-	// {
-	// 	if (info->tokens[i].type == DOLLAR_SIGN \
-	// 							&& info->tokens[i + 1].type == REDIRECT_OUT)
-	// 		return (DOLLAR_SIGN);
-	// 	i++;
-	// }
-	return (0);
-}
-
 int	check_bad_limiter(t_info *info)
 {
 	int	i;
@@ -80,21 +55,21 @@ int	check_bad_limiter(t_info *info)
 	while (i < info->num_of_tokens)
 	{
 		if (info->tokens[i].type == AND_SIGN \
-							&& ((info->tokens[i - 1].type != CMD \
+							&& ((info->tokens[i - 1].type != WORD \
 							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (info->tokens[i + 1].type != CMD \
+							|| (info->tokens[i + 1].type != WORD \
 							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (AND_SIGN);
-		if (info->tokens[i].type == OR_SIGN \
-							&& ((info->tokens[i - 1].type != CMD \
+		else if (info->tokens[i].type == OR_SIGN \
+							&& ((info->tokens[i - 1].type != WORD \
 							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (info->tokens[i + 1].type != CMD \
+							|| (info->tokens[i + 1].type != WORD \
 							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (OR_SIGN);
-		if (info->tokens[i].type == PIPE \
-							&& ((info->tokens[i - 1].type != CMD \
+		else if (info->tokens[i].type == PIPE \
+							&& ((info->tokens[i - 1].type != WORD \
 							&& info->tokens[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (info->tokens[i + 1].type != CMD \
+							|| (info->tokens[i + 1].type != WORD \
 							&& info->tokens[i + 1].type != LEFT_PARENTHESIS)))
 			return (PIPE);
 		i++;
@@ -109,16 +84,29 @@ int	check_bad_redirect(t_info *info)
 	i = 0;
 	while (i < info->num_of_tokens)
 	{
-		if (info->tokens[i].type == REDIRECT_APPEND \
+		// printf("%d\n", info->tokens[i].type);
+		if (info->tokens[i].type == REDIRECT_OUT \
+								&& info->tokens[i + 1].type != WORD)
+			return (REDIRECT_OUT);
+		else if (info->tokens[i].type == REDIRECT_IN \
+								&& info->tokens[i + 1].type != WORD)
+			return (REDIRECT_IN);
+		else if (info->tokens[i].type == REDIRECT_APPEND \
+								&& info->tokens[i + 1].type != WORD)
+			return (REDIRECT_APPEND);//должен быть newline
+		else if (info->tokens[i].type == REDIRECT_HEREDOC \
+								&& info->tokens[i + 1].type != WORD)
+			return (REDIRECT_HEREDOC);//должен быть newline
+		else if (info->tokens[i].type == REDIRECT_APPEND \
 								&& info->tokens[i + 1].type == REDIRECT_OUT)
 			return (REDIRECT_OUT);
-		if (info->tokens[i].type == REDIRECT_APPEND \
+		else if (info->tokens[i].type == REDIRECT_APPEND \
 								&& info->tokens[i + 1].type == REDIRECT_APPEND)
-			return (REDIRECT_OUT);
-		if (info->tokens[i].type == REDIRECT_OUT \
+			return (REDIRECT_APPEND);
+		else if (info->tokens[i].type == REDIRECT_OUT \
 								&& info->tokens[i + 1].type == REDIRECT_IN)
 			return (REDIRECT_IN);
-		if (info->tokens[i].type == REDIRECT_APPEND \
+		else if (info->tokens[i].type == REDIRECT_APPEND \
 								&& info->tokens[i + 1].type == REDIRECT_IN)
 			return (REDIRECT_IN);
 		i++;
@@ -178,13 +166,11 @@ int	check_bad_syntax(t_info *info)
 	int	ret_qoutes;
 	int	ret_redirect;
 	int	ret_limiter;
-	// int	ret_dollar;
 
 	ret_parenthesis = check_bad_parenthesis(info);
 	ret_qoutes = check_bad_qoutes(info);
 	ret_redirect = check_bad_redirect(info);
 	ret_limiter = check_bad_limiter(info);
-	// ret_dollar = check_bad_dollar(info, str);
 	if (ret_parenthesis)
 		return (print_error_token(info, ret_parenthesis));
 	if (ret_qoutes)
@@ -193,7 +179,5 @@ int	check_bad_syntax(t_info *info)
 		return (print_error_token(info, ret_redirect));
 	if (ret_limiter)
 		return (print_error_token(info, ret_limiter));
-	// if (ret_dollar)
-	// 	return (print_error_token(info, ret_dollar));
 	return (0);
 }

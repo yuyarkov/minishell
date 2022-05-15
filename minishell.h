@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 20:56:13 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 13:34:09 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@
 # define WORD 205
 # define QUOTE 206
 # define DOUBLE_QUOTE 207
-# define REDIRECT_OUT 208// >
-# define REDIRECT_IN 209// <
-# define REDIRECT_APPEND 210// >>
-# define REDIRECT_HEREDOC 211// <<
+# define REDIRECT_OUT 208// > перенаправление вывода с перезаписью
+# define REDIRECT_IN 209// < перенаправление ввод из файла с перезаписью
+# define REDIRECT_APPEND 210// >> перенаправление вывода с добавлением
+# define REDIRECT_HEREDOC 211// << перенаправление ввода из файла с добавлением
 # define LEFT_PARENTHESIS 212
 # define RIGHT_PARENTHESIS 213
 # define DOLLAR_SIGN 215

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 20:48:16 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 14:54:24 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,12 @@ int	main(int argc, char **argv, char **envp)
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
-					//print_tokens(&info);
+					// print_tokens(&info);
 		// dollar_processing(&info);//WIP
-		parse_and_execute_tree(&info);
-		if (1)//(!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
+		// parse_and_execute_tree(&info); --- поставил эту команду после проверки синтаксиса
+		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
+			parse_and_execute_tree(&info);
 			// get_info_from_string(str, &info);//парсер
 			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск
 				// print_commands_list(commands);
