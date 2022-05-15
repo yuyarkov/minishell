@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 14:54:24 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/15 18:49:35 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 				add_history(str);
 			else// если передан ctrl D
 			{
-				free(str);
+			 	free(str);
 				clear_tokens(&info);
 				ft_putstr_fd("\x1b[1F", 1);
 				ft_putstr_fd(SHELL, 1);
@@ -51,31 +51,26 @@ int	main(int argc, char **argv, char **envp)
 		else
 			one_time_launch = 0;
 		get_tokens_from_string(str, &info);//лексер
-	
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
 					// print_tokens(&info);
-		// dollar_processing(&info);//WIP
-		// parse_and_execute_tree(&info); --- поставил эту команду после проверки синтаксиса
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			parse_and_execute_tree(&info);
-			// get_info_from_string(str, &info);//парсер
-			// parse_commands(str, &info, info.envp);// пока выключу, буду тестировать новый запуск
-				// print_commands_list(commands);
 			if (is_exit_command(str))
 			{
 				free(str);
+				clear_tokens(&info);
+				free_string_array(info.envp);
+				clear_info(info);
 				break ;
 			}
-			// else
-			// 	info.status = execute_commands(info.commands, info.envp, &info.env);
 		}
 		// printf_char_pointer(envp);
 		// printf_env(env);
 		clear_tokens(&info);
-		free_string_array(info.envp);
+		free_string_array(info.envp);//в цикле не хватает очистки для cmd,сейчас утечка
 		free(str);
 		str = NULL;
 	}
@@ -85,4 +80,3 @@ int	main(int argc, char **argv, char **envp)
 }
 
 // сега при вызове ctrl D после какой нибудь команды
-// сега если передать pwd |||||

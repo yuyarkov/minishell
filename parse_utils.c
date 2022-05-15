@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 21:02:37 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 18:29:19 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	is_builtin_command(char *s)
 		return (1);
 	if (ft_strncmp(s, "pwd", 3) == 0)
 		return (1);
-	// if (ft_strncmp(s, "env\0", 4) == 0)
-	// 	return (1);
 	if (ft_strncmp(s, "unset\0", 6) == 0)
 		return (1);
 	if (ft_strncmp(s, "export\0", 7) == 0)
@@ -75,15 +73,14 @@ char	*find_cmd_path(char *cmd, char *path)
 	i = 0;
 	result = NULL;
 	temp = get_first_word(cmd);
-	if (cmd[0] != '/') //похоже на костыль, чтобы не добавлять второй / 
+	if (cmd[0] != '/')
 		temp_cmd = ft_strjoin("/", temp);
 	else
 		temp_cmd = cmd;
-	//printf("get_cmd_name: %s\n", cmd);
 	free(temp);
 	while (dirs[i] && !result)
 	{
-		if (ft_strncmp(dirs[i], temp_cmd, ft_strlen(dirs[i])) != 0)//ещё костыль, чтобы учесть команды, где уже указан полный путь
+		if (ft_strncmp(dirs[i], temp_cmd, ft_strlen(dirs[i])) != 0)
 			temp = ft_strjoin(dirs[i], temp_cmd);
 		else
 			temp = ft_strdup(temp_cmd);
@@ -100,7 +97,6 @@ char	*find_cmd_path(char *cmd, char *path)
 		free(cmd);
 		free(temp_cmd);
 	}
-	//printf("результат из find_cmd_path: %s\n", result);
 	return (result);
 }
 
@@ -116,8 +112,7 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 	cmd = ft_strdup(input_cmd);
 	if (cmd == '\0')
 		return (cmd);
-	//printf("cmd before access: %s\n", cmd);
-	if (access(cmd, 1 << 0) == 0) //если подали команду уже с путём
+	if (access(cmd, 1 << 0) == 0)
 		return (cmd);
 	if (is_builtin_command(cmd))
 		return (cmd);
@@ -141,76 +136,76 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 		return (NULL);
 }
 
-void	parse_limiters(char *s, t_info *info)
-{
-	int	i;
-	int	j;
+// void	parse_limiters(char *s, t_info *info)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	j = 0;
-	while (s[i] && s[i + 1])
-	{
-		if (s[i] == ';')
-		{
-			info->limiters[j].sign = SEMICOLON;
-			info->limiters[j++].index = i;
-		}
-		if (s[i] == '|')
-		{
-			info->limiters[j].sign = PIPE;
-			info->limiters[j++].index = i;
-		}	
-		if (ft_strncmp(&s[i], "&&", 2) == 0)
-		{
-			info->limiters[j].sign = AND_SIGN;
-			info->limiters[j++].index = i;
-		}
-		if (ft_strncmp(&s[i], "||", 2) == 0)
-		{
-			info->limiters[j].sign = OR_SIGN;
-			info->limiters[j++].index = i;
-		}
-		i++;
-	}
-	//printf("inside parse limiters\n");
-	info->limiters[j].sign = SEMICOLON;
-	info->limiters[j].index = ft_strlen(s);//для последнего команды ставлю параметры виртуального разделителя
-}
+// 	i = 0;
+// 	j = 0;
+// 	while (s[i] && s[i + 1])
+// 	{
+// 		if (s[i] == ';')
+// 		{
+// 			info->limiters[j].sign = SEMICOLON;
+// 			info->limiters[j++].index = i;
+// 		}
+// 		if (s[i] == '|')
+// 		{
+// 			info->limiters[j].sign = PIPE;
+// 			info->limiters[j++].index = i;
+// 		}	
+// 		if (ft_strncmp(&s[i], "&&", 2) == 0)
+// 		{
+// 			info->limiters[j].sign = AND_SIGN;
+// 			info->limiters[j++].index = i;
+// 		}
+// 		if (ft_strncmp(&s[i], "||", 2) == 0)
+// 		{
+// 			info->limiters[j].sign = OR_SIGN;
+// 			info->limiters[j++].index = i;
+// 		}
+// 		i++;
+// 	}
+// 	//printf("inside parse limiters\n");
+// 	info->limiters[j].sign = SEMICOLON;
+// 	info->limiters[j].index = ft_strlen(s);//для последнего команды ставлю параметры виртуального разделителя
+// }
 
-void	get_info_from_string(char *str, t_info *info)
-{
-	int		i;
-	int		num;
-	char	*s;
+// void	get_info_from_string(char *str, t_info *info)
+// {
+// 	int		i;
+// 	int		num;
+// 	char	*s;
 
-	s = ft_strtrim(str, SPACES);
-	//printf("after trim, \"%s\"\n", s);
-	i = 0;
-	num = 0;
-	while (s[i] && s[i + 1])
-	{
-		if (s[i] == ';' || s[i] == '|')
-			num++;
-		if (ft_strncmp(&s[i], "&&", 2) == 0 || ft_strncmp(&s[i], "||", 2) == 0)
-			num++;
-		i++;
-	}
-	if (num == 0)
-		info->num_of_commands = 1;
-	else
-		info->num_of_commands = num + 1;
-	info->limiters = malloc(sizeof(t_limiter) * info->num_of_commands);
-	if (NULL == info->limiters)// при таком выходе не очищаются структуры
-		exit(EXIT_FAILURE);
-	parse_limiters(s, info);
-	if (num == 0)
-	{
-		info->limiters[0].sign = SEMICOLON; //костыль, когда команда одна, заполняю как будто ; в конце
-		info->limiters[0].index = ft_strlen(s);
-	//printf("num of commands: %d\n", info->num_of_commands);
-	}
-	free(s);
-}
+// 	s = ft_strtrim(str, SPACES);
+// 	//printf("after trim, \"%s\"\n", s);
+// 	i = 0;
+// 	num = 0;
+// 	while (s[i] && s[i + 1])
+// 	{
+// 		if (s[i] == ';' || s[i] == '|')
+// 			num++;
+// 		if (ft_strncmp(&s[i], "&&", 2) == 0 || ft_strncmp(&s[i], "||", 2) == 0)
+// 			num++;
+// 		i++;
+// 	}
+// 	if (num == 0)
+// 		info->num_of_commands = 1;
+// 	else
+// 		info->num_of_commands = num + 1;
+// 	info->limiters = malloc(sizeof(t_limiter) * info->num_of_commands);
+// 	if (NULL == info->limiters)// при таком выходе не очищаются структуры
+// 		exit(EXIT_FAILURE);
+// 	parse_limiters(s, info);
+// 	if (num == 0)
+// 	{
+// 		info->limiters[0].sign = SEMICOLON; //костыль, когда команда одна, заполняю как будто ; в конце
+// 		info->limiters[0].index = ft_strlen(s);
+// 	//printf("num of commands: %d\n", info->num_of_commands);
+// 	}
+// 	free(s);
+// }
 
 
 
@@ -241,24 +236,3 @@ char	**split_commands_by_limiters(char *str, t_info *info)
 	result[i] = NULL;
 	return (result);
 }
-
-// void	parse_commands(char *str, t_info *info, char **envp)
-// {
-// 	char	**commands;
-// 	t_list	*result;
-
-// 	if (info->num_of_commands > 1) // здесь надо будет выделить в отдельную функцию поиск и разделение по ;, && и т.д.
-// 		commands = split_commands_by_limiters(str, info);
-// 	else
-// 	{
-// 		commands = malloc(sizeof(char *) * 2);
-// 		commands[0] = ft_strtrim(str, SPACES); //утечка
-// 		commands[1] = NULL;//и помечаю пустым последний элемент массива строк
-// 	}
-// 					//printf("commands before add: %s, num_of_commands: %d\n", commands[0], info->num_of_commands);
-// 	result = add_cmd_to_list(info, commands, envp);
-// 					//printf("before return from parse commands, cmd: %s\n", result->cmd);
-// 	free_string_array(commands);
-// 	// return (result);
-// 	info->commands = result;
-// }

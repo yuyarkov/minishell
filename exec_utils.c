@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 20:29:51 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 16:30:43 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,44 @@
 
 void	execute_cmd(t_list *cmd, char **envp)
 {
-	int	i;
+	//int	i;
 	
 	ft_signal(2);
-	printf("вот такую команду исполняю: %s, argv: %p\n", cmd->cmd, cmd->arguments);
-	i = 0;
-	while (cmd->arguments && cmd->arguments[i])
-		{
-			printf("argv[%d]: %s\n", i, cmd->arguments[i]);
-			i++;
-		}
+	// i = 0;
+	// while (cmd->arguments && cmd->arguments[i])
+	// 	{
+	// 		printf("argv[%d]: %s\n", i, cmd->arguments[i]);
+	// 		i++;
+	// 	}
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
-	// exit(EXIT_SUCCESS);//подумать, как брать корректный код выхода из execve
-	exit(EXIT_SUCCESS);//При успешном завершении execve() не возвращает управление - EXIT_FAILURE
+	exit(EXIT_FAILURE);
 }
 
 int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 {
+	int	status;
+	
 	if (cmd->redirect_in)
 		dup_redirect_in_for_cmd(cmd);
 	if (cmd->redirect_out)
 		dup_redirect_out_for_cmd(cmd);
-	//printf("\n=============inside execute_builtin========\n");
+	status = 0;
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
-		return (execute_cd_command(cmd, envp, info->env));
+		status = execute_cd_command(cmd, envp, info->env);
 	else if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
-		return (execute_exit_command(cmd, envp));
+		status = execute_exit_command(cmd, envp);
 	else if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
-		return (execute_echo_command(cmd, envp));
+		status = execute_echo_command(cmd, envp);
 	else if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
-		return (execute_pwd_command(cmd, envp));
-	// else if (ft_strncmp(cmd->cmd, "env\0", 4) == 0)
-	// 	return (execute_env_command(cmd, envp));
+		status = execute_pwd_command(cmd, envp);
 	else if (ft_strncmp(cmd->cmd, "unset\0", 6) == 0)
-		return (execute_unset_command(cmd, envp, info->env));
+		status = execute_unset_command(cmd, envp, info->env);
 	else if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
-		return (execute_export_command(cmd, envp, info->env));
-	//перед выходом обратно поставить редиректы на то, что было
-	return (0);
+		status = execute_export_command(cmd, envp, info->env);
+	if (cmd->redirect_in || cmd->redirect_out)
+		dup_back_redirect(cmd);
+	return (status);
 }
 
 // int	execute_commands(t_list *commands, char **envp, t_env **env)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 13:34:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/15 16:30:15 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int		execute_builtin(t_list *cmd, char **envp, t_info *info);
 
 void	dup_redirect_in_for_cmd(t_list *cmd);
 void	dup_redirect_out_for_cmd(t_list *cmd);
+void	dup_back_redirect(t_list *cmd);
 char	*get_next_line(int fd);
 int		read_from_heredoc(t_list *cmd, int *end);
 void	pipe_for_heredoc(t_list *iter, int *fd);

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 20:33:58 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 15:46:42 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	execute_group(t_list *commands, char **envp, t_info *info)
 		if (iter)
 			iter = iter->next;
 	}
-	info->status = status;
+	info->status = status / 256;
 	//printf("-------присвоил статус: %c, char: %d\n", status, info->status);
 	return (status);
 }

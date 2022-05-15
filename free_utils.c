@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/13 20:52:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 18:39:15 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void	free_string_array(char **str)
 {
-	int	iterator;
+	int	i;
 
-	iterator = 0;
-	while (str[iterator])
+	i = 0;
+	while (str[i])
 	{
-		free(str[iterator]);
-		iterator++;
+		free(str[i]);
+		i++;
 	}
-	free(str);
+	if (str)
+		free(str);
 }
 
 void	lstiter_env(t_env *list, void (*f)(void *))
@@ -51,7 +52,8 @@ void	clear_tokens(t_info *info)
 		free(info->tokens[i].value);
 		i++;
 	}
-	free(info->tokens);
+	if (info->tokens)
+		free(info->tokens);
 }
 
 void	clear_info(t_info info)//зачаток общей функции, которая чистит всё
@@ -71,6 +73,10 @@ void	clear_info(t_info info)//зачаток общей функции, кото
 				free(iter->cmd);
 			if (iter->arguments)
 				free_string_array(iter->arguments);
+			if (iter->redirect_in_file)
+				free(iter->redirect_in_file);
+			if (iter->redirect_out_file)
+				free(iter->redirect_out_file);
 			temp = iter;
 			iter = iter->next;
 			free(temp);

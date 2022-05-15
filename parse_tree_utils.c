@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 21:10:14 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 18:21:57 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*get_next_limiter(t_token *token, t_info *info)
 	i = 0;
 	while (&t[i] != token)
 		i++;
-	i++;//чтобы не было бесконечного цикла
+	i++;
 	while (i < info->num_of_tokens)
 	{
 		if (is_limiter(t[i]))
@@ -108,7 +108,6 @@ void	check_and_replace_dollar(t_token *t, t_info *info)
 		}
 		i++;
 	}
-	
 }
 
 void	join_words_inside_quotes(t_token *t)
@@ -139,7 +138,6 @@ void	join_words_inside_quotes(t_token *t)
 			t[k].value = result;
 		}
 	}
-	
 }
 
 void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
@@ -156,7 +154,7 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	if (NULL == result)
 		exit(EXIT_FAILURE);
 	group_id = t->group_id;
-	result[0] = cmd->cmd;
+	result[0] = ft_strdup(cmd->cmd);
 	if (t && t->type == PIPE)
 		i = 1;
 	else
@@ -168,7 +166,6 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 		{
 			result[k] = t[i].value;
 			t[i].type = ARGV;
-	//printf("inside get argv, t[%d].value = %s\n", i, t[i].value);
 			k++;
 		}
 		i++;
@@ -197,7 +194,7 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 		{
 			if (t[i + 1].type == WORD)
 			{
-				t[i + 1].type = INPUT_FILE;//чтобы следующие парсеры не путались
+				t[i + 1].type = INPUT_FILE;
 				cmd->redirect_in = t[i].type;
 				cmd->redirect_in_file = t[i + 1].value;//тут нужно делать проверку на валидность файла
 				//printf("inside parser, redirect_in_file: %s\n", cmd->redirect_in_file);
@@ -207,24 +204,24 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 		{
 			if (t[i + 1].type == WORD)
 			{
-				t[i + 1].type = HEREDOC_EOF;//чтобы следующие парсеры не путались
+				t[i + 1].type = HEREDOC_EOF;
 				cmd->redirect_in = t[i].type;
 				cmd->heredoc_eof = t[i + 1].value;
 			}			
 		}
 		if (t[i].type == REDIRECT_OUT || t[i].type == REDIRECT_APPEND)
 		{
-			//	printf("inside parser, redirect_out_file: %s\n", t[i + 1].value);
 			if (t[i + 1].type == WORD)
 			{
-				t[i + 1].type = OUTPUT_FILE;//чтобы следующие парсеры не путались
+				t[i + 1].type = OUTPUT_FILE;
 				cmd->redirect_out = t[i].type;
 				cmd->redirect_out_file = t[i + 1].value;
+				cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+				close(cmd->fd[1]);
 			}	
 		}
 		i++;
 	}
-	//отдельной функцией добавить heredoc и append
 }
 
 t_list	*create_elem_cmd(t_token *t, t_info *info)
