@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/13 18:45:32 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/15 19:03:50 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	dup_redirect_in_for_cmd(t_list *cmd)
 	}
 	if (cmd->redirect_in == REDIRECT_HEREDOC)
 		pipe_for_heredoc(cmd, cmd->fd);
+	cmd->fd[2] = dup(STDIN_FILENO);
 	if (dup2(cmd->fd[0], STDIN_FILENO) < 0)
 		perror ("Could not dup2 STDOUT");
 	close (cmd->fd[0]);
@@ -46,9 +47,26 @@ void	dup_redirect_out_for_cmd(t_list *cmd)
 		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_APPEND, 0644);	
 	if (cmd->fd[1] < 0)
 		print_file_error(cmd->redirect_out_file);
+	cmd->fd[3] = dup(STDOUT_FILENO);
 	if (dup2(cmd->fd[1], STDOUT_FILENO) < 0)
 		perror ("Could not dup2 STDOUT");
 	close (cmd->fd[1]);
+}
+
+void	dup_back_redirect(t_list *cmd)
+{
+	printf("inside dup_back, fd[0]: %d, fd[1]: %d\n", cmd->fd[0], cmd->fd[1]);
+	if (cmd->redirect_in)
+	{
+		if (dup2(cmd->fd[2], STDIN_FILENO) < 0)
+			perror ("Could not dup2 STDIN");
+	}
+	
+	if (cmd->redirect_out)
+	{		
+		if (dup2(cmd->fd[3], STDOUT_FILENO) < 0)
+			perror ("Could not dup2 STDOUT");
+	}
 }
 
 void	child_pipex(t_list *cmd, t_info *info)
@@ -111,9 +129,9 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 		if (child == 0)
 			child_pipex(iter, info);
 		close_parent_pipes(iter);
-		if (!iter->next)//костыль (или нет). Родительский процесс будет ждать только после последней команды в цепочке пайпов
+		if (!iter->next)
 			waitpid(child, &status, 0);
-		info->status = status;
+		info->status = status / 256;
 		iter = iter->next;
 	}
 	return (iter);
