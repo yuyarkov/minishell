@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 13:34:09 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/16 22:19:28 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define HEREDOC_EOF 302
 # define ARGV 303
 # define CMD 305
+# define NEW_LINE 1000
 
 typedef struct s_env
 {
@@ -114,11 +115,11 @@ void	get_tokens_from_string(char *s, t_info *info);
 
 int		is_builtin_command(char *s);
 void	get_info_from_string(char *s, t_info *info);
-int 	put_dollar_key_to_token(char *s, t_token *t, int *k);
+int		put_dollar_key_to_token(char *s, t_token *t, int *k);
 
 int		check_bad_syntax(t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
-int		dollar_processing(t_info *info);
+int		dollar_processing(t_info *info);// похоже эта штука не нужна
 
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
@@ -170,6 +171,8 @@ int		find_max_strlen(char *str1, char *str2);
 t_list	*execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
+int		print_error_token(t_info *info, int token);
+void	ft_ctrl_d(char *str, t_info *info);
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
 void	print_tokens(t_info *info);//для дебага, убрать перед сдачей

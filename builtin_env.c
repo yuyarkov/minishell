@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/04/08 19:37:38 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/16 23:00:44 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,17 @@ char	**return_env_to_char(t_env *env)
 			size++;
 		tmp = tmp->next;
 	}
-	new_envp = (char **)malloc(sizeof(char *) * (size + 1));// может вернуть NULL
+	new_envp = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!new_envp)
+		exit(1);
 	index = 0;
 	while (index < size)
 	{
 		while (!env->value && env)
 			env = env->next;
-		new_envp[index] = env_strjoin(env->key, env->value);// может вернуть NULL
+		new_envp[index] = env_strjoin(env->key, env->value);
+		if (!new_envp)
+			exit(1);
 		env = env->next;
 		index++;
 	}
@@ -87,20 +91,28 @@ t_env	*env_create_elem(char *str)
 	char	**result;
 
 	new_elem = malloc(sizeof(t_env));
-	if (NULL == new_elem)
-		return (NULL);
+	if (!new_elem)
+		exit(1);
 	new_elem->next = NULL;
 	if (ft_strchr(str, '='))
 	{	
 		result = ft_split(str, '=');
-		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));// может вернуть NULL
+		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
+		if (!new_elem->key)
+			exit(1);
 		if (result[1])
-			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));// может вернуть NULL
+		{
+			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
+			if (!new_elem->value)
+				exit(1);
+		}
 		free_string_array(result);
 	}
 	else
 	{
-		new_elem->key = ft_substr(str, 0, ft_strlen(str));// может вернуть NULL
+		new_elem->key = ft_substr(str, 0, ft_strlen(str));
+		if (!new_elem->key)
+			exit(1);
 		new_elem->value = NULL;
 	}
 	return (new_elem);
@@ -113,11 +125,15 @@ t_env	*create_env(char **envp)
 	t_env	*list;
 
 	new_elem = NULL;
-	list = env_create_elem(envp[0]);// может вернуть NULL
+	list = env_create_elem(envp[0]);
+	if (!list)
+		exit(1);
 	iterator = 1;
 	while (envp[iterator])
 	{
-		new_elem = env_create_elem(envp[iterator]);// может вернуть NULL
+		new_elem = env_create_elem(envp[iterator]);
+		if (!new_elem)
+			exit(1);
 		env_lstadd_back(&list, new_elem);
 		iterator++;
 	}

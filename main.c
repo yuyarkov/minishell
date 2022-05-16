@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 14:54:24 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/16 22:21:18 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char 	*str;
+	char	*str;
 	t_info	info;
 	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
 
 	rl_outstream = stderr;
-	info = (t_info){};//зануляет структуру - подсказка от Николая
+	info = (t_info){};
 	str = NULL;
 	one_time_launch = 1;
 	if (argc >= 3) //если при запуске в аргументах что-то есть - берем команду из них. Для тестов и для чеклиста
@@ -27,12 +27,12 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strncmp(argv[1], "-c", 3) == 0)// проверить это условие в сабже
 			str = argv[2];
 	}
-	using_history();/* initialize history */
+	using_history();
 	info.env = create_env(envp);
-	while (one_time_launch)// && !is_exit_command(str))
+	while (one_time_launch)
 	{
-		info.envp = return_env_to_char(info.env);// заполняю массив строк значениями из связного списка // может вернуть NULL
-		if (!str) //для разделения   запуске
+		info.envp = return_env_to_char(info.env);// может вернуть NULL
+		if (!str) //для разделения запуске
 		{
 			ft_signal(1);
 			str = readline(SHELL);// str нужно фришить (17:58)
@@ -40,11 +40,7 @@ int	main(int argc, char **argv, char **envp)
 				add_history(str);
 			else// если передан ctrl D
 			{
-				free(str);
-				clear_tokens(&info);
-				ft_putstr_fd("\x1b[1F", 1);
-				ft_putstr_fd(SHELL, 1);
-				ft_putendl_fd("exit", 1);
+				ft_ctrl_d(str, &info);
 				break ;
 			}
 		}
@@ -72,8 +68,6 @@ int	main(int argc, char **argv, char **envp)
 			// else
 			// 	info.status = execute_commands(info.commands, info.envp, &info.env);
 		}
-		// printf_char_pointer(envp);
-		// printf_env(env);
 		clear_tokens(&info);
 		free_string_array(info.envp);
 		free(str);
@@ -85,4 +79,3 @@ int	main(int argc, char **argv, char **envp)
 }
 
 // сега при вызове ctrl D после какой нибудь команды
-// сега если передать pwd |||||

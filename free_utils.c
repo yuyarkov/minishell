@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/13 20:52:44 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/16 22:19:44 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,13 @@ void	clear_info(t_info info)//зачаток общей функции, кото
 	}
 	if (info.envp)
 		free_string_array(info.envp);
+}
+
+void	ft_ctrl_d(char *str, t_info *info)
+{
+	free(str);
+	clear_tokens(info);
+	ft_putstr_fd("\x1b[1F", 1);
+	ft_putstr_fd(SHELL, 1);
+	ft_putendl_fd("exit", 1);
 }
