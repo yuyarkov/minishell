@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/16 23:07:25 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/17 20:31:53 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);//перенести в другой раздел
 void	clear_tokens(t_info *info);
 void	clear_info(t_info info);//зачаток общей функции, которая чистит всё
+void	clear_info_except_envp(t_info info);
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 char	*get_dollar_value_from_env(char *s, t_info *info);
 
@@ -173,7 +174,7 @@ t_list	*execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
 int		print_error_token(t_info *info, int token);
-void	ft_ctrl_d(char *str, t_info *info);
+void	ft_ctrl_d(char *str, t_info info);
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
 void	print_tokens(t_info *info);//для дебага, убрать перед сдачей

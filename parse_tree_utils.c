@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 18:21:57 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/17 20:13:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd)
 	{
 		if (t[i].type == WORD && t[i].value && *t[i].value != '\0')
 		{
-			result[k] = t[i].value;
+			result[k] = ft_strdup(t[i].value);
 			t[i].type = ARGV;
 			k++;
 		}
@@ -196,8 +196,7 @@ void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd)
 			{
 				t[i + 1].type = INPUT_FILE;
 				cmd->redirect_in = t[i].type;
-				cmd->redirect_in_file = t[i + 1].value;//тут нужно делать проверку на валидность файла
-				//printf("inside parser, redirect_in_file: %s\n", cmd->redirect_in_file);
+				cmd->redirect_in_file = ft_strdup(t[i + 1].value);//тут нужно делать проверку на валидность файла
 			}			
 		}
 		if (t[i].type == REDIRECT_HEREDOC)
