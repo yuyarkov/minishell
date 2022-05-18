@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/17 20:11:05 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/18 20:50:31 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int put_token_from_single_quotes(char *s, t_token *t, int *k)
 	result = malloc(ft_strlen(s) + 1);
 	if (NULL == result)
 		exit(EXIT_FAILURE);
+	t[0].type = QUOTE;
 	i = 1;
 	while (s[i] && s[i] != ch)
 	{
@@ -78,9 +79,15 @@ int put_token_from_single_quotes(char *s, t_token *t, int *k)
 	}
 	result[i - 1] = '\0';
 	i++;
-	t->value = result;
-	t->type = WORD;
-	*k = *k + 1;
+	t[1].value = result;
+	t[1].type = WORD;
+	if (s[i - 1] == ch)
+	{
+		t[2].type = QUOTE;
+		*k = *k + 3;
+	}
+	else
+		*k = *k + 2;
 	return (i);	
 }
 
@@ -191,11 +198,11 @@ void	get_tokens_from_string(char *s, t_info *info)
 
 	result = malloc(sizeof(t_token) * (ft_strlen(s) + 1));
 	if (NULL == result)
-		exit(EXIT_FAILURE);//Юра - выход из некорректного маллока
+		exit(EXIT_FAILURE);
 	i = 0;
 	while (s[i])
 	{
-		result[i] = (t_token){};//зануляет структуру - подсказка от Николая
+		result[i] = (t_token){};
 		result[i].status = NEVER_EXECUTED;
 		i++;
 	}
@@ -221,6 +228,7 @@ void	get_tokens_from_string(char *s, t_info *info)
 	}
 	else
 	{
+		free(result);
 		info->tokens = NULL;
 		info->num_of_tokens = 0;
 	}

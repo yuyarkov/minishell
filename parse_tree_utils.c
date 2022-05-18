@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/17 20:13:07 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/18 20:16:47 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	check_and_replace_dollar(t_token *t, t_info *info)
 	{
 		if (t[i].type == DOLLAR_KEY)
 		{
-			//free(t[i].value);//здесь не надо освобождать, а где?
+			free(t[i].value);
 			t[i].value = get_dollar_value_from_env(t[i].value, info);
 			t[i].type = WORD;
 		}
@@ -116,6 +116,7 @@ void	join_words_inside_quotes(t_token *t)
 	int		i;
 	int		k;
 	char	*result;
+	char	*temp;
 
 	group_id = t->group_id;
 	i = 0;
@@ -131,7 +132,9 @@ void	join_words_inside_quotes(t_token *t)
 			i++;
 			while (t[i].inside_qoutes && t[i].type != END_OF_TOKENS && t[i].group_id == group_id)
 			{
+				temp = result;
 				result = ft_strjoin(result, t[i].value);//сделать очистку утечек через temp
+				free(temp);
 				t[i].type = ARGV; //чтобы больше не попадало в аргументы
 				i++;
 			}
@@ -299,7 +302,7 @@ int	parse_and_execute_branch(t_token *t, t_info *info)//основная рек�
 {
 	
 	//printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group_id, t->type, t->status);
-	if (!t->left && !t->right)
+	if (!t->left && !t->right)//конечный случай рекурсии
 		return (parse_and_execute_group(t, info));
 	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня
 		t->status = parse_and_execute_branch(t->left, info);

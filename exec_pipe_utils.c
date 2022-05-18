@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 19:03:50 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/18 20:26:43 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	dup_back_redirect(t_list *cmd)
 		if (dup2(cmd->fd[2], STDIN_FILENO) < 0)
 			perror ("Could not dup2 STDIN");
 	}
-	
 	if (cmd->redirect_out)
 	{		
 		if (dup2(cmd->fd[3], STDOUT_FILENO) < 0)

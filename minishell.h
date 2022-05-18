@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/17 20:31:53 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/18 20:41:28 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_info
 	t_list		*commands;
 	t_env		*env;
 	char		**envp;
+	int			changed_envp;
 }	t_info;
 
 typedef struct s_line

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/17 20:31:25 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/18 20:43:42 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	clear_info(t_info info)//зачаток общей функции, кото
 {
 	clear_info_except_envp(info);
 	lstiter_env(info.env, free);//освобождаю сам связный список и его поля
-	if (info.envp)
+	if (info.envp && info.changed_envp)
 		free_string_array(info.envp);
 }
 
