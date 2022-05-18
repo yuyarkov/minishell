@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/17 19:55:55 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/18 21:39:34 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,27 @@ char	*env_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
+int	lern_size_env(t_env *env)
+{
+	int	size;
+
+	size = 0;
+	while (env)
+	{
+		if (env->value)
+			size++;
+		env = env->next;
+	}
+	return (size);
+}
+
 char	**return_env_to_char(t_env *env)
 {
 	int		size;
 	int		index;
 	char	**new_envp;
-	t_env	*tmp;
 
-	size = 0;
-	tmp = env;
-	while (tmp)
-	{
-		if (tmp->value)
-			size++;
-		tmp = tmp->next;
-	}
+	size = lern_size_env(env);
 	new_envp = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!new_envp)
 		exit(1);
@@ -83,39 +89,6 @@ void	env_lstadd_back(t_env **list, t_env *new_elem)
 	}
 	else
 		*list = new_elem;
-}
-
-t_env	*env_create_elem(char *str)
-{
-	t_env	*new_elem;
-	char	**result;
-
-	new_elem = malloc(sizeof(t_env));
-	if (!new_elem)
-		exit(1);
-	new_elem->next = NULL;
-	if (ft_strchr(str, '='))
-	{	
-		result = ft_split(str, '=');
-		new_elem->key = ft_substr(result[0], 0, ft_strlen(result[0]));
-		if (!new_elem->key)
-			exit(1);
-		if (result[1])
-		{
-			new_elem->value = ft_substr(result[1], 0, ft_strlen(result[1]));
-			if (!new_elem->value)
-				exit(1);
-		}
-		free_string_array(result);
-	}
-	else
-	{
-		new_elem->key = ft_substr(str, 0, ft_strlen(str));
-		if (!new_elem->key)
-			exit(1);
-		new_elem->value = NULL;
-	}
-	return (new_elem);
 }
 
 t_env	*create_env(char **envp)
