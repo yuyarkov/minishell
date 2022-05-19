@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 17:26:09 by jg                #+#    #+#             */
-/*   Updated: 2022/03/31 18:13:15 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/19 23:22:14 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void	search_list(t_env **list, char *str)
 {
 	t_env	*tmp;
 	int		index;
-	int		max_strlen;
+	// int		max_strlen;
 
 	tmp = *list;
 	index = 0;
 	while (tmp)// пока список есть
 	{
-		max_strlen = find_max_strlen(tmp->key, str);
-		if (ft_strncmp(tmp->key, str, max_strlen) == 0)//если ключ совпал с переданным значением
+		// max_strlen = max_strlen(tmp->key, str);
+		if (ft_strncmp(tmp->key, str, max_strlen(tmp->key, str)) == 0)//если ключ совпал с переданным значением
 		{
 			free(tmp->key);//освобождаю удаляемый элемент
 			free(tmp->value);//нужно чистить сам элемент списка?

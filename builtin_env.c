@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/18 21:39:34 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/19 20:37:20 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,14 @@ char	**return_env_to_char(t_env *env)
 
 	size = lern_size_env(env);
 	new_envp = (char **)malloc(sizeof(char *) * (size + 1));
-	if (!new_envp)
-		exit(1);
+	if_pointer_is_null(new_envp);
 	index = 0;
 	while (index < size)
 	{
 		while (!env->value && env)
 			env = env->next;
 		new_envp[index] = env_strjoin(env->key, env->value);
-		if (!new_envp)
-			exit(1);
+		if_value_is_null(new_envp[index]);
 		env = env->next;
 		index++;
 	}
@@ -98,15 +96,12 @@ t_env	*create_env(char **envp)
 	t_env	*list;
 
 	new_elem = NULL;
-	list = env_create_elem(envp[0]);
-	if (!list)
-		exit(1);
+	list = env_create_elem(envp[0]);//не может вернуть NULL
+	list->next = NULL;
 	iterator = 1;
 	while (envp[iterator])
 	{
 		new_elem = env_create_elem(envp[iterator]);
-		if (!new_elem)
-			exit(1);
 		env_lstadd_back(&list, new_elem);
 		iterator++;
 	}

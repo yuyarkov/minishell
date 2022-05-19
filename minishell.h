@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/18 20:41:28 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/19 23:29:15 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ void	clear_info_except_envp(t_info info);
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 char	*get_dollar_value_from_env(char *s, t_info *info);
 
-
 int		execute_commands(t_list *commands, char **envp, t_env **env);
 void	execute_cmd(t_list *cmd, char **envp);
 
@@ -169,13 +168,18 @@ int		execute_unset_command(t_list *cmd, char **envp, t_env *env);
 int		execute_export_command(t_list *cmd, char **envp, t_env *env);
 void	env_lstadd_back(t_env **list, t_env *new_elem);
 t_env	*env_create_elem(char *str);
-int		find_max_strlen(char *str1, char *str2);
+int		max_strlen(char *str1, char *str2);
+t_env	*if_arg_is_not_in_env(char *arg, t_env **env);
+int		find_argument_in_env(char *argument, t_env **env);
+void	if_there_is_equal_sign(char *str, t_env **new_elem);
 
 t_list	*execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
 int		print_error_token(t_info *info, int token);
 void	ft_ctrl_d(char *str, t_info info);
+void	if_value_is_null(void *value);// проверка на возврат malloc'ом NULL
+void	if_pointer_is_null(char **value);// проверка на NULL
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
 void	print_tokens(t_info *info);//для дебага, убрать перед сдачей

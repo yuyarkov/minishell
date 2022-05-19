@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 16:30:43 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/19 19:38:22 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	execute_cmd(t_list *cmd, char **envp)
 int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 {
 	int	status;
-	
+
 	if (cmd->redirect_in)
 		dup_redirect_in_for_cmd(cmd);
 	if (cmd->redirect_out)

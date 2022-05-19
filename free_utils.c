@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/18 20:43:42 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/19 19:34:13 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,6 @@ void	ft_ctrl_d(char *str, t_info info)
 	ft_putstr_fd("\x1b[1F", 1);
 	ft_putstr_fd(SHELL, 1);
 	ft_putendl_fd("exit", 1);
+	clear_info_except_envp(info);
+	free(str);
 }
