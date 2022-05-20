@@ -6,7 +6,7 @@
 #    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/05/20 19:28:21 by dirony           ###   ########.fr        #
+#    Updated: 2022/05/20 21:33:50 by dirony           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,12 @@ SRCS = 	main.c						parse_utils.c\
 		builtin_pwd.c				free_utils.c\
 		builtin_export.c			builtin_utils.c\
 		exec_pipe_utils.c			handler_utils.c\
-		lexer_utils.c				check_syntax_utils.c\
+		lexer_utils.c				lexer_utils2.c\
+		lexer_utils3.c\
+		check_syntax_utils.c		builtin_export_utils.c\
 		ast_parse_utils.c			parse_tree_utils.c\
 		new_exec_utils.c			pre_parsing_utils.c\
 		heredoc_utils.c				get_next_line.c\
-		builtin_export_utils.c\
 		print_utils_delete.c #delete before check
 	
 LIBDIR =   ./libft/
@@ -56,7 +57,7 @@ CPPFLAGS 	= -I$(INC_DIR) -I$(RL_INC_DIR)
 
 LDFLAGS 	= -L$(RL_LIB_DIR)
 
-CFLAGS 		= -MMD -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS 		= -MMD -Wall -Wextra -Werror -g -fsanitize=address
 
 all		:	libmake $(NAME)
 
