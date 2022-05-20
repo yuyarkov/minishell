@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/20 19:17:34 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 20:36:24 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_env	*create_env(char **envp)
 	t_env	*list;
 
 	new_elem = NULL;
-	list = env_create_elem(envp[0]);//не может вернуть NULL
+	list = env_create_elem(envp[0]);
 	list->next = NULL;
 	i = 1;
 	while (envp[i])

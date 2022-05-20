@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 23:25:51 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/19 23:31:40 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/20 20:40:15 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int	find_argument_in_env(char *argument, t_env **env)
 	{
 		a_in_e = ft_strncmp(sparg[0], tmp->key, max_strlen(sparg[0], tmp->key));
 		return_strchr = ft_strchr(argument, '=');
-		if (!a_in_e && return_strchr)//аргумент уже есть в енв и подан С =
+		if (!a_in_e && return_strchr)
 			if_arg_submit_with_equal(&tmp->value, sparg[1], &result);
-		else if (!a_in_e && !return_strchr)//аргумент уже есть в енв и подан БЕЗ =
+		else if (!a_in_e && !return_strchr)
 			result = 1;
 		tmp = tmp->next;
 	}
@@ -72,12 +72,12 @@ void	if_there_is_equal_sign(char *str, t_env **new_elem)
 	if_pointer_is_null(result);
 	(*new_elem)->key = ft_substr(result[0], 0, ft_strlen(result[0]));
 	if_value_is_null((*new_elem)->key);
-	if (!result[1])//если нет value
+	if (!result[1])
 	{
 		(*new_elem)->value = ft_substr("\0", 0, 1);
 		if_value_is_null((*new_elem)->value);
 	}
-	else// есть value
+	else
 	{
 		(*new_elem)->value = ft_substr(result[1], 0, ft_strlen(result[1]));
 		if_value_is_null((*new_elem)->value);

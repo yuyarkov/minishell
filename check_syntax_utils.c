@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 20:31:29 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/16 21:57:02 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/20 20:36:01 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,16 @@ int	check_bad_limiter(t_token *t, int not)
 	while (i < not)
 	{
 		if (t[i].type == AND_SIGN && ((t[i - 1].type != WORD \
-							&& t[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (t[i + 1].type != WORD \
-							&& t[i + 1].type != LEFT_PARENTHESIS)))
+		&& t[i - 1].type != RIGHT_PARENTHESIS && t[i - 1].type != DOUBLE_QUOTE) \
+		|| (t[i + 1].type != WORD && t[i + 1].type != LEFT_PARENTHESIS)))
 			return (AND_SIGN);
 		else if (t[i].type == OR_SIGN && ((t[i - 1].type != WORD \
-							&& t[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (t[i + 1].type != WORD \
-							&& t[i + 1].type != LEFT_PARENTHESIS)))
+		&& t[i - 1].type != RIGHT_PARENTHESIS && t[i - 1].type != DOUBLE_QUOTE) \
+		|| (t[i + 1].type != WORD && t[i + 1].type != LEFT_PARENTHESIS)))
 			return (OR_SIGN);
 		else if (t[i].type == PIPE && ((t[i - 1].type != WORD \
-							&& t[i - 1].type != RIGHT_PARENTHESIS) \
-							|| (t[i + 1].type != WORD \
-							&& t[i + 1].type != LEFT_PARENTHESIS)))
+		&& t[i - 1].type != RIGHT_PARENTHESIS && t[i - 1].type != DOUBLE_QUOTE) \
+		|| (t[i + 1].type != WORD && t[i + 1].type != LEFT_PARENTHESIS)))
 			return (PIPE);
 		i++;
 	}
@@ -100,7 +97,6 @@ int	check_bad_qoutes(t_token *t, int not)
 	double_quote = 0;
 	while (i < not)
 	{
-		// printf("%d\n", info->tokens[i].type);
 		if (t[i].type == QUOTE)
 			quote = quote ^ 1;
 		else if (t[i].type == DOUBLE_QUOTE)
