@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/20 19:19:08 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 21:32:49 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ int	main(int argc, char **argv, char **envp)
 		else
 			one_time_launch = 0;
 		get_tokens_from_string(str, &info);//лексер
-		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
-		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
-		put_tree_marks(&info);
 					//print_tokens(&info);
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{

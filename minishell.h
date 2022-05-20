@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/20 19:11:10 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 19:43:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,16 @@ int		is_exit_command(char *str);
 void	get_tokens_from_string(char *s, t_info *info);
 
 int		is_builtin_command(char *s);
-void	get_info_from_string(char *s, t_info *info);
+int		has_double_special_symbol(char *s);
+int		put_word_token(char *s, t_token *token, int *k);
+int		put_special_token(char *s, t_token *token, int *k);
 int		put_dollar_key_to_token(char *s, t_token *t, int *k);
+int		put_double_special_token(char *s, t_token *token, int *k);
+int		put_token_from_single_quotes(char *s, t_token *t, int *k);
+int		put_token_from_double_quotes(char *s, t_token *t, int *k);
 
 int		check_bad_syntax(t_info *info);
 void	parse_commands(char *str, t_info *info, char **envp);
-int		dollar_processing(t_info *info);// похоже эта штука не нужна
 
 void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
 void	put_group_id_marks(t_info *info);
