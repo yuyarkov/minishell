@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:57:31 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/11 19:16:39 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 17:55:33 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_dollar_value_from_env(char *s, t_info *info)
 	iter = info->env;
 	while (iter)
 	{
-		if (ft_strncmp(iter->key, s, ft_strlen(s)) == 0)
+		if (ft_strncmp(iter->key, s, ft_strlen(iter->key)) == 0)
 			result = ft_strdup(iter->value);
 		iter = iter->next;
 	}

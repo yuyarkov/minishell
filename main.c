@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/18 20:47:04 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 19:19:08 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 				add_history(str);
 			else// если передан ctrl D
 			{
-				ft_ctrl_d(str, info);
+				free_after_ctrl_d(str, &info);
 				break ;
 			}
 		}
@@ -50,18 +50,18 @@ int	main(int argc, char **argv, char **envp)
 		put_tree_level_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_group_id_marks(&info); //пока здесь ставлю вызов, можно делать изнутри лексера
 		put_tree_marks(&info);
-					 print_tokens(&info);
+					//print_tokens(&info);
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			parse_and_execute_tree(&info);
 			if (is_exit_command(str))
 			{
 				free(str);
-				clear_info(info);
+				clear_info(&info);
 				break ;
 			}
 		}
-		clear_info_except_envp(info);
+		clear_info_except_envp(&info);
 		free(str);
 		str = NULL;
 	}

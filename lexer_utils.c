@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/18 20:50:31 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 18:16:42 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,19 @@ int put_token_from_double_quotes(char *s, t_token *t, int *k)
 {
 	int		i;
 	int		j;
-	char	ch;
 	char	*result;
 
-	ch = '\"';
-	result = malloc(ft_strlen(s) + 1);
-	if (NULL == result)
-		exit(EXIT_FAILURE);
+	t->type = DOUBLE_QUOTE;
+	*k = *k + 1;
+	t = &t[1];
 	i = 1;
-	while (s[i] && s[i] != ch)
+	while (s[i] && s[i] != '\"')
 	{
 		result = malloc(ft_strlen(s) + 1);
 		if (NULL == result)
 			exit(EXIT_FAILURE);
 		j = 0;
-		while (s[i] && s[i] != ch && s[i] != '$')
+		while (s[i] && s[i] != '\"' && s[i] != '$')
 		{
 			result[j] = s[i];
 			i++;
@@ -125,6 +123,12 @@ int put_token_from_double_quotes(char *s, t_token *t, int *k)
 		{
 			t->inside_qoutes = 1;
 			i = i + put_dollar_key_to_token(&s[i], t, k);
+			*k = *k + 1;
+			t = &t[1];
+		}
+		if (s[i] == '\"')
+		{
+			t->type = DOUBLE_QUOTE;
 			*k = *k + 1;
 			t = &t[1];
 		}

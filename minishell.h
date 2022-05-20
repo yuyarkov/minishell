@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/19 23:29:15 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/20 19:11:10 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,8 @@ void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);//перенести в другой раздел
 void	clear_tokens(t_info *info);
-void	clear_info(t_info info);//зачаток общей функции, которая чистит всё
-void	clear_info_except_envp(t_info info);
+void	clear_info(t_info *info);//зачаток общей функции, которая чистит всё
+void	clear_info_except_envp(t_info *info);
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 char	*get_dollar_value_from_env(char *s, t_info *info);
 
@@ -177,7 +177,7 @@ t_list	*execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
 int		print_error_token(t_info *info, int token);
-void	ft_ctrl_d(char *str, t_info info);
+void	free_after_ctrl_d(char *str, t_info *info);
 void	if_value_is_null(void *value);// проверка на возврат malloc'ом NULL
 void	if_pointer_is_null(char **value);// проверка на NULL
 

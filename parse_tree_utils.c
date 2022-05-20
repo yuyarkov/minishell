@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/18 20:16:47 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 18:04:46 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void	join_words_inside_quotes(t_token *t)
 				temp = result;
 				result = ft_strjoin(result, t[i].value);//сделать очистку утечек через temp
 				free(temp);
-				t[i].type = ARGV; //чтобы больше не попадало в аргументы
+				t[i].type = ARGV;
 				i++;
 			}
 			t[k].value = result;

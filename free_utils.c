@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/19 19:34:13 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/20 19:16:55 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,37 @@ void	clear_tokens(t_info *info)
 	int	i;
 
 	i = 0;
-	while (info->tokens && i < info->num_of_tokens)
+	while (info->tokens && info->tokens[i].type != END_OF_TOKENS)
 	{
 		free(info->tokens[i].value);
 		i++;
 	}
 	if (info->tokens)
 		free(info->tokens);
+	info->tokens = NULL;
 }
 
-void	clear_info(t_info info)//зачаток общей функции, которая чистит всё
+void	clear_info(t_info *info)//зачаток общей функции, которая чистит всё
 {
 	clear_info_except_envp(info);
-	lstiter_env(info.env, free);//освобождаю сам связный список и его поля
-	if (info.envp && info.changed_envp)
-		free_string_array(info.envp);
+	lstiter_env(info->env, free);//освобождаю сам связный список и его поля
+	if (info->envp && info->changed_envp)
+		free_string_array(info->envp);
 }
 
-void	clear_info_except_envp(t_info info)
+void	clear_info_except_envp(t_info *info)
 {
 	t_list	*iter;
 	t_list	*temp;
 
-	clear_tokens(&info);
-	if (info.envp)
-		free_string_array(info.envp);
-	if (info.limiters)//тут происходила лишняя очистка, т.к. структура не была обнулена
-		free(info.limiters);
-	//lstiter_env(info.env, free);//освобождаю сам связный список и его поля
-	if (info.commands)
+	clear_tokens(info);
+	if (info->envp)
+		free_string_array(info->envp);
+	// if (info->limiters)//тут происходила лишняя очистка, т.к. структура не была обнулена
+	// 	free(info->limiters);
+	if (info->commands)
 	{
-		iter = info.commands;
+		iter = info->commands;
 		while (iter)
 		{
 			if (iter->cmd)
@@ -93,15 +93,16 @@ void	clear_info_except_envp(t_info info)
 			free(temp);
 		}
 	}
+	info->commands = NULL;
 }
 
-void	ft_ctrl_d(char *str, t_info info)
+void	free_after_ctrl_d(char *str, t_info *info)
 {
 	free(str);
 	clear_info(info);
 	ft_putstr_fd("\x1b[1F", 1);
 	ft_putstr_fd(SHELL, 1);
 	ft_putendl_fd("exit", 1);
-	clear_info_except_envp(info);
+	//clear_info_except_envp(info);
 	free(str);
 }

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 22:33:18 by dirony            #+#    #+#             */
-/*   Updated: 2021/10/14 22:37:45 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/20 18:02:43 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	i;
 	size_t	j;
 
-	if (!s1 || !s2)
-		return (NULL);
 	result = malloc(ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1);
 	if (NULL == result)
 		return (NULL);

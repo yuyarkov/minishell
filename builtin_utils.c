@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 12:42:00 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/19 23:19:13 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/20 19:03:57 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,24 @@ int	max_strlen(char *str1, char *str2)
 
 void	if_pointer_is_null(char **value)
 {
-	int	i;
-
-	i = 0;
-	while (value[i])
+	if (NULL == value)
 	{
-		if (NULL == value[i])
-		{
-			ft_putstr_fd("Memory has not been properly allocated\n", 2);
-			exit(1);
-		}
-		i++;
+		ft_putstr_fd("Memory has not been properly allocated\n", 2);
+		exit(1);
 	}
+// пока заменил на обычную проверку после маллока
+	// int	i;
+
+	// i = 0;
+	// while (value && value[i])
+	// {
+	// 	if (NULL == value[i])
+	// 	{
+	// 		ft_putstr_fd("Memory has not been properly allocated\n", 2);
+	// 		exit(1);
+	// 	}
+	// 	i++;
+	// }
 }
 
 void	if_value_is_null(void *value)
@@ -76,5 +82,6 @@ t_env	*env_create_elem(char *str)
 		if_value_is_null(new_elem->key);
 		new_elem->value = NULL;
 	}
+	new_elem->next = NULL;
 	return (new_elem);
 }

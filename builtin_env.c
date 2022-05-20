@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/19 20:37:20 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/20 19:17:34 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**return_env_to_char(t_env *env)
 	char	**new_envp;
 
 	size = lern_size_env(env);
-	new_envp = (char **)malloc(sizeof(char *) * (size + 1));
+	new_envp = malloc(sizeof(char *) * (size + 1));
 	if_pointer_is_null(new_envp);
 	index = 0;
 	while (index < size)
@@ -79,9 +79,9 @@ void	env_lstadd_back(t_env **list, t_env *new_elem)
 	t_env	*iterator;
 
 	iterator = *list;
-	if (*list)
+	if (iterator)
 	{
-		while (iterator->next)
+		while (iterator && iterator->next)
 			iterator = iterator->next;
 		iterator->next = new_elem;
 	}
@@ -91,19 +91,19 @@ void	env_lstadd_back(t_env **list, t_env *new_elem)
 
 t_env	*create_env(char **envp)
 {
-	int		iterator;
+	int		i;
 	t_env	*new_elem;
 	t_env	*list;
 
 	new_elem = NULL;
 	list = env_create_elem(envp[0]);//не может вернуть NULL
 	list->next = NULL;
-	iterator = 1;
-	while (envp[iterator])
+	i = 1;
+	while (envp[i])
 	{
-		new_elem = env_create_elem(envp[iterator]);
+		new_elem = env_create_elem(envp[i]);
 		env_lstadd_back(&list, new_elem);
-		iterator++;
+		i++;
 	}
 	return (list);
 }
