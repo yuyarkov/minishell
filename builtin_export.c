@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:53:52 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/20 22:34:35 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/21 21:49:31 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,36 +79,83 @@ int	add_arguments(t_list *cmd, t_env **env)
 	return (result);
 }
 
-// t_env	*find_next_min(t_env *env)
-// {
-	
-// }
+int	find_key_in_list(char *argument, t_env *list)
+{
+	char	**sparg;
+	int		a_in_l;
 
-// t_env	*sort_env(t_env *env)
-// {
-// 	t_env	*tmp;
-// 	int		size;
+	sparg = ft_split(argument, '=');
+	if_pointer_is_null(sparg);
+	while (list)
+	{
+		a_in_l = ft_strncmp(sparg[0], list->key, max_strlen(sparg[0], list->key));
+		if (!a_in_l)
+		{
+			free_string_array(sparg);
+			return (1);
+		}
+		list = list->next;
+	}
+	free_string_array(sparg);
+	return (0);
+}
 
-// 	size = lern_size_env(env);
-// 	while (size--)
-// 		env_lstadd_back(&tmp, find_next_min(env));
-// 	return (tmp);
-// }
+char	*find_next_min(char **envp, t_env *list)
+{
+	char	*str_min;
+	int		i;
+
+	i = 0;
+	str_min = ft_substr("z", 0, 1);
+	while (envp[i])
+	{
+		if (find_key_in_list(envp[i], list))
+			i++;
+		else if (ft_strcmp(str_min, envp[i]) > 0)
+		{
+			free(str_min);
+			str_min = ft_substr(envp[i], 0, ft_strlen(envp[i]));
+			i++;
+		}
+		else
+			i++;
+	}
+	return (str_min);
+}
+
+t_env	*create_sort_env(char **envp)
+{
+	int		i;
+	t_env	*new_elem;
+	t_env	*list;
+	char	*min_str;
+
+	list = NULL;
+	i = 0;
+	while (envp[i])
+	{
+		min_str = find_next_min(envp, list);
+		new_elem = env_create_elem(min_str);
+		env_lstadd_back(&list, new_elem);
+		free(min_str);
+		i++;
+	}
+	return (list);
+}
 
 int	execute_export_command(t_list *cmd, char **envp, t_env *env)
 {
 	int		result;
-	// t_env	*tmp;
+	t_env	*tmp;
 
-	(void)envp;
 	result = 0;
 	if (cmd->arguments[1])
 		result = add_arguments(cmd, &env);
 	else
 	{
-		// tmp = sort_env(env);
-		// print_export(tmp);
-		print_export(env);
+		tmp = create_sort_env(envp);
+		print_export(tmp);
+		lstiter_env(tmp, free);
 	}
 	return (result);
 }
