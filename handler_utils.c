@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:09:26 by dirony            #+#    #+#             */
-/*   Updated: 2022/04/16 21:25:35 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/22 15:55:04 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handler(int num)
 
 void	ft_signal(int i)
 {
-	if (i ==1)//родительский процесс
+	if (i == 1)//родительский процесс
 	{
 		rl_catch_signals = 0;//не отображает ^C и ^back_slash
 		signal(SIGINT, &handler);//вот тут я ловлю сигнал ctrl+C

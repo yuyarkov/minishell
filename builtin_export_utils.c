@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 23:25:51 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/20 20:40:15 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/22 21:10:29 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	find_argument_in_env(char *argument, t_env **env)
 	result = 0;
 	while (tmp)
 	{
-		a_in_e = ft_strncmp(sparg[0], tmp->key, max_strlen(sparg[0], tmp->key));
+		a_in_e = ft_strcmp(sparg[0], tmp->key);
 		return_strchr = ft_strchr(argument, '=');
 		if (!a_in_e && return_strchr)
 			if_arg_submit_with_equal(&tmp->value, sparg[1], &result);

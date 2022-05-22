@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/21 21:48:44 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/22 21:30:17 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	lstiter_env(t_env *list, void (*f)(void *))
 
 	while (list)
 	{
-		if (list && list->key)
+		if (list->key)
 			f(list->key);
-		if (list && list->value)
+		if (list->value)
 			f(list->value);
 		temp = list;
 		list = list->next;
