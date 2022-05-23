@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 15:35:11 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/22 21:29:28 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/23 20:52:05 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,8 @@ void	change_strmin(t_env **strmin, t_env *tmp)
 		if_value_is_null((*strmin)->value);
 	}
 	else
+	{
+		free((*strmin)->value);
 		(*strmin)->value = NULL;
+	}
 }

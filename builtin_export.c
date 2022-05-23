@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:53:52 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/22 21:24:50 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 00:06:27 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,27 @@ t_env	*export_create_elem(char *str)
 
 int	add_arguments(t_list *cmd, t_env **env)
 {
-	int		iterator;
+	int		i;
 	int		result;
-	t_env	*new_elem;
 
 	result = 0;
-	iterator = 1;
-	while (cmd->arguments[iterator])
+	i = 1;
+	while (cmd->arguments[i])
 	{
-		if (ft_isalpha(cmd->arguments[iterator][0]) \
-			|| cmd->arguments[iterator][0] == '_')
+		if (ft_isalpha(cmd->arguments[i][0]) \
+			|| cmd->arguments[i][0] == '_')
 		{
-			if (!find_argument_in_env(cmd->arguments[iterator], env))
-				new_elem = if_arg_is_not_in_env(cmd->arguments[iterator], env);
+			if (!find_argument_in_env(cmd->arguments[i], env))
+				env_lstadd_back(env, export_create_elem(cmd->arguments[i]));
 		}
 		else
 		{
 			result = 1;
 			ft_putstr_fd("minishell: export: '", 2);
-			ft_putstr_fd(cmd->arguments[iterator], 2);
+			ft_putstr_fd(cmd->arguments[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
-		iterator++;
+		i++;
 	}
 	return (result);
 }
@@ -64,7 +63,7 @@ t_env	*find_next_min(t_env *env, t_env *list)
 	t_env	*tmp;
 
 	strmin = ft_calloc(1, sizeof(t_env));
-	strmin->key = ft_substr("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", 0, 40);
+	strmin->key = ft_substr("~", 0, 1);
 	if_value_is_null(strmin->key);
 	strmin->value = ft_calloc(1, sizeof(char));
 	tmp = env;
@@ -72,7 +71,7 @@ t_env	*find_next_min(t_env *env, t_env *list)
 	{
 		if (find_key_in_list(tmp->key, list))
 			tmp = tmp->next;
-		else if (strcmp(strmin->key, tmp->key) > 0)
+		else if (ft_strcmp(strmin->key, tmp->key) > 0)
 		{
 			change_strmin(&strmin, tmp);
 			tmp = tmp->next;
@@ -90,6 +89,7 @@ t_env	*create_sort_env(t_env *env)
 	t_env	*min_elem;
 
 	list = ft_calloc(1, sizeof(t_env));
+	if_value_is_null(list);
 	tmp = env;
 	while (tmp)
 	{

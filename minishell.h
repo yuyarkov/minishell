@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 21:25:13 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 00:04:16 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void	if_there_is_equal_sign(char *str, t_env **new_elem);
 int		find_key_in_list(char *argument, t_env *list);
 void	print_export(t_env *env);
 void	change_strmin(t_env **strmin, t_env *tmp);
+// t_env	*sort_env(t_env *env);////del?
 
 t_list	*execute_with_pipe(t_list *list, t_info *info);
 
