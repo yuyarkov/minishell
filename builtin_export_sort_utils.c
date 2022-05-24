@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 15:35:11 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/24 20:54:10 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 21:26:12 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ void	change_strmin(t_env **strmin, t_env *tmp)
 
 int	find_key_in_list(char *argument, t_env *list)
 {
-	int		a_in_l;
+	int		arg_in_list;
 
 	while (list)
 	{
-		a_in_l = ft_strcmp(argument, list->key);
-		if (!a_in_l)
+		arg_in_list = ft_strcmp(argument, list->key);
+		if (!arg_in_list)
 			return (1);
 		list = list->next;
 	}
@@ -90,7 +90,7 @@ t_env	*find_next_min(t_env *env, t_env *list)
 	return (strmin);
 }
 
-t_env	*create_sort_env(t_env *env)
+void	create_sort_env(t_env *env)
 {
 	t_env	*list;
 	t_env	*tmp;
@@ -105,5 +105,6 @@ t_env	*create_sort_env(t_env *env)
 		env_lstadd_back(&list, min_elem);
 		tmp = tmp->next;
 	}
-	return (list);
+	print_export(list);
+	lstiter_env(list, free);
 }

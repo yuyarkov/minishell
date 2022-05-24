@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 15:46:42 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 19:05:23 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	execute_cmd_from_group(t_list *cmd, char **envp, t_info *info)
 {
-	ft_signal(2);
 	int	status;
 
 	(void) info;
+	ft_signal(2);
 	status = 0;
 	if (cmd->redirect_in)
 		dup_redirect_in_for_cmd(cmd);
@@ -26,7 +26,7 @@ void	execute_cmd_from_group(t_list *cmd, char **envp, t_info *info)
 	status = execve(cmd->cmd, cmd->arguments, envp);
 	if (status == -1)
 			perror ("Could not execve");
-	exit(status);//При успешном завершении execve() не возвращает управление
+	exit(status);
 }
 
 int	execute_group(t_list *commands, char **envp, t_info *info)
@@ -74,10 +74,11 @@ int	execute_group(t_list *commands, char **envp, t_info *info)
 				}
 			}
 		}
+		if (!iter->cmd)
+			return (EXIT_FAILURE);
 		if (iter)
 			iter = iter->next;
 	}
 	info->status = status / 256;
-	//printf("-------присвоил статус: %c, char: %d\n", status, info->status);
 	return (status);
 }

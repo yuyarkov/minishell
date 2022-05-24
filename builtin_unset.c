@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 17:26:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/24 20:06:42 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 21:41:51 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,15 @@ void	search_list(t_env **list, char *str)
 	}
 }
 
-int	execute_unset_command(t_list *cmd, char **envp, t_env *env)
+int	execute_unset_command(t_list *cmd, t_env *env)
 {
-	(void)envp;
-	if (cmd->arguments[1])
-		search_list(&env, cmd->arguments[1]);
+	int		i;
+
+	i = 1;
+	while (cmd->arguments[i])
+	{
+		search_list(&env, cmd->arguments[i]);
+		i++;
+	}
 	return (0);
 }

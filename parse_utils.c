@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/15 18:29:19 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 17:52:05 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	is_builtin_command(char *s)
 	if (ft_strncmp(s, "exit", 4) == 0)
 		return (1);
 	if ((ft_strncmp(s, "cd ", 3) == 0) || (ft_strncmp(s, "cd\0", 3) == 0))
-						//Артём - можно поставить пробел или \0 после cd.
-						//Юра - как отличать случаи cdk, cdcd и т.д.?
 		return (1);
 	if (ft_strncmp(s, "echo ", 5) == 0)
 		return (1);
@@ -136,103 +134,28 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 		return (NULL);
 }
 
-// void	parse_limiters(char *s, t_info *info)
+// char	**split_commands_by_limiters(char *str, t_info *info)
 // {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (s[i] && s[i + 1])
-// 	{
-// 		if (s[i] == ';')
-// 		{
-// 			info->limiters[j].sign = SEMICOLON;
-// 			info->limiters[j++].index = i;
-// 		}
-// 		if (s[i] == '|')
-// 		{
-// 			info->limiters[j].sign = PIPE;
-// 			info->limiters[j++].index = i;
-// 		}	
-// 		if (ft_strncmp(&s[i], "&&", 2) == 0)
-// 		{
-// 			info->limiters[j].sign = AND_SIGN;
-// 			info->limiters[j++].index = i;
-// 		}
-// 		if (ft_strncmp(&s[i], "||", 2) == 0)
-// 		{
-// 			info->limiters[j].sign = OR_SIGN;
-// 			info->limiters[j++].index = i;
-// 		}
-// 		i++;
-// 	}
-// 	//printf("inside parse limiters\n");
-// 	info->limiters[j].sign = SEMICOLON;
-// 	info->limiters[j].index = ft_strlen(s);//для последнего команды ставлю параметры виртуального разделителя
-// }
-
-// void	get_info_from_string(char *str, t_info *info)
-// {
+// 	char	**result;
+// 	char	*temp;
+// 	int		length;
+// 	int		index;
 // 	int		i;
-// 	int		num;
-// 	char	*s;
 
-// 	s = ft_strtrim(str, SPACES);
-// 	//printf("after trim, \"%s\"\n", s);
-// 	i = 0;
-// 	num = 0;
-// 	while (s[i] && s[i + 1])
+// 	result = malloc(sizeof(char *) * (info->num_of_commands + 1));
+// 	if (NULL == result)
+// 		exit(EXIT_FAILURE);
+// 	result[0] = ft_strtrim(ft_substr(str, 0, info->limiters[0].index), SPACES);//подумать над освобождением строк после trim и substr
+// 	i = 1;
+// 	while (i < info->num_of_commands)
 // 	{
-// 		if (s[i] == ';' || s[i] == '|')
-// 			num++;
-// 		if (ft_strncmp(&s[i], "&&", 2) == 0 || ft_strncmp(&s[i], "||", 2) == 0)
-// 			num++;
+// 		index = info->limiters[i - 1].index + (info->limiters[i - 1].sign % 2 + 1);
+// 		length = info->limiters[i].index - index;
+// 		temp = ft_substr(str, index, length);
+// 		result[i] = ft_strtrim(temp, SPACES);
+// 		free(temp);
 // 		i++;
 // 	}
-// 	if (num == 0)
-// 		info->num_of_commands = 1;
-// 	else
-// 		info->num_of_commands = num + 1;
-// 	info->limiters = malloc(sizeof(t_limiter) * info->num_of_commands);
-// 	if (NULL == info->limiters)// при таком выходе не очищаются структуры
-// 		exit(EXIT_FAILURE);
-// 	parse_limiters(s, info);
-// 	if (num == 0)
-// 	{
-// 		info->limiters[0].sign = SEMICOLON; //костыль, когда команда одна, заполняю как будто ; в конце
-// 		info->limiters[0].index = ft_strlen(s);
-// 	//printf("num of commands: %d\n", info->num_of_commands);
-// 	}
-// 	free(s);
+// 	result[i] = NULL;
+// 	return (result);
 // }
-
-
-
-char	**split_commands_by_limiters(char *str, t_info *info)
-{
-	char	**result;
-	char	*temp;
-	int		length;
-	int		index;
-	int		i;
-
-	result = malloc(sizeof(char *) * (info->num_of_commands + 1));
-	if (NULL == result)
-		exit(EXIT_FAILURE);
-	result[0] = ft_strtrim(ft_substr(str, 0, info->limiters[0].index), SPACES);//подумать над освобождением строк после trim и substr
-	//printf("result[0]: %s\n", result[0]);
-	i = 1;
-	while (i < info->num_of_commands)
-	{
-		index = info->limiters[i - 1].index + (info->limiters[i - 1].sign % 2 + 1);
-		length = info->limiters[i].index - index;
-		temp = ft_substr(str, index, length);
-		result[i] = ft_strtrim(temp, SPACES);
-		free(temp);
-		//printf("result[%d]: %s\n", i, result[i]);
-		i++;
-	}
-	result[i] = NULL;
-	return (result);
-}

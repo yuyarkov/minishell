@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 12:58:46 by jg                #+#    #+#             */
-/*   Updated: 2022/05/16 22:54:55 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 21:36:51 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	execute_cd_command(t_list *cmd, char **envp, t_env *env)
 	char	*path;
 	char	oldpwd[1024];
 
-	(void)envp;
 	if (!cmd->arguments[1])
 	{
 		path = search_home(envp);

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 13:00:14 by jg                #+#    #+#             */
-/*   Updated: 2022/05/20 20:38:24 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 21:39:04 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ int	is_numeric(char *s)
 	return (result);
 }
 
-int	execute_exit_command(t_list *cmd, char **envp)
+int	execute_exit_command(t_list *cmd)
 {
 	int		exit_code;
 
-	(void) envp;
 	ft_putstr_fd("exit\n", 1);
 	if (!is_numeric(cmd->arguments[1]))
 	{

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/18 20:26:43 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 18:02:53 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	child_pipex(t_list *cmd, t_info *info)
 		dup_child_pipe(cmd);
 	else
 	{
-		close (cmd->end[1]);//добавил, почему-то раньше не было
+		close (cmd->end[1]);
 		if (dup2(cmd->previous->end[0], STDIN_FILENO) < 0)
 			perror ("Could not dup2 STDIN");
 		close (cmd->previous->end[0]);
@@ -94,7 +94,7 @@ void	child_pipex(t_list *cmd, t_info *info)
 		execute_builtin(cmd, info->envp, info);
 	else if (execve(cmd->cmd, cmd->arguments, info->envp) == -1)
 		perror ("Could not execve");
-	exit(EXIT_FAILURE);//тут видимо надо поменять код exit
+	exit(EXIT_FAILURE);
 }
 
 void	close_parent_pipes(t_list *iter)
@@ -123,8 +123,7 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 			pipe(iter->end);
 		child = fork();
 		if (child < 0)
-			exit(EXIT_FAILURE);//придумать корректный выход
-			//return (perror("Fork: "));
+			exit(EXIT_FAILURE);
 		if (child == 0)
 			child_pipex(iter, info);
 		close_parent_pipes(iter);
