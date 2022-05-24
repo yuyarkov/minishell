@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 19:49:31 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/24 20:52:50 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,10 @@ int		max_strlen(char *str1, char *str2);
 t_env	*if_arg_is_not_in_env(char *arg, t_env **env);
 int		find_argument_in_env(char *argument, t_env **env);
 void	if_there_is_equal_sign(char *str, t_env **new_elem);
+int		find_key_in_list(char *argument, t_env *list);
+void	print_export(t_env *env);
+void	change_strmin(t_env **strmin, t_env *tmp);
+// t_env	*sort_env(t_env *env);////del?
 
 t_list	*execute_with_pipe(t_list *list, t_info *info);
 

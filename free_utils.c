@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/22 19:46:42 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/24 20:51:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	lstiter_env(t_env *list, void (*f)(void *))
 
 	while (list)
 	{
-		if (list && list->key)
+		if (list->key)
 			f(list->key);
-		if (list && list->value)
+		if (list->value)
 			f(list->value);
 		temp = list;
 		list = list->next;

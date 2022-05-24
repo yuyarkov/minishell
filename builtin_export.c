@@ -6,32 +6,11 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 15:53:52 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/21 21:49:31 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 00:06:27 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_export(t_env *env)
-{
-	while (env)
-	{
-		if (env->value)
-		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putstr_fd(env->key, 1);
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(env->value, 1);
-			ft_putendl_fd("\"", 1);
-		}
-		else
-		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putendl_fd(env->key, 1);
-		}
-		env = env->next;
-	}
-}
 
 t_env	*export_create_elem(char *str)
 {
@@ -53,92 +32,70 @@ t_env	*export_create_elem(char *str)
 
 int	add_arguments(t_list *cmd, t_env **env)
 {
-	int		iterator;
+	int		i;
 	int		result;
-	t_env	*new_elem;
 
 	result = 0;
-	iterator = 1;
-	while (cmd->arguments[iterator])
+	i = 1;
+	while (cmd->arguments[i])
 	{
-		if (ft_isalpha(cmd->arguments[iterator][0]) \
-			|| cmd->arguments[iterator][0] == '_')
+		if (ft_isalpha(cmd->arguments[i][0]) \
+			|| cmd->arguments[i][0] == '_')
 		{
-			if (!find_argument_in_env(cmd->arguments[iterator], env))
-				new_elem = if_arg_is_not_in_env(cmd->arguments[iterator], env);
+			if (!find_argument_in_env(cmd->arguments[i], env))
+				env_lstadd_back(env, export_create_elem(cmd->arguments[i]));
 		}
 		else
 		{
 			result = 1;
 			ft_putstr_fd("minishell: export: '", 2);
-			ft_putstr_fd(cmd->arguments[iterator], 2);
+			ft_putstr_fd(cmd->arguments[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 		}
-		iterator++;
+		i++;
 	}
 	return (result);
 }
 
-int	find_key_in_list(char *argument, t_env *list)
+t_env	*find_next_min(t_env *env, t_env *list)
 {
-	char	**sparg;
-	int		a_in_l;
+	t_env	*strmin;
+	t_env	*tmp;
 
-	sparg = ft_split(argument, '=');
-	if_pointer_is_null(sparg);
-	while (list)
+	strmin = ft_calloc(1, sizeof(t_env));
+	strmin->key = ft_substr("~", 0, 1);
+	if_value_is_null(strmin->key);
+	strmin->value = ft_calloc(1, sizeof(char));
+	tmp = env;
+	while (tmp)
 	{
-		a_in_l = ft_strncmp(sparg[0], list->key, max_strlen(sparg[0], list->key));
-		if (!a_in_l)
+		if (find_key_in_list(tmp->key, list))
+			tmp = tmp->next;
+		else if (ft_strcmp(strmin->key, tmp->key) > 0)
 		{
-			free_string_array(sparg);
-			return (1);
-		}
-		list = list->next;
-	}
-	free_string_array(sparg);
-	return (0);
-}
-
-char	*find_next_min(char **envp, t_env *list)
-{
-	char	*str_min;
-	int		i;
-
-	i = 0;
-	str_min = ft_substr("z", 0, 1);
-	while (envp[i])
-	{
-		if (find_key_in_list(envp[i], list))
-			i++;
-		else if (ft_strcmp(str_min, envp[i]) > 0)
-		{
-			free(str_min);
-			str_min = ft_substr(envp[i], 0, ft_strlen(envp[i]));
-			i++;
+			change_strmin(&strmin, tmp);
+			tmp = tmp->next;
 		}
 		else
-			i++;
+			tmp = tmp->next;
 	}
-	return (str_min);
+	return (strmin);
 }
 
-t_env	*create_sort_env(char **envp)
+t_env	*create_sort_env(t_env *env)
 {
-	int		i;
-	t_env	*new_elem;
 	t_env	*list;
-	char	*min_str;
+	t_env	*tmp;
+	t_env	*min_elem;
 
-	list = NULL;
-	i = 0;
-	while (envp[i])
+	list = ft_calloc(1, sizeof(t_env));
+	if_value_is_null(list);
+	tmp = env;
+	while (tmp)
 	{
-		min_str = find_next_min(envp, list);
-		new_elem = env_create_elem(min_str);
-		env_lstadd_back(&list, new_elem);
-		free(min_str);
-		i++;
+		min_elem = find_next_min(env, list);
+		env_lstadd_back(&list, min_elem);
+		tmp = tmp->next;
 	}
 	return (list);
 }
@@ -148,12 +105,13 @@ int	execute_export_command(t_list *cmd, char **envp, t_env *env)
 	int		result;
 	t_env	*tmp;
 
+	(void)envp;
 	result = 0;
 	if (cmd->arguments[1])
 		result = add_arguments(cmd, &env);
 	else
 	{
-		tmp = create_sort_env(envp);
+		tmp = create_sort_env(env);
 		print_export(tmp);
 		lstiter_env(tmp, free);
 	}
