@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/21 21:48:44 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/22 19:46:42 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void	clear_tokens(t_info *info)
 	int	i;
 
 	i = 0;
-	while (info->tokens && info->tokens[i].type != END_OF_TOKENS)
+	while (info->tokens && info->tokens[i].type != EOF_TOKENS)
 	{
 		free(info->tokens[i].value);
+		info->tokens[i].value = NULL;
 		i++;
 	}
 	if (info->tokens)
@@ -65,6 +66,14 @@ void	clear_info(t_info *info)//зачаток общей функции, кот�
 		free_string_array(info->envp);
 }
 
+void	set_values_to_null(t_list *iter)
+{
+	iter->cmd = NULL;
+	iter->arguments = NULL;
+	iter->redirect_in_file = NULL;
+	iter->redirect_out_file = NULL;
+}
+
 void	clear_info_except_envp(t_info *info)
 {
 	t_list	*iter;
@@ -73,8 +82,6 @@ void	clear_info_except_envp(t_info *info)
 	clear_tokens(info);
 	if (info->envp)
 		free_string_array(info->envp);
-	// if (info->limiters)//тут происходила лишняя очистка, т.к. структура не была обнулена
-	// 	free(info->limiters);
 	if (info->commands)
 	{
 		iter = info->commands;
@@ -88,6 +95,7 @@ void	clear_info_except_envp(t_info *info)
 				free(iter->redirect_in_file);
 			if (iter->redirect_out_file)
 				free(iter->redirect_out_file);
+			set_values_to_null(iter);
 			temp = iter;
 			iter = iter->next;
 			free(temp);

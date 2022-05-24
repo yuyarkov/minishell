@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/18 20:12:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 19:55:30 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,26 @@ void	put_group_id_marks(t_info *info)
 {
 	t_token	*t;
 	int		i;
-	int		group_id;
+	int		group;
 
 	t = info->tokens;
 	i = 0;
-	group_id = 0;
+	group = 0;
 	while (t && i < info->num_of_tokens)
 	{
 		if (is_limiter(t[i]))
-			group_id++;
+			group++;
 		if (t[i].type != LEFT_PARENTHESIS && t[i].type != RIGHT_PARENTHESIS)
-			t[i].group_id = group_id;
+			t[i].group = group;
 		else
-			t[i].group_id = -1;
+			t[i].group = -1;
 		if (is_limiter(t[i]))
-			group_id++;
+			group++;
 		i++;
 	}	
 }
 
-t_token	*get_group_start_point(int group_id, t_info *info)
+t_token	*get_group_start_point(int group, t_info *info)
 {
 	t_token	*t;
 	int		i;
@@ -72,7 +72,7 @@ t_token	*get_group_start_point(int group_id, t_info *info)
 	i = 0;
 	while (i < info->num_of_tokens)
 	{
-		if (t[i].group_id == group_id)
+		if (t[i].group == group)
 			return (&t[i]);
 		i++;
 	}
@@ -92,8 +92,8 @@ void	put_tree_marks(t_info *info)
 	{
 		if (is_limiter(t[i]))
 		{
-			t[i].left = get_group_start_point(t[i].group_id - 1, info);//указатель на начало предыдущей группы
-			t[i].right = get_group_start_point(t[i].group_id + 1, info);//указатель на начало следующей группы			
+			t[i].left = get_group_start_point(t[i].group - 1, info);//указатель на начало предыдущей группы
+			t[i].right = get_group_start_point(t[i].group + 1, info);//указатель на начало следующей группы			
 		}
 		i++;
 	}

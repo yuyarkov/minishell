@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/20 21:33:16 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 20:35:43 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	put_dollar_key_to_token(char *s, t_token *t, int *k)
 	i = 1;
 	if (s[1] && s[1] == '?')
 	{
-		key = "?";
+		key = ft_strdup("?");
 		t->type = DOLLAR_KEY;
 		t->value = key;
 		*k = *k + 1;
@@ -107,7 +107,7 @@ void	get_tokens_from_string(char *s, t_info *info)
 				i = i + put_special_token(&s[i], &result[k], &k);
 		}
 	}
-	result[k].type = END_OF_TOKENS;
+	result[k].type = EOF_TOKENS;
 	info->tokens = result;
 	info->num_of_tokens = k;
 	put_tree_level_marks(info);

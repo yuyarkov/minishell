@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 21:25:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/20 21:31:55 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 20:34:53 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	put_word_token_in_quotes(char *s, t_token *t, int *k)
 	result[i] = '\0';
 	t->value = result;
 	t->type = WORD;
-	t->inside_qoutes = 1;
+	t->in_qoutes = 1;
 	*k = *k + 1;
 	return (i);
 }
@@ -56,7 +56,7 @@ int	put_token_from_double_quotes(char *s, t_token *t, int *k)
 		}
 		if (s[i] && s[i] == '$')
 		{
-			t->inside_qoutes = 1;
+			t->in_qoutes = 1;
 			i = i + put_dollar_key_to_token(&s[i], t, k);
 			t = &t[1];
 		}
@@ -66,5 +66,5 @@ int	put_token_from_double_quotes(char *s, t_token *t, int *k)
 			t = &t[1];
 		}
 	}
-	return (i + 1);
+	return (i);
 }

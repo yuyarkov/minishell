@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/20 21:32:49 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/24 20:49:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	main(int argc, char **argv, char **envp)
 	info.env = create_env(envp);
 	while (one_time_launch)
 	{
-		info.envp = return_env_to_char(info.env);// может вернуть NULL
-		if (!str) //для разделения запуске
+		info.envp = return_env_to_char(info.env);
+		if (!str)
 		{
 			ft_signal(1);
 			str = readline(SHELL);// str нужно фришить (17:58)

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/20 19:43:07 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/22 19:49:31 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define SPACES " \n\t\v\f\r"
 # define SPECIAL_SYMBOLS ";|\'\"><()\\$&|"
 # define VALID_KEY_SYMBOLS ""
-# define END_OF_TOKENS -600
+# define EOF_TOKENS -600
 # define NEVER_EXECUTED -500
 # define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
 # define SEMICOLON 202// ;
@@ -74,8 +74,8 @@ typedef struct s_token
 	int				type;
 	char			*value;
 	int				level;
-	int				group_id;
-	int				inside_qoutes;//чтобы объединять в один аргумент содержимое кавычек
+	int				group;
+	int				in_qoutes;//чтобы объединять в один аргумент содержимое кавычек
 	int				status;//по умолчанию будем присваивать NEVER_EXECUTED
 	struct s_token	*left;
 	struct s_token	*right;
@@ -124,14 +124,16 @@ int		put_token_from_single_quotes(char *s, t_token *t, int *k);
 int		put_token_from_double_quotes(char *s, t_token *t, int *k);
 
 int		check_bad_syntax(t_info *info);
-void	parse_commands(char *str, t_info *info, char **envp);
+//void	parse_commands(char *str, t_info *info, char **envp);
 
-void	put_tree_level_marks(t_info *info);//подумать нужен ли int или void
+void	put_tree_level_marks(t_info *info);
 void	put_group_id_marks(t_info *info);
 void	put_tree_marks(t_info *info);
 int		is_limiter(t_token t);
 t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
+void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd);
+void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd);
 int		execute_group(t_list *cmd, char **envp, t_info *info);
 int		execute_builtin(t_list *cmd, char **envp, t_info *info);
 
