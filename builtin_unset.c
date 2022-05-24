@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/17 17:26:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/19 23:22:14 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 20:06:42 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ void	delete_list_from_env(t_env **list, t_env *tmp, int index)
 {
 	t_env	*new_env;
 
-	if (index == 0)// если нужно удалить первый элемент
+	if (index == 0)
 	{
 		new_env = (*list)->next;
-		**list = *new_env;//обращаюсь к голове связного списка
+		**list = *new_env;
 	}
 	else
 	{
 		new_env = *list;
-		while (index - 1)//нахожу лист перед удаляемым
+		while (index - 1)
 		{
 			new_env = new_env->next;
 			index--;
 		}
-		new_env->next = tmp;//связываю эл перед удаляем с эл после удаляемого
-		*list = new_env;//изменяю содержимое env
+		new_env->next = tmp;
+		*list = new_env;
 	}
 }
 
@@ -38,18 +38,17 @@ void	search_list(t_env **list, char *str)
 {
 	t_env	*tmp;
 	int		index;
-	// int		max_strlen;
 
 	tmp = *list;
 	index = 0;
-	while (tmp)// пока список есть
+	while (tmp)
 	{
-		// max_strlen = max_strlen(tmp->key, str);
-		if (ft_strncmp(tmp->key, str, max_strlen(tmp->key, str)) == 0)//если ключ совпал с переданным значением
+		if (ft_strcmp(tmp->key, str) == 0)
 		{
-			free(tmp->key);//освобождаю удаляемый элемент
-			free(tmp->value);//нужно чистить сам элемент списка?
-			delete_list_from_env(list, tmp->next, index);//далее работаю с: енв, элементом след за удаляемым и номером удаляемого элта
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
+			delete_list_from_env(list, tmp->next, index);
 			break ;
 		}
 		tmp = tmp->next;

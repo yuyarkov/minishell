@@ -6,7 +6,7 @@
 #    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/05/24 00:04:26 by fdarkhaw         ###   ########.fr        #
+#    Updated: 2022/05/24 20:51:17 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,8 @@ SRCS = 	main.c						parse_utils.c\
 		builtin_env.c				builtin_unset.c\
 		builtin_exit.c				builtin_cd.c\
 		builtin_pwd.c				free_utils.c\
-		builtin_export.c			builtin_export_utils.c\
-		builtin_export_utils2.c		builtin_utils.c\
+		builtin_export.c			builtin_export_add_utils.c\
+		builtin_export_sort_utils.c	builtin_utils.c\
 		exec_pipe_utils.c			handler_utils.c\
 		lexer_utils.c				lexer_utils2.c\
 		lexer_utils3.c				check_syntax_utils.c\
