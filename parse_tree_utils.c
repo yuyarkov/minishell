@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/24 20:18:11 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:36:13 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ t_list	*create_elem_cmd(t_token *t, t_info *info)
 	if (NULL == cmd)
 		exit(EXIT_FAILURE);
 	*cmd = (t_list){};
-	get_redirect_from_token(t, info, cmd);
+	get_redirect_from_token(t, cmd);
 	get_command_from_token(t, info, cmd);
-	get_argv_from_token(t, info, cmd);
+	get_argv_from_token(t, info, cmd, t->group);
 	return (cmd);
 }
 

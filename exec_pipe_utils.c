@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 18:02:53 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:43:18 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	dup_redirect_in_for_cmd(t_list *cmd)
 void	dup_redirect_out_for_cmd(t_list *cmd)
 {
 	if (cmd->redirect_out == REDIRECT_OUT)
-		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		cmd->fd[1] = open(cmd->out_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (cmd->redirect_out == REDIRECT_APPEND)
-		cmd->fd[1] = open(cmd->redirect_out_file, O_CREAT | O_RDWR | O_APPEND, 0644);	
+		cmd->fd[1] = open(cmd->out_file, O_CREAT | O_RDWR | O_APPEND, 0644);	
 	if (cmd->fd[1] < 0)
-		print_file_error(cmd->redirect_out_file);
+		print_file_error(cmd->out_file);
 	cmd->fd[3] = dup(STDOUT_FILENO);
 	if (dup2(cmd->fd[1], STDOUT_FILENO) < 0)
 		perror ("Could not dup2 STDOUT");

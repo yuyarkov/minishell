@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/21 20:38:53 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:43:18 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_list
 	char			*redirect_in_file;
 	char			*heredoc_eof;
 	int				redirect_out;
-	char			*redirect_out_file;
+	char			*out_file;
 	int				exit_code;
 	struct s_list	*next;
 	struct s_list	*previous;//сделаем двусвязный, как в пайпексе

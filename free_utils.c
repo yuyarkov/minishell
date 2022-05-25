@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/24 23:31:49 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:43:18 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	set_values_to_null(t_list *iter)
 	iter->cmd = NULL;
 	iter->arguments = NULL;
 	iter->redirect_in_file = NULL;
-	iter->redirect_out_file = NULL;
+	iter->out_file = NULL;
 }
 
 void	clear_info_except_envp(t_info *info)
@@ -93,8 +93,8 @@ void	clear_info_except_envp(t_info *info)
 				free_string_array(iter->arguments);
 			if (iter->redirect_in_file)
 				free(iter->redirect_in_file);
-			if (iter->redirect_out_file)
-				free(iter->redirect_out_file);
+			if (iter->out_file)
+				free(iter->out_file);
 			set_values_to_null(iter);
 			temp = iter;
 			iter = iter->next;

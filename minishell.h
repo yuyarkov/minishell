@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:12:56 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:35:56 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
 void	join_words_inside_quotes(t_token *t);
 void	check_and_replace_dollar(t_token *t, t_info *info);
-void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd);
-void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd);
+void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd, int group);
+void	get_redirect_from_token(t_token *t, t_list *cmd);
 int		execute_group(t_list *cmd, char **envp, t_info *info);
 int		execute_builtin(t_list *cmd, char **envp, t_info *info);
 
