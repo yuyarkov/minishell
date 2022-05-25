@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 20:35:43 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 20:07:11 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,5 @@ void	get_tokens_from_string(char *s, t_info *info)
 	info->num_of_tokens = k;
 	put_tree_level_marks(info);
 	put_group_id_marks(info);
-	put_tree_marks(info);
+	put_tree_marks(info, info->tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 19:55:30 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 20:06:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,26 +79,22 @@ t_token	*get_group_start_point(int group, t_info *info)
 	return (NULL);
 }
 
-void	put_tree_marks(t_info *info)
+void	put_tree_marks(t_info *info, t_token *t)
 {
-	t_token	*t;
-	t_token *next;
+	t_token	*next;
 	int		i;
-	// int		current_level;
 
-	t = info->tokens;
-	i = 0;
-	while (t && i < info->num_of_tokens)
+	i = -1;
+	while (t && ++i < info->num_of_tokens)
 	{
 		if (is_limiter(t[i]))
 		{
-			t[i].left = get_group_start_point(t[i].group - 1, info);//указатель на начало предыдущей группы
-			t[i].right = get_group_start_point(t[i].group + 1, info);//указатель на начало следующей группы			
+			t[i].left = get_group_start_point(t[i].group - 1, info);
+			t[i].right = get_group_start_point(t[i].group + 1, info);
 		}
-		i++;
 	}
-	i = 0;
-	while (t && i < info->num_of_tokens)//теперь второй раз прохожу по строке, чтобы проверить уровни и связать узлы в соответствии
+	i = -1;
+	while (t && ++i < info->num_of_tokens)
 	{
 		if (is_limiter(t[i]))
 		{
@@ -106,8 +102,7 @@ void	put_tree_marks(t_info *info)
 			if (next && next->level > t[i].level)
 				t[i].right = next;
 			if (next && next->level < t[i].level)
-				next->left = &t[i];		
+				next->left = &t[i];
 		}
-		i++;			
 	}
 }
