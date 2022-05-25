@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/24 20:52:50 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/24 21:20:38 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ void	put_tree_marks(t_info *info);
 int		is_limiter(t_token t);
 t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
+void	join_words_inside_quotes(t_token *t);
+void	check_and_replace_dollar(t_token *t, t_info *info);
 void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd);
 void	get_redirect_from_token(t_token *t, t_info *info, t_list *cmd);
 int		execute_group(t_list *cmd, char **envp, t_info *info);

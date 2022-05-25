@@ -6,7 +6,7 @@
 #    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/05/24 20:52:36 by dirony           ###   ########.fr        #
+#    Updated: 2022/05/24 21:19:03 by dirony           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRCS = 	main.c						parse_utils.c\
 		lexer_utils.c				lexer_utils2.c\
 		lexer_utils3.c				check_syntax_utils.c\
 		ast_parse_utils.c			parse_tree_utils.c\
-		new_exec_utils.c			pre_parsing_utils.c\
+		new_exec_utils.c\
+		pre_parsing_utils.c			pre_parsing_utils2.c\
 		heredoc_utils.c				get_next_line.c\
 		print_utils_delete.c# delete before check
 	
