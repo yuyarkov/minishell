@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:35:56 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 21:21:13 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ typedef struct s_line
 	int				last_line;
 }	t_line;
 
-int		is_exit_command(char *str);
+int		is_exit_command(char *str, t_info *info);
 
 void	get_tokens_from_string(char *s, t_info *info);
 

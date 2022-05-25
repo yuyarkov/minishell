@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 17:52:05 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 21:21:49 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_exit_command(char *str)
+int	is_exit_command(char *str, t_info *info)
 {
 	if (!str)
 		return (0);
 	if (ft_strncmp(str, "exit\0", 5) == 0)
+	{
+		clear_info(info);
 		return (1);
+	}
 	else
 		return (0);
 }

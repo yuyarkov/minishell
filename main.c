@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:13:03 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 21:37:20 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_argc_argv(int ac, char **av)
+{
+	(void)ac;
+	(void)av;
+}
 
 int	free_after_ctrl_d(char *str, t_info *info)
 {
@@ -20,7 +26,7 @@ int	free_after_ctrl_d(char *str, t_info *info)
 	ft_putstr_fd(SHELL, 1);
 	ft_putendl_fd("exit", 1);
 	//clear_info_except_envp(info);
-	free(str);//зачем фришить str дважды?
+	// free(str);//зачем фришить str дважды?
 	return (1);
 }
 
@@ -29,9 +35,8 @@ int	main(int argc, char **argv, char **envp)
 	char	*str;
 	t_info	info;
 
-	(void)argc;
-	(void)argv;
-	rl_outstream = stderr;
+	ft_argc_argv(argc, argv);
+	// rl_outstream = stderr;//что делает эта строка
 	info = (t_info){};
 	str = NULL;
 	using_history();
@@ -49,16 +54,12 @@ int	main(int argc, char **argv, char **envp)
 				break ;
 		}
 		get_tokens_from_string(str, &info);//лексер
-					print_tokens(&info);
+					//print_tokens(&info);
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			parse_and_execute_tree(&info);
-			if (is_exit_command(str))
-			{
-				// free(str);
-				clear_info(&info);
+			if (is_exit_command(str, &info))
 				break ;
-			}
 		}
 		clear_info_except_envp(&info);
 		free(str);

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/24 23:05:17 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/25 20:09:10 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	execute_cmd(t_list *cmd, char **envp)
 {
 	//int	i;
-	
 	ft_signal(2);
 	// i = 0;
 	// while (cmd->arguments && cmd->arguments[i])
