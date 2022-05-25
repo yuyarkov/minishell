@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/19 19:38:22 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 23:05:17 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
 		status = execute_cd_command(cmd, envp, info->env);
 	else if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
-		status = execute_exit_command(cmd, envp);
+		status = execute_exit_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
-		status = execute_echo_command(cmd, envp);
+		status = execute_echo_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
-		status = execute_pwd_command(cmd, envp);
+		status = execute_pwd_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "unset\0", 6) == 0)
-		status = execute_unset_command(cmd, envp, info->env);
+		status = execute_unset_command(cmd, info->env);
 	else if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
-		status = execute_export_command(cmd, envp, info->env);
+		status = execute_export_command(cmd, info->env);
 	if (cmd->redirect_in || cmd->redirect_out)
 		dup_back_redirect(cmd);
 	return (status);

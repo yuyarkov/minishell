@@ -6,17 +6,16 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 13:02:20 by jg                #+#    #+#             */
-/*   Updated: 2022/05/16 22:55:18 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 21:37:13 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_echo_command(t_list *cmd, char **envp)
+int	execute_echo_command(t_list *cmd)
 {
 	int		iterator;
 
-	(void) envp;
 	iterator = 1;
 	if (ft_strncmp(cmd->arguments[1], "-n\0", 3) == 0)
 		iterator = 2;

@@ -6,34 +6,22 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 12:42:00 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/22 16:37:20 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/24 20:09:00 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	max_strlen(char *str1, char *str2)
-{
-	int	s1;
-	int	s2;
-
-	s1 = ft_strlen(str1);
-	s2 = ft_strlen(str2);
-	if (s1 > s2)
-		return (s1);
-	else
-		return (s2);
-}
-
 void	if_pointer_is_null(char **value)
 {
-	// int	i;
 
 	if (NULL == value)// добавил проверку
 	{
 		ft_putstr_fd("Memory has not been properly allocated\n", 2);
 		exit(1);
 	}
+	// int	i;
+
 	// i = 0;
 	// while (value[i])
 	// {

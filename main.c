@@ -6,46 +6,48 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/24 20:57:13 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:13:03 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	free_after_ctrl_d(char *str, t_info *info)
+{
+	free(str);
+	clear_info(info);
+	ft_putstr_fd("\x1b[1F", 1);
+	ft_putstr_fd(SHELL, 1);
+	ft_putendl_fd("exit", 1);
+	//clear_info_except_envp(info);
+	free(str);//зачем фришить str дважды?
+	return (1);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	t_info	info;
-	int		one_time_launch; //признак, что в аргументы передали -с и запускать надо один раз
 
+	(void)argc;
+	(void)argv;
 	rl_outstream = stderr;
 	info = (t_info){};
 	str = NULL;
-	one_time_launch = 1;
-	if (argc >= 3) //если при запуске в аргументах что-то есть - берем команду из них. Для тестов и для чеклиста
-	{
-		if (ft_strncmp(argv[1], "-c", 3) == 0)// проверить это условие в сабже
-			str = argv[2];
-	}
 	using_history();
 	info.env = create_env(envp);
-	while (one_time_launch)
+	while (1)
 	{
 		info.envp = return_env_to_char(info.env);
-		if (!str)
+		if (!str)//подумать, как собрать в ft_readline
 		{
 			ft_signal(1);
-			str = readline(SHELL);// str нужно фришить (17:58)
+			str = readline(SHELL);
 			if (str)
 				add_history(str);
-			else// если передан ctrl D
-			{
-				free_after_ctrl_d(str, &info);
+			else if (free_after_ctrl_d(str, &info))// если передан ctrl D
 				break ;
-			}
 		}
-		else
-			one_time_launch = 0;
 		get_tokens_from_string(str, &info);//лексер
 					print_tokens(&info);
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
@@ -53,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 			parse_and_execute_tree(&info);
 			if (is_exit_command(str))
 			{
-				free(str);
+				// free(str);
 				clear_info(&info);
 				break ;
 			}
@@ -62,10 +64,10 @@ int	main(int argc, char **argv, char **envp)
 		free(str);
 		str = NULL;
 	}
+	if (str)
+		free(str);
 	rl_clear_history();
 	if (info.envp && info.changed_envp)
 		free_string_array(info.envp);
 	return (info.status);
 }
-
-// сега при вызове ctrl D после какой нибудь команды

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/24 21:20:38 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:12:56 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,29 +169,23 @@ void	execute_cmd(t_list *cmd, char **envp);
 
 // builtin's //
 int		execute_cd_command(t_list *cmd, char **envp, t_env *env);
-int		execute_exit_command(t_list *cmd, char **envp);
-int		execute_echo_command(t_list *cmd, char **envp);
-int		execute_pwd_command(t_list *cmd, char **envp);
-int		execute_unset_command(t_list *cmd, char **envp, t_env *env);
-int		execute_export_command(t_list *cmd, char **envp, t_env *env);
+int		execute_exit_command(t_list *cmd);
+int		execute_echo_command(t_list *cmd);
+int		execute_pwd_command(t_list *cmd);
+int		execute_unset_command(t_list *cmd, t_env *env);
+int		execute_export_command(t_list *cmd, t_env *env);
 void	env_lstadd_back(t_env **list, t_env *new_elem);
 t_env	*env_create_elem(char *str);
-int		max_strlen(char *str1, char *str2);
-t_env	*if_arg_is_not_in_env(char *arg, t_env **env);
-int		find_argument_in_env(char *argument, t_env **env);
-void	if_there_is_equal_sign(char *str, t_env **new_elem);
-int		find_key_in_list(char *argument, t_env *list);
-void	print_export(t_env *env);
-void	change_strmin(t_env **strmin, t_env *tmp);
-// t_env	*sort_env(t_env *env);////del?
+int		add_arguments(t_list *cmd, t_env **env);
+void	create_sort_env(t_env *env);
 
 t_list	*execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
-int		print_error_token(t_info *info, int token);
-void	free_after_ctrl_d(char *str, t_info *info);
+int		free_after_ctrl_d(char *str, t_info *info);
 void	if_value_is_null(void *value);// проверка на возврат malloc'ом NULL
-void	if_pointer_is_null(char **value);// проверка на NULL
+void	if_pointer_is_null(char **value);// проверка массивов на NULL
+int		print_error_token(t_info *info, int token);// отладка?
 
 void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
 void	print_tokens(t_info *info);//для дебага, убрать перед сдачей
