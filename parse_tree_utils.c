@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 21:10:08 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 20:52:59 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,20 +129,20 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 		}
 	}
 	//debug
-				// temp = first_elem;
-				// while (temp)
-				// {
-				// 				printf("parsing token group, command: %s\n", temp->cmd);
-				// 				i = 0;
-				// 				while (temp->arguments && temp->arguments[i])
-				// 				{
-				// 					printf("argv[%d]: %s\n", i, temp->arguments[i]);
-				// 					i++;
-				// 				}
-				// 				printf("redirect_in: %s\n", temp->redirect_in_file);
-				// 				printf("redirect_out: %s\n", temp->redirect_out_file);
-				// 	temp = temp->next;
-				// }
+				temp = first_elem;
+				while (temp)
+				{
+								printf("parsing token group, command: %s\n", temp->cmd);
+								i = 0;
+								while (temp->arguments && temp->arguments[i])
+								{
+									printf("argv[%d]: %s\n", i, temp->arguments[i]);
+									i++;
+								}
+								printf("redirect_in: %s\n", temp->redirect_in_file);
+								printf("redirect_out: %s\n", temp->out_file);
+					temp = temp->next;
+				}
 	return (first_elem);
 }
 

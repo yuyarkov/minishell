@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 21:21:13 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 19:58:48 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int		check_bad_syntax(t_info *info);
 
 void	put_tree_level_marks(t_info *info);
 void	put_group_id_marks(t_info *info);
-void	put_tree_marks(t_info *info);
+void	put_tree_marks(t_info *info, t_token *t);
 int		is_limiter(t_token t);
 t_token	*get_next_limiter(t_token *token, t_info *info);
 int		parse_and_execute_tree(t_info *info);
@@ -153,7 +153,7 @@ char	*get_cmd_path(char *cmd, char **envp, t_info *info);
 void	print_cmd_error(char *argv);
 void	print_file_error(char *file_name);
 
-t_env	*create_env(char **envp);
+t_env	*create_env(char **envp, int ac, char **av);
 char	**return_env_to_char(t_env *env);
 void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));

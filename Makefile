@@ -6,7 +6,7 @@
 #    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/05/25 21:25:39 by fdarkhaw         ###   ########.fr        #
+#    Updated: 2022/05/26 19:53:33 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ CPPFLAGS 	= -I$(INC_DIR) -I$(RL_INC_DIR)
 
 LDFLAGS 	= -L$(RL_LIB_DIR)
 
-CFLAGS 		= -MMD -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS 		= -MMD -Wall -Wextra -Werror# -g -fsanitize=address
 
 all		:	libmake $(NAME)
 

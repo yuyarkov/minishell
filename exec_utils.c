@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 20:09:10 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 20:58:01 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 	status = 0;
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
 		status = execute_cd_command(cmd, envp, info->env);
-	else if (ft_strncmp(cmd->cmd, "exit ", 5) == 0)
+	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
 		status = execute_exit_command(cmd);
-	else if (ft_strncmp(cmd->cmd, "echo ", 5) == 0)
+	else if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
 		status = execute_echo_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
 		status = execute_pwd_command(cmd);

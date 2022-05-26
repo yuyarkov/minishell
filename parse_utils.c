@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 21:21:49 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 20:47:54 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	is_exit_command(char *str, t_info *info)
 
 int	is_builtin_command(char *s)
 {
+	printf("is_builtin_command - here, s: '%s'\n", s);
 	if (!s)
 		return (0);
-	if (ft_strncmp(s, "exit", 4) == 0)
+	if (ft_strncmp(s, "exit", 4) == 0 || ft_strncmp(s, "exit ", 5) == 0)
 		return (1);
 	if ((ft_strncmp(s, "cd ", 3) == 0) || (ft_strncmp(s, "cd\0", 3) == 0))
 		return (1);
