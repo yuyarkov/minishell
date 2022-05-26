@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:13:03 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:02:24 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **envp)
 				break ;
 		}
 		get_tokens_from_string(str, &info);//лексер
-					print_tokens(&info);
+					//print_tokens(&info);
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			parse_and_execute_tree(&info);

@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 20:07:11 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 20:01:24 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int	put_special_token(char *s, t_token *token, int *k)
 		token->type = LEFT_PARENTHESIS;
 	if (*s == ')')
 		token->type = RIGHT_PARENTHESIS;
-	if (*s == '\\')
-		token->type = BACKSLASH;
 	if (*s == '$')
 		return (put_dollar_key_to_token(s, token, k));
 	if (*s == '>')
@@ -73,7 +71,7 @@ t_token	*init_tokens(char *s)
 	int		i;
 	t_token	*result;
 
-	result = malloc(sizeof(t_token) * (ft_strlen(s) + 1));
+	result = malloc(sizeof(t_token) * (ft_strlen(s) + 2));
 	if (NULL == result)
 		exit(EXIT_FAILURE);
 	i = 0;
@@ -81,8 +79,12 @@ t_token	*init_tokens(char *s)
 	{
 		result[i] = (t_token){};
 		result[i].status = NEVER_EXECUTED;
+		result[i].value = NULL;
 		i++;
 	}
+	result[i] = (t_token){};
+	result[i].status = NEVER_EXECUTED;
+	result[i].value = NULL;
 	return (result);
 }
 

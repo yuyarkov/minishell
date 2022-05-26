@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 17:52:05 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 20:28:06 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*get_first_word(char *cmd)
 	char	*result;
 	int		i;
 
+	if (!cmd)
+		return (NULL);
 	i = 0;
 	result = malloc(ft_strlen(cmd) + 1);
 	if (NULL == result)
@@ -108,7 +110,7 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 
 	(void) info;
 	cmd = ft_strdup(input_cmd);
-	if (cmd == '\0')
+	if (cmd == '\0' || cmd == NULL)
 		return (cmd);
 	if (access(cmd, 1 << 0) == 0)
 		return (cmd);
@@ -133,29 +135,3 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 	else
 		return (NULL);
 }
-
-// char	**split_commands_by_limiters(char *str, t_info *info)
-// {
-// 	char	**result;
-// 	char	*temp;
-// 	int		length;
-// 	int		index;
-// 	int		i;
-
-// 	result = malloc(sizeof(char *) * (info->num_of_commands + 1));
-// 	if (NULL == result)
-// 		exit(EXIT_FAILURE);
-// 	result[0] = ft_strtrim(ft_substr(str, 0, info->limiters[0].index), SPACES);//подумать над освобождением строк после trim и substr
-// 	i = 1;
-// 	while (i < info->num_of_commands)
-// 	{
-// 		index = info->limiters[i - 1].index + (info->limiters[i - 1].sign % 2 + 1);
-// 		length = info->limiters[i].index - index;
-// 		temp = ft_substr(str, index, length);
-// 		result[i] = ft_strtrim(temp, SPACES);
-// 		free(temp);
-// 		i++;
-// 	}
-// 	result[i] = NULL;
-// 	return (result);
-// }

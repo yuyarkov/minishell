@@ -37,8 +37,10 @@ void	print_tokens(t_info *info)
 
 	t = info->tokens;
 	printf("Num of tokens: %d\n", info->num_of_tokens);
-	if (info->num_of_tokens == 0)
-		return ;
+	// if (info->num_of_tokens == 0)
+	// 	return ;
+	// if (t->value == NULL)
+	// 	return ;
 	i = 0;
 	while (t && i <= info->num_of_tokens)
 	{

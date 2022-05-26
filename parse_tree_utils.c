@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:36:13 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:02:12 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	get_min_level(t_token *t)
 	return (result);	
 }
 
-t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем следующий корень дерева
+t_token	*get_next_root_limiter(t_token *token, t_info *info)
 {
 	t_token	*t;
 	int		level;
@@ -65,7 +65,7 @@ t_token	*get_next_root_limiter(t_token *token, t_info *info)//ищем след�
 		return (NULL);
 	while (t)
 	{
-		if (t->level == level && t->status == NEVER_EXECUTED)//убедиться, что у корневого элемента уровень всегда 0
+		if (t->level == level && t->status == NEVER_EXECUTED)
 			return (t);
 		t = get_next_limiter(t, info);
 	}
@@ -83,7 +83,7 @@ void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 	i = 0;
 	while (t[i].type != EOF_TOKENS && t[i].group == group && t[i].type != WORD)
 		i++;
-	if (t[i].type == WORD && t[i].group == group)
+	if (t[i].type == WORD && t[i].group == group && t[i].type != EOF_TOKENS)
 	{
 		result = get_cmd_path(t[i].value, info->envp, info);
 		t[i].type = CMD;
@@ -101,9 +101,11 @@ t_list	*create_elem_cmd(t_token *t, t_info *info)
 	if (NULL == cmd)
 		exit(EXIT_FAILURE);
 	*cmd = (t_list){};
+	cmd->cmd = NULL;
 	get_redirect_from_token(t, cmd);
 	get_command_from_token(t, info, cmd);
-	get_argv_from_token(t, info, cmd, t->group);
+	if (cmd->cmd)
+		get_argv_from_token(t, info, cmd, t->group);
 	return (cmd);
 }
 
@@ -132,7 +134,7 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 				// temp = first_elem;
 				// while (temp)
 				// {
-				// 				printf("parsing token group, command: %s\n", temp->cmd);
+				// 				printf("parsing token group, command: %s, cmd: %p\n", temp->cmd, temp);
 				// 				i = 0;
 				// 				while (temp->arguments && temp->arguments[i])
 				// 				{
@@ -140,13 +142,13 @@ t_list	*parse_token_group(t_token *t, t_info *info)
 				// 					i++;
 				// 				}
 				// 				printf("redirect_in: %s\n", temp->redirect_in_file);
-				// 				printf("redirect_out: %s\n", temp->redirect_out_file);
+				// 				//printf("redirect_out: %s\n", temp->redirect_out_file);
 				// 	temp = temp->next;
 				// }
 	return (first_elem);
 }
 
-int	parse_and_execute_group(t_token *t, t_info *info)//для листьев дерева
+int	parse_and_execute_group(t_token *t, t_info *info)
 {
 	t_list	*cmd;
 	int		i;
@@ -169,7 +171,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)//для листьев д�
 int	parse_and_execute_branch(t_token *t, t_info *info)//основная рекурсивная функция
 {
 	
-	//printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group, t->type, t->status);
+	printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group, t->type, t->status);
 	if (!t->left && !t->right)//конечный случай рекурсии
 		return (parse_and_execute_group(t, info));
 	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня
@@ -177,7 +179,6 @@ int	parse_and_execute_branch(t_token *t, t_info *info)//основная рек�
 	if ((t->status == 0 && t->type == AND_SIGN) ||
 			(t->status != 0 && t->type == OR_SIGN))
 		t->status = parse_and_execute_branch(t->right, info);
-	//printf("inside parse_and_execute_branch, t->status: %d\n", t->status);
 	return (t->status);
 }
 
