@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 13:00:14 by jg                #+#    #+#             */
-/*   Updated: 2022/05/26 20:56:14 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 21:20:08 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	is_numeric(char *s)
 	int	i;
 	int	result;
 
+	if (!s)
+		return (0);
 	result = 1;
 	i = 0;
 	while (s[i])
@@ -33,6 +35,8 @@ int	execute_exit_command(t_list *cmd)
 	int		exit_code;
 
 	ft_putstr_fd("exit\n", 1);
+	if (!cmd->arguments[1])
+		return (0);
 	if (!is_numeric(cmd->arguments[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -48,8 +52,6 @@ int	execute_exit_command(t_list *cmd)
 	else if (is_numeric(cmd->arguments[1]) && !cmd->arguments[2])
 	{
 		exit_code = ft_atoi(cmd->arguments[1]);
-	printf("here, exit_code: %d\n", exit_code);
-
 		exit(exit_code);
 	}
 	return (0);

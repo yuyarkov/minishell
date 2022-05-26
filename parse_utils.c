@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:05:16 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:14:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ int	is_builtin_command(char *s)
 	printf("is_builtin_command - here, s: '%s'\n", s);
 	if (!s)
 		return (0);
-	if (ft_strncmp(s, "exit", 4) == 0 || ft_strncmp(s, "exit ", 5) == 0)
+	if (ft_strncmp(s, "exit", 5) == 0)
 		return (1);
-	if ((ft_strncmp(s, "cd ", 3) == 0) || (ft_strncmp(s, "cd\0", 3) == 0))
+	if (ft_strncmp(s, "cd", 3) == 0)
 		return (1);
-	if (ft_strncmp(s, "echo ", 5) == 0)
+	if (ft_strncmp(s, "echo", 5) == 0)
 		return (1);
 	if (ft_strncmp(s, "pwd", 3) == 0)
 		return (1);
-	if (ft_strncmp(s, "unset\0", 6) == 0)
+	if (ft_strncmp(s, "unset", 6) == 0)
 		return (1);
-	if (ft_strncmp(s, "export\0", 7) == 0)
+	if (ft_strncmp(s, "export", 7) == 0)
 		return (1);
 	return (0);
 }
@@ -119,7 +119,10 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 	if (access(cmd, 1 << 0) == 0)
 		return (cmd);
 	if (is_builtin_command(cmd))
+	{
+		printf("it's builtin command, see: '%s'\n", cmd);
 		return (cmd);
+	}
 	result = 0;
 	i = 0;
 	while (!result && envp[i])
