@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:04:09 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:05:16 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	is_exit_command(char *str, t_info *info)
 
 int	is_builtin_command(char *s)
 {
+	printf("is_builtin_command - here, s: '%s'\n", s);
 	if (!s)
 		return (0);
-	if (ft_strncmp(s, "exit", 4) == 0)
+	if (ft_strncmp(s, "exit", 4) == 0 || ft_strncmp(s, "exit ", 5) == 0)
 		return (1);
 	if ((ft_strncmp(s, "cd ", 3) == 0) || (ft_strncmp(s, "cd\0", 3) == 0))
 		return (1);

@@ -6,17 +6,11 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:03:42 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:06:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_argc_argv(int ac, char **av)
-{
-	(void)ac;
-	(void)av;
-}
 
 int	free_after_ctrl_d(char *str, t_info *info)
 {
@@ -35,26 +29,21 @@ int	main(int argc, char **argv, char **envp)
 	char	*str;
 	t_info	info;
 
-	ft_argc_argv(argc, argv);
-	// rl_outstream = stderr;//что делает эта строка
+	 rl_outstream = stderr;
 	info = (t_info){};
-	str = NULL;
 	using_history();
-	info.env = create_env(envp);
+	info.env = create_env(envp, argc, argv);
 	while (1)
 	{
+		ft_signal(1);
 		info.envp = return_env_to_char(info.env);
-		if (!str)//подумать, как собрать в ft_readline
-		{
-			ft_signal(1);
-			str = readline(SHELL);
-			if (str)
-				add_history(str);
-			else if (free_after_ctrl_d(str, &info))// если передан ctrl D
-				break ;
-		}
+		str = readline(SHELL);
+		if (str)
+			add_history(str);
+		else if (free_after_ctrl_d(str, &info))// если передан ctrl D
+			break ;
 		get_tokens_from_string(str, &info);//лексер
-					//print_tokens(&info);
+					print_tokens(&info);
 		if (!check_bad_syntax(&info))//если синтаксис хороший; проследить какой type используется для команд (сейчас всегда CMD)
 		{
 			parse_and_execute_tree(&info);

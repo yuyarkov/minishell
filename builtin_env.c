@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/20 22:39:50 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 19:56:14 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,14 @@ void	env_lstadd_back(t_env **list, t_env *new_elem)
 		*list = new_elem;
 }
 
-t_env	*create_env(char **envp)
+t_env	*create_env(char **envp, int ac, char **av)
 {
 	int		i;
 	t_env	*new_elem;
 	t_env	*list;
 
+	(void)ac;
+	(void)av;
 	new_elem = NULL;
 	list = env_create_elem(envp[0]);
 	list->next = NULL;
