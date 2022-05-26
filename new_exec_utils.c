@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/22 19:05:23 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/25 20:13:38 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	execute_cmd_from_group(t_list *cmd, char **envp, t_info *info)
 {
+	ft_signal(2);
 	int	status;
 
 	(void) info;
-	ft_signal(2);
 	status = 0;
 	if (cmd->redirect_in)
 		dup_redirect_in_for_cmd(cmd);

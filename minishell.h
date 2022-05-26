@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 20:06:43 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:03:55 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ typedef struct s_line
 	int				last_line;
 }	t_line;
 
-int		is_exit_command(char *str);
+int		is_exit_command(char *str, t_info *info);
 
 void	get_tokens_from_string(char *s, t_info *info);
 
