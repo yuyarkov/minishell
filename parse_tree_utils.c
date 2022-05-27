@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 19:41:36 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 19:59:39 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 		i++;
 	if (t[i].type == WORD && t[i].group == group && t[i].type != EOF_TOKENS)
 	{
-		result = get_cmd_path(t[i].value, info->envp, info);
+		result = get_cmd_path(t[i].value, info);
 		t[i].type = CMD;
 	}
 	cmd->cmd = result;

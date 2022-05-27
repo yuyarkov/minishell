@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 18:34:20 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:10:44 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,14 @@ char	*get_first_word(char *cmd)
 	return (result);
 }
 
-char	*find_cmd_path(char *cmd, char *path)
+char	*iterate_path(char **dirs, char *cmd, char *temp_cmd)
 {
-	char	**dirs;
-	char	*temp;
-	char	*temp_cmd;
 	int		i;
 	char	*result;
+	char	*temp;
 
-	dirs = ft_split(path, ':');
 	i = 0;
 	result = NULL;
-	temp = get_first_word(cmd);
-	if (cmd[0] != '/')
-		temp_cmd = ft_strjoin("/", temp);
-	else
-		temp_cmd = cmd;
-	free(temp);
 	while (dirs[i] && !result)
 	{
 		if (ft_strncmp(dirs[i], temp_cmd, ft_strlen(dirs[i])) != 0)
@@ -92,7 +83,6 @@ char	*find_cmd_path(char *cmd, char *path)
 		free(temp);
 		i++;
 	}
-	free_string_array(dirs);
 	if (cmd == temp_cmd)
 		free(temp_cmd);
 	else
@@ -103,38 +93,22 @@ char	*find_cmd_path(char *cmd, char *path)
 	return (result);
 }
 
-char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
+char	*find_cmd_path(char *cmd, char *path)
 {
-	int		i;
-	int		j;
-	char	*cmd;
-	char	start[5];
-	int		result;
+	char	**dirs;
+	char	*temp;
+	char	*temp_cmd;
+	char	*result;
 
-	(void) info;
-	cmd = ft_strdup(input_cmd);
-	if (cmd == '\0' || cmd == NULL)
-		return (cmd);
-	if (access(cmd, 1 << 0) == 0)
-		return (cmd);
-	if (is_builtin_command(cmd))
-		return (cmd);
-	result = 0;
-	i = 0;
-	while (!result && envp[i])
-	{
-		j = 0;
-		while (j < 5)
-		{
-			start[j] = envp[i][j];
-			j++;
-		}
-		if (ft_strncmp("PATH=", start, 5) == 0)
-			result = i;
-		i++;
-	}
-	if (result != 0)
-		return (find_cmd_path(cmd, envp[result] + 5));
+	dirs = ft_split(path, ':');
+	free(path);
+	temp = get_first_word(cmd);
+	if (cmd[0] != '/')
+		temp_cmd = ft_strjoin("/", temp);
 	else
-		return (NULL);
+		temp_cmd = cmd;
+	free(temp);
+	result = iterate_path(dirs, cmd, temp_cmd);
+	free_string_array(dirs);
+	return (result);
 }
