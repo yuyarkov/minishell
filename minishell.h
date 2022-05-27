@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 21:57:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 22:03:59 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	ft_double_list_add_back(t_list **list, t_list *new_elem);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, t_info *info);
 char	*find_cmd_path(char *cmd, char *path);
-void	print_cmd_error(char *argv);
+void	print_cmd_error(char *argv, int *status);
 void	print_file_error(char *file_name);
 
 t_list	*create_elem_cmd(t_token *t, t_info *info);

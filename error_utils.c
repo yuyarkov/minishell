@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 21:56:08 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:58:31 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_cmd_error(char *argv, int *status)
 		ft_putstr_fd(temp, 2);
 		ft_putendl_fd(": command not found", 2);
 		free(temp);
-		*status = 127;//так же работает bash
+		*status = 127;
 	}
 }
 
