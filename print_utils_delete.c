@@ -45,8 +45,8 @@ void	print_tokens(t_info *info)
 	while (t && i <= info->num_of_tokens)
 	{
 		if (t[i].left && t[i].right)
-			printf("level: %d\tgroup: %d\tvalue: %s\tleft: %s, %d\tright: %s, %d\n", 
-			t[i].level, t[i].group, t[i].value, t[i].left->value, t[i].left->type,
+			printf("level: %d\tgroup: %d\ttype: %d\tleft: %s, %d\tright: %s, %d\n", 
+			t[i].level, t[i].group, t[i].type, t[i].left->value, t[i].left->type,
 					 t[i].right->value, t[i].right->type);
 		else
 			printf("level: %d\tgroup: %d\tvalue: \'%s\',\ttype: %d, \tinside_quotes: %d\n", 

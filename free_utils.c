@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/26 22:04:21 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/27 21:48:56 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,53 @@ void	set_values_to_null(t_list *iter)
 	iter->out_file = NULL;
 }
 
+void	clear_cmd(t_list *iter)
+{
+	t_list	*temp;
+	
+	while (iter)
+	{
+		if (iter->cmd)
+			free(iter->cmd);
+		if (iter->arguments)
+			free_string_array(iter->arguments);
+		if (iter->redirect_in_file)
+			free(iter->redirect_in_file);
+		if (iter->out_file)
+			free(iter->out_file);
+		set_values_to_null(iter);
+		temp = iter;
+		iter = iter->next;
+		free(temp);
+	}
+}
+
 void	clear_info_except_envp(t_info *info)
 {
-	t_list	*iter;
-	t_list	*temp;
+	// t_list	*iter;
+	// t_list	*temp;
 
 	clear_tokens(info);
 	if (info->envp)
 		free_string_array(info->envp);
-	if (info->commands)
-	{
-		iter = info->commands;
-		while (iter)
-		{
-			if (iter->cmd)
-				free(iter->cmd);
-			if (iter->arguments)
-				free_string_array(iter->arguments);
-			if (iter->redirect_in_file)
-				free(iter->redirect_in_file);
-			if (iter->out_file)
-				free(iter->out_file);
-			set_values_to_null(iter);
-			temp = iter;
-			iter = iter->next;
-			free(temp);
-		}
-	}
+	// if (info->commands)
+	// {
+	// 	iter = info->commands;
+	// 	while (iter)
+	// 	{
+	// 		if (iter->cmd)
+	// 			free(iter->cmd);
+	// 		if (iter->arguments)
+	// 			free_string_array(iter->arguments);
+	// 		if (iter->redirect_in_file)
+	// 			free(iter->redirect_in_file);
+	// 		if (iter->out_file)
+	// 			free(iter->out_file);
+	// 		set_values_to_null(iter);
+	// 		temp = iter;
+	// 		iter = iter->next;
+	// 		free(temp);
+	// 	}
+	// }
 	info->commands = NULL;
 }

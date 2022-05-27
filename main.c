@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 21:42:17 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/27 21:44:21 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,17 @@ int	main(int argc, char **argv, char **envp)
 		// printf("after rl - %s\n", str);
 		if (is_exit_command(str, &info) == 1)
 			break ;
-	printf("main - status: %d\n", info.status);
+	// printf("main - status: %d\n", info.status);
 		if (str)
 			add_history(str);
 		else if (free_after_ctrl_d(&info, &str))
 			break ;
-		get_tokens_from_string(str, &info);//лексер // print_tokens(&info);
-		print_tokens(&info);
+		get_tokens_from_string(str, &info);//лексер и парсер
+		// print_tokens(&info);
 		clear_info_except_envp(&info);
 		free(str);
 		str = NULL;
-	printf("main - status: %d\n", info.status);
-
+	// printf("main - status: %d\n", info.status);
 	}
 	rl_clear_history();
 	if (info.envp && info.changed_envp)
