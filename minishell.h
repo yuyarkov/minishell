@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 20:10:20 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:16:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,11 @@ char	*get_cmd_path(char *cmd, t_info *info);
 char	*find_cmd_path(char *cmd, char *path);
 void	print_cmd_error(char *argv);
 void	print_file_error(char *file_name);
+
+t_list	*create_elem_cmd(t_token *t, t_info *info);
+t_token	*get_next_root_limiter(t_token *token, t_info *info);
+void	get_redirect_from_token(t_token *t, t_list *c);
+void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd, int group);
 
 t_env	*create_env(char **envp, int ac, char **av);
 char	**return_env_to_char(t_env *env);
