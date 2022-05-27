@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 20:58:01 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/27 18:24:45 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,51 +53,41 @@ int	execute_builtin(t_list *cmd, char **envp, t_info *info)
 	return (status);
 }
 
-// int	execute_commands(t_list *commands, char **envp, t_env **env)
-// {
-// 	pid_t	child;
-// 	int		status;
-// 	t_list	*iter;
+void	close_parent_pipes(t_list *iter)
+{
+	if (!iter->previous)
+		close(iter->end[1]);
+	else if (iter->next)
+	{
+		close(iter->end[1]);
+		close(iter->previous->end[0]);
+	}
+	else
+		close(iter->previous->end[1]);
+}
 
-// 	if (commands)
-// 		status = 0;
-// 	else
-// 		status = 127; //разобраться почему 127 и заменить на константу
-// 	iter = commands;
-// 	while (iter)
-// 	{
-// 		if (is_builtin_command(iter->cmd))
-// 			status = execute_builtin(iter, envp, env);
-// 		else if (iter->cmd && *iter->cmd != '\0')
-// 		{
-// 		//	printf("iter->cmd: %s, iter->limiter: %d, iter->previous: %p\n", iter->cmd,
-// 		//		 iter->limiter, iter->previous);
-// 			if (iter->limiter == PIPE)
-// 				iter = execute_with_pipe(iter, envp);
-// 			else
-// 			{
-// 				child = fork();
-// 				if (child < 0)
-// 				{
-// 					perror("Fork: ");
-// 					return (-1);//подумать, какой правильный код возвращать
-// 				}
-// 				signal(SIGINT, SIG_IGN);//сигнал SIGINT игнорируется
-// 				signal(SIGQUIT, SIG_IGN);//сигнал SIGQUIT игнорируется
-// 				if (child == 0)
-// 					execute_cmd(iter, envp);
-// 				waitpid(child, &status, WUNTRACED);
-// 				if (WIFSIGNALED(status))//если во время дочернего процесса (cat или grep) передан сигнал
-// 				{
-// 					if (WTERMSIG(status) == 3)
-// 						ft_putstr_fd("Quit: 3\n", 1);// back slash
-// 					else
-// 						ft_putstr_fd("\n", 1);// ^C
-// 				}
-// 			}
-// 		}
-// 		if (iter)
-// 			iter = iter->next;
-// 	}
-// 	return (status);
-// }
+t_list	*execute_with_pipe(t_list *list, t_info *info)
+{
+	int		status;
+	pid_t	child;
+	t_list	*iter;
+
+	iter = list;
+	while (iter && (iter->limiter == PIPE
+			|| (iter->previous && iter->previous->limiter == PIPE)))
+	{
+		if (iter->next)
+			pipe(iter->end);
+		child = fork();
+		if (child < 0)
+			exit(EXIT_FAILURE);
+		if (child == 0)
+			child_pipex(iter, info);
+		close_parent_pipes(iter);
+		if (!iter->next)
+			waitpid(child, &status, 0);
+		info->status = status / 256;
+		iter = iter->next;
+	}
+	return (iter);
+}

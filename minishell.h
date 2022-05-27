@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:05:24 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 19:42:06 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void	dup_back_redirect(t_list *cmd);
 char	*get_next_line(int fd);
 int		read_from_heredoc(t_list *cmd, int *end);
 void	pipe_for_heredoc(t_list *iter, int *fd);
+void	child_pipex(t_list *cmd, t_info *info);
 
 t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 void	ft_double_list_add_back(t_list **list, t_list *new_elem);
@@ -160,6 +161,7 @@ void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);//перенести в другой раздел
 void	clear_tokens(t_info *info);
 void	clear_info(t_info *info);//зачаток общей функции, которая чистит всё
+void	clear_cmd(t_list *iter);
 void	clear_info_except_envp(t_info *info);
 void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
 char	*get_dollar_value_from_env(char *s, t_info *info);

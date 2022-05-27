@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 15:57:12 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/08 16:00:09 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 18:26:26 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,6 @@ void	pipe_for_heredoc(t_list *iter, int *fd)
 	*fd = end[0];
 }
 
-void	print_prompt_string(t_list *cmd)
-{
-	(void) cmd;//вообще непонятно, нужна ли эта отдельная функция
-	ft_putstr_fd("> ", 1);
-}
-
 int	read_from_heredoc(t_list *cmd, int *end)
 {
 	char	*buff;
@@ -45,13 +39,13 @@ int	read_from_heredoc(t_list *cmd, int *end)
 	close(end[0]);
 	limiter = ft_strjoin(cmd->heredoc_eof, "\n");
 	lim_len = ft_strlen(limiter);
-	print_prompt_string(cmd);
+	ft_putstr_fd("> ", 1);
 	buff = get_next_line(0);
 	while (ft_strncmp(buff, limiter, lim_len) != 0)
 	{
 		temp = buff;
 		ft_putstr_fd(buff, end[1]);
-		print_prompt_string(cmd);
+		ft_putstr_fd("> ", 1);
 		buff = get_next_line(0);
 		free(temp);
 	}

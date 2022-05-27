@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:43:18 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 18:24:39 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	dup_redirect_out_for_cmd(t_list *cmd)
 	if (cmd->redirect_out == REDIRECT_OUT)
 		cmd->fd[1] = open(cmd->out_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (cmd->redirect_out == REDIRECT_APPEND)
-		cmd->fd[1] = open(cmd->out_file, O_CREAT | O_RDWR | O_APPEND, 0644);	
+		cmd->fd[1] = open(cmd->out_file, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (cmd->fd[1] < 0)
 		print_file_error(cmd->out_file);
 	cmd->fd[3] = dup(STDOUT_FILENO);
@@ -95,42 +95,4 @@ void	child_pipex(t_list *cmd, t_info *info)
 	else if (execve(cmd->cmd, cmd->arguments, info->envp) == -1)
 		perror ("Could not execve");
 	exit(EXIT_FAILURE);
-}
-
-void	close_parent_pipes(t_list *iter)
-{
-	if (!iter->previous)
-		close(iter->end[1]);
-	else if (iter->next)
-	{
-		close(iter->end[1]);
-		close(iter->previous->end[0]);
-	}
-	else
-		close(iter->previous->end[1]);
-}
-
-t_list	*execute_with_pipe(t_list *list, t_info *info)
-{
-	int		status;
-	pid_t	child;
-	t_list	*iter;
-
-	iter = list;
-	while (iter && (iter->limiter == PIPE || (iter->previous && iter->previous->limiter == PIPE)))
-	{
-		if (iter->next)
-			pipe(iter->end);
-		child = fork();
-		if (child < 0)
-			exit(EXIT_FAILURE);
-		if (child == 0)
-			child_pipex(iter, info);
-		close_parent_pipes(iter);
-		if (!iter->next)
-			waitpid(child, &status, 0);
-		info->status = status / 256;
-		iter = iter->next;
-	}
-	return (iter);
 }

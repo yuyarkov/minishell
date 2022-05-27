@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:48:25 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 19:43:18 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 18:18:34 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 typedef struct s_list
 {
 	void			*content;
-	char			*cmd;// сама команда, например ls или cat
-	char			**arguments;//вся строка с командой и аргументами, например "ls -la"
-	int				limiter; //коды int SEMICOLON, AND_SIGN и т.д.
-	int				fd[4];//сюда клады дескрипторы файлов, если есть редирект. Еще два добавил, чтобы хранить копии стандартных ввода и вывода
+	char			*cmd;
+	char			**arguments;
+	int				limiter;
+	int				fd[4];
 	int				pipe_in;
 	int				pipe_out;
-	int				end[2];//заполняется, если есть pipe
+	int				end[2];
 	int				redirect_in;
 	char			*redirect_in_file;
 	char			*heredoc_eof;
@@ -33,7 +33,7 @@ typedef struct s_list
 	char			*out_file;
 	int				exit_code;
 	struct s_list	*next;
-	struct s_list	*previous;//сделаем двусвязный, как в пайпексе
+	struct s_list	*previous;
 }	t_list;
 
 void	*ft_memset(void *s, int value, size_t num_bytes);

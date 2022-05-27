@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:05:57 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 19:41:36 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ int	get_min_level(t_token *t)
 	if (!t)
 		return (0);
 	i = 0;
+	result = 0;
 	while (t && t[i].type != EOF_TOKENS)
 	{
 		if (t[i].type == AND_SIGN || t[i].type == OR_SIGN)
 			result = t[i].level;
 		i++;		
 	}
+	i = 0;
 	while (t && t[i].type != EOF_TOKENS)
 	{
 		if ((t[i].type == AND_SIGN || t[i].type == OR_SIGN) && t[i].level < result)
@@ -165,20 +167,31 @@ int	parse_and_execute_group(t_token *t, t_info *info)
 	else
 		return (t->status);
 	t->status = execute_group(cmd, info->envp, info);
+	clear_cmd(cmd);
 	return (t->status);
 }
 
-int	parse_and_execute_branch(t_token *t, t_info *info)//основная рекурсивная функция
+int	mark_branch_not_executable(t_token *t)
 {
-	
-	printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group, t->type, t->status);
-	if (!t->left && !t->right)//конечный случай рекурсии
+	if (t->left)
+		mark_branch_not_executable(t->left);
+	if (t->right)
+		mark_branch_not_executable(t->right);
+	t->status = 0;
+	return (0);
+}
+
+int	parse_and_execute_branch(t_token *t, t_info *info)
+{
+	if (!t->left && !t->right)
 		return (parse_and_execute_group(t, info));
-	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня
+	if (t->status == NEVER_EXECUTED)
 		t->status = parse_and_execute_branch(t->left, info);
 	if ((t->status == 0 && t->type == AND_SIGN) ||
 			(t->status != 0 && t->type == OR_SIGN))
 		t->status = parse_and_execute_branch(t->right, info);
+	if (t->status == 0 && t->type == OR_SIGN)
+		mark_branch_not_executable(t);
 	return (t->status);
 }
 
@@ -187,18 +200,18 @@ int	parse_and_execute_tree(t_info *info)
 	t_token *t;
 
 	t = info->tokens;
-	while (t)//основной большой цикл.
+	while (t)
 	{
 		t = get_next_root_limiter(t, info);
 		// if (t)
-		// 	printf("next root limiter: %d\n", t->type);
+		// 	printf("next root limiter, type: %d, group: %d\n", t->type, t->group);
 		if (!t)
-			return (parse_and_execute_group(info->tokens, info));//вырожденный случай, когда нет лимитеров в строке
+			return (parse_and_execute_group(info->tokens, info));
 		if (t)
 			parse_and_execute_branch(t, info);
 	}
 	if (t)
 		return (t->status);
 	else
-		return (EXIT_FAILURE);//вопрос, что возвращать в этом случае
+		return (EXIT_FAILURE);
 }
