@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:05:57 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 22:29:11 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	get_min_level(t_token *t)
 	{
 		if (t[i].type == AND_SIGN || t[i].type == OR_SIGN)
 			result = t[i].level;
-		i++;		
+		i++;
 	}
 	while (t && t[i].type != EOF_TOKENS)
 	{
@@ -51,7 +51,7 @@ int	get_min_level(t_token *t)
 			result = t[i].level;
 		i++;
 	}
-	return (result);	
+	return (result);
 }
 
 t_token	*get_next_root_limiter(t_token *token, t_info *info)
@@ -90,7 +90,7 @@ void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 	}
 	cmd->cmd = result;
 	if (!result)
-		print_cmd_error(t[i].value);
+		print_cmd_error(t[i].value, &info->status);
 }
 
 t_list	*create_elem_cmd(t_token *t, t_info *info)
@@ -171,7 +171,7 @@ int	parse_and_execute_group(t_token *t, t_info *info)
 int	parse_and_execute_branch(t_token *t, t_info *info)//основная рекурсивная функция
 {
 	
-	printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group, t->type, t->status);
+	// printf("=====executing branch: %d, t.type: %d, t.status: %d=====\n", t->group, t->type, t->status);
 	if (!t->left && !t->right)//конечный случай рекурсии
 		return (parse_and_execute_group(t, info));
 	if (t->status == NEVER_EXECUTED)//защита от повторного обхода дерева слева от другого корня

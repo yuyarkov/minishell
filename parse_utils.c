@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:14:41 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:11:25 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_exit_command(char *str, t_info *info)
-{
-	if (!str)
-		return (0);
-	if (ft_strncmp(str, "exit\0", 5) == 0)
-	{
-		clear_info(info);
-		return (1);
-	}
-	else
-		return (0);
-}
+// int	is_exit_command(char *str, t_info *info)
+// {
+// 	if (!str)
+// 		return (0);
+// 	if (ft_strncmp(str, "exit\0", 5) == 0)
+// 	{
+// 		clear_info(info);
+// 		return (1);
+// 	}
+// 	else
+// 		return (0);
+// }
 
 int	is_builtin_command(char *s)
 {
-	printf("is_builtin_command - here, s: '%s'\n", s);
+	// printf("is_builtin_command - here, s: '%s'\n", s);
 	if (!s)
 		return (0);
 	if (ft_strncmp(s, "exit", 5) == 0)
@@ -119,10 +119,7 @@ char	*get_cmd_path(char *input_cmd, char **envp, t_info *info)
 	if (access(cmd, 1 << 0) == 0)
 		return (cmd);
 	if (is_builtin_command(cmd))
-	{
-		printf("it's builtin command, see: '%s'\n", cmd);
 		return (cmd);
-	}
 	result = 0;
 	i = 0;
 	while (!result && envp[i])

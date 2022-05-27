@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 20:01:24 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/26 21:41:58 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,6 @@ void	get_tokens_from_string(char *s, t_info *info)
 	put_tree_level_marks(info);
 	put_group_id_marks(info);
 	put_tree_marks(info, info->tokens);
+	if (!check_bad_syntax(info))//если синтаксис хороший;
+		parse_and_execute_tree(info);
 }

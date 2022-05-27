@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 21:05:24 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:22:13 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ typedef struct s_line
 	int				last_line;
 }	t_line;
 
-int		is_exit_command(char *str, t_info *info);
+// int		is_exit_command(char *str, t_info *info);
 
 void	get_tokens_from_string(char *s, t_info *info);
 
@@ -137,7 +137,7 @@ void	check_and_replace_dollar(t_token *t, t_info *info);
 void	get_argv_from_token(t_token *t, t_info *info, t_list *cmd, int group);
 void	get_redirect_from_token(t_token *t, t_list *cmd);
 int		execute_group(t_list *cmd, char **envp, t_info *info);
-int		execute_builtin(t_list *cmd, char **envp, t_info *info);
+void	execute_builtin(t_list *cmd, char **envp, t_info *info);
 
 void	dup_redirect_in_for_cmd(t_list *cmd);
 void	dup_redirect_out_for_cmd(t_list *cmd);
@@ -150,7 +150,7 @@ t_list	*add_cmd_to_list(t_info *info, char **argv, char **envp);
 void	ft_double_list_add_back(t_list **list, t_list *new_elem);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, char **envp, t_info *info);
-void	print_cmd_error(char *argv);
+void	print_cmd_error(char *argv, int *status);
 void	print_file_error(char *file_name);
 
 t_env	*create_env(char **envp, int ac, char **av);
@@ -170,6 +170,7 @@ void	execute_cmd(t_list *cmd, char **envp);
 // builtin's //
 int		execute_cd_command(t_list *cmd, char **envp, t_env *env);
 int		execute_exit_command(t_list *cmd);
+// void	execute_exit_command(char **split_arg, int *status);
 int		execute_echo_command(t_list *cmd);
 int		execute_pwd_command(t_list *cmd);
 int		execute_unset_command(t_list *cmd, t_env *env);
@@ -182,7 +183,6 @@ void	create_sort_env(t_env *env);
 t_list	*execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
-int		free_after_ctrl_d(char *str, t_info *info);
 void	if_value_is_null(void *value);// проверка на возврат malloc'ом NULL
 void	if_pointer_is_null(char **value);// проверка массивов на NULL
 int		print_error_token(t_info *info, int token);// отладка?

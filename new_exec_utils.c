@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 20:13:38 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/27 19:02:58 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_cmd_from_group(t_list *cmd, char **envp, t_info *info)
 		dup_redirect_out_for_cmd(cmd);
 	status = execve(cmd->cmd, cmd->arguments, envp);
 	if (status == -1)
-			perror ("Could not execve");
+		perror ("Could not execve");
 	exit(status);
 }
 
