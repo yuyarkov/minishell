@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 18:24:45 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:52:05 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,7 @@
 
 void	execute_cmd(t_list *cmd, char **envp)
 {
-	//int	i;
 	ft_signal(2);
-	// i = 0;
-	// while (cmd->arguments && cmd->arguments[i])
-	// 	{
-	// 		printf("argv[%d]: %s\n", i, cmd->arguments[i]);
-	// 		i++;
-	// 	}
 	if (execve(cmd->cmd, cmd->arguments, envp) == -1)
 		perror ("Could not execve");
 	exit(EXIT_FAILURE);
@@ -66,7 +59,7 @@ void	close_parent_pipes(t_list *iter)
 		close(iter->previous->end[1]);
 }
 
-t_list	*execute_with_pipe(t_list *list, t_info *info)
+int	execute_with_pipe(t_list *list, t_info *info)
 {
 	int		status;
 	pid_t	child;
@@ -89,5 +82,5 @@ t_list	*execute_with_pipe(t_list *list, t_info *info)
 		info->status = status / 256;
 		iter = iter->next;
 	}
-	return (iter);
+	return (info->status);
 }

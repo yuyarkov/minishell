@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/26 20:01:24 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:41:15 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ int	put_dollar_key_to_token(char *s, t_token *t, int *k)
 	if (NULL == key)
 		exit(EXIT_FAILURE);
 	i = 1;
+	*k = *k + 1;
 	if (s[1] && s[1] == '?')
 	{
-		key = ft_strdup("?");
+		key[0] = '?';
+		key[1] = '\0';
 		t->type = DOLLAR_KEY;
 		t->value = key;
-		*k = *k + 1;
 		return (i + 1);
 	}
 	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_' ))
@@ -37,7 +38,6 @@ int	put_dollar_key_to_token(char *s, t_token *t, int *k)
 	key[i - 1] = '\0';
 	t->type = DOLLAR_KEY;
 	t->value = key;
-	*k = *k + 1;
 	return (i);
 }
 

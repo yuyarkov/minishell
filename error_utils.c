@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 18:21:52 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:33:08 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ int	print_error_token(t_info *info, int token)
 	ft_putstr_fd("minishell: syntax error near unexpected token \'", 2);
 	write_token(token);
 	ft_putendl_fd("\'", 2);
-	info->status = 25;//258;
+	info->status = 258;
 	return (1);
 }

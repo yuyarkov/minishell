@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 20:16:41 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:52:41 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@
 # define VALID_KEY_SYMBOLS ""
 # define EOF_TOKENS -600
 # define NEVER_EXECUTED -500
-# define AND_SIGN 201 //чётность кодов использую в парсинге. выбрасываю по 1 или по 2 символа, в зависимости от разделителя
-# define SEMICOLON 202// ;
+# define AND_SIGN 201
+# define SEMICOLON 202
 # define OR_SIGN 203
 # define PIPE 204
 # define WORD 205
 # define QUOTE 206
 # define DOUBLE_QUOTE 207
-# define REDIRECT_OUT 208// > перенаправление вывода с перезаписью
-# define REDIRECT_IN 209// < перенаправление ввод из файла с перезаписью
-# define REDIRECT_APPEND 210// >> перенаправление вывода с добавлением
-# define REDIRECT_HEREDOC 211// << перенаправление ввода из файла с добавлением
+# define REDIRECT_OUT 208
+# define REDIRECT_IN 209
+# define REDIRECT_APPEND 210
+# define REDIRECT_HEREDOC 211
 # define LEFT_PARENTHESIS 212
 # define RIGHT_PARENTHESIS 213
 # define DOLLAR_SIGN 215
@@ -63,11 +63,11 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_limiter
-{
-	int	sign;
-	int	index;
-}	t_limiter;
+// typedef struct s_limiter
+// {
+// 	int	sign;
+// 	int	index;
+// }	t_limiter;
 
 typedef struct s_token
 {
@@ -75,19 +75,16 @@ typedef struct s_token
 	char			*value;
 	int				level;
 	int				group;
-	int				in_qoutes;//чтобы объединять в один аргумент содержимое кавычек
-	int				status;//по умолчанию будем присваивать NEVER_EXECUTED
+	int				in_qoutes;
+	int				status;
 	struct s_token	*left;
 	struct s_token	*right;
-	struct s_token	*root;//пока непонятно, нужен ли
 }	t_token;
 
 typedef struct s_info
 {
-	int			num_of_commands;//не пригодилось, убрать, как уберу файл parse_utils
 	t_token		*tokens;
 	int			num_of_tokens;
-	t_limiter	*limiters;
 	int			in_redirect;
 	int			out_redirect;
 	int			err_redirect;
@@ -124,7 +121,6 @@ int		put_token_from_single_quotes(char *s, t_token *t, int *k);
 int		put_token_from_double_quotes(char *s, t_token *t, int *k);
 
 int		check_bad_syntax(t_info *info);
-//void	parse_commands(char *str, t_info *info, char **envp);
 
 void	put_tree_level_marks(t_info *info);
 void	put_group_id_marks(t_info *info);
@@ -164,12 +160,12 @@ t_env	*create_env(char **envp, int ac, char **av);
 char	**return_env_to_char(t_env *env);
 void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
-void	free_string_array(char **str);//перенести в другой раздел
+void	free_string_array(char **str);
 void	clear_tokens(t_info *info);
-void	clear_info(t_info *info);//зачаток общей функции, которая чистит всё
+void	clear_info(t_info *info);
 void	clear_cmd(t_list *iter);
 void	clear_info_except_envp(t_info *info);
-void	clear_list_env(t_env *env);//зачаток общей функции, которая чистит всё
+void	clear_list_env(t_env *env);
 char	*get_dollar_value_from_env(char *s, t_info *info);
 
 int		execute_commands(t_list *commands, char **envp, t_env **env);
@@ -187,15 +183,15 @@ t_env	*env_create_elem(char *str);
 int		add_arguments(t_list *cmd, t_env **env);
 void	create_sort_env(t_env *env);
 
-t_list	*execute_with_pipe(t_list *list, t_info *info);
+int		execute_with_pipe(t_list *list, t_info *info);
 
 void	ft_signal(int i);
 int		free_after_ctrl_d(char *str, t_info *info);
-void	if_value_is_null(void *value);// проверка на возврат malloc'ом NULL
-void	if_pointer_is_null(char **value);// проверка массивов на NULL
-int		print_error_token(t_info *info, int token);// отладка?
+void	if_value_is_null(void *value);
+void	if_pointer_is_null(char **value);
+int		print_error_token(t_info *info, int token);
 
-void	print_commands_list(t_list *cmd);//для дебага, убрать перед сдачей вместе с файлом print_utils
-void	print_tokens(t_info *info);//для дебага, убрать перед сдачей
+void	print_commands_list(t_list *cmd);
+void	print_tokens(t_info *info);
 
 #endif

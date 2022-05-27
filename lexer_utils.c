@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 12:52:32 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/24 20:37:30 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:20:36 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ int	put_token_from_single_quotes(char *s, t_token *t, int *k)
 	result[i - 1] = '\0';
 	t[1].value = result;
 	t[1].type = WORD;
-	// if (s[i] == '\0')
-	// 	return (i);
 	if (s[i] == '\'')
 	{
 		t[2].type = QUOTE;
