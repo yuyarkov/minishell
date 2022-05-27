@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tree_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 19:35:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 20:13:19 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:51:33 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	get_command_from_token(t_token *t, t_info *info, t_list *cmd)
 	}
 	cmd->cmd = result;
 	if (!result)
-		print_cmd_error(t[i].value);
+		print_cmd_error(t[i].value, &info->status);
 }
 
 t_list	*create_elem_cmd(t_token *t, t_info *info)

@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 21:39:09 by jg                #+#    #+#             */
-/*   Updated: 2022/05/26 19:56:14 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/26 22:40:09 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	**return_env_to_char(t_env *env)
 	int		index;
 	char	**new_envp;
 
+	ft_signal(1);
 	size = lern_size_env(env);
 	new_envp = malloc(sizeof(char *) * (size + 1));
 	if_pointer_is_null(new_envp);

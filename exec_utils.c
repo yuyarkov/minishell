@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 21:52:05 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/27 21:56:17 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,30 @@ void	execute_cmd(t_list *cmd, char **envp)
 	exit(EXIT_FAILURE);
 }
 
-int	execute_builtin(t_list *cmd, char **envp, t_info *info)
+void	execute_builtin(t_list *cmd, char **envp, t_info *info)
 {
-	int	status;
-
 	if (cmd->redirect_in)
 		dup_redirect_in_for_cmd(cmd);
 	if (cmd->redirect_out)
 		dup_redirect_out_for_cmd(cmd);
-	status = 0;
+	info->status = 0;
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
-		status = execute_cd_command(cmd, envp, info->env);
+		info->status = execute_cd_command(cmd, envp, info->env);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
-		status = execute_exit_command(cmd);
+		info->status = execute_exit_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "echo", 5) == 0)
-		status = execute_echo_command(cmd);
+		info->status = execute_echo_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
-		status = execute_pwd_command(cmd);
+		info->status = execute_pwd_command(cmd);
 	else if (ft_strncmp(cmd->cmd, "unset\0", 6) == 0)
-		status = execute_unset_command(cmd, info->env);
+		info->status = execute_unset_command(cmd, info->env);
 	else if (ft_strncmp(cmd->cmd, "export\0", 7) == 0)
-		status = execute_export_command(cmd, info->env);
+		info->status = execute_export_command(cmd, info->env);
 	if (cmd->redirect_in || cmd->redirect_out)
 		dup_back_redirect(cmd);
-	return (status);
+	// info->status = status;
+	printf("inside execute_builtin, status: %d\n", info->status);
+	// return (status);
 }
 
 void	close_parent_pipes(t_list *iter)
