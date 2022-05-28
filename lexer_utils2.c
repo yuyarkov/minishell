@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 16:51:40 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/28 18:07:39 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,15 @@ t_token	*init_tokens(char *s)
 	result[i].status = NEVER_EXECUTED;
 	result[i].value = NULL;
 	return (result);
+}
+
+void	pre_parse_and_execute(t_info *info)
+{
+	put_tree_level_marks(info);
+	put_group_id_marks(info);
+	put_tree_marks(info, info->tokens);
+	if (!check_bad_syntax(info))
+		parse_and_execute_tree(info);
 }
 
 void	get_tokens_from_string(char *s, t_info *info)
