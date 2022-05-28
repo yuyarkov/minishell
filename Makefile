@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/12 14:50:20 by dirony            #+#    #+#              #
-#    Updated: 2022/05/27 21:56:34 by dirony           ###   ########.fr        #
+#    Updated: 2022/05/28 17:59:25 by fdarkhaw         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = 	main.c						parse_utils.c\
 		new_exec_utils.c			parse_utils2.c\
 		pre_parsing_utils.c			pre_parsing_utils2.c\
 		heredoc_utils.c				get_next_line.c\
-		print_utils_delete.c# delete before check
+		#print_utils_delete.c delete before check
 	
 LIBDIR =   ./libft/
 
@@ -59,7 +59,7 @@ CPPFLAGS 	= -I$(INC_DIR) -I$(RL_INC_DIR)
 
 LDFLAGS 	= -L$(RL_LIB_DIR)
 
-CFLAGS 		= -Wall -Wextra -Werror -MMD -g -fsanitize=address
+CFLAGS 		= -Wall -Wextra -Werror -MMD -g# -fsanitize=address
 
 all		:	libmake $(NAME)
 
@@ -68,7 +68,8 @@ libmake :
 
 $(NAME)	:	$(OBJS) $(LIBDIR)$(LIBFT)
 			@cp $(LIBDIR)$(LIBFT) $(LIBFT)
-			@$(CC)  $(CFLAGS) $(CPPFLAGS) -g $(LDFLAGS) $(LIBFT) $(LDLIBS) $(OBJS) -o $@  
+			@$(CC)  $(CFLAGS) $(CPPFLAGS) -g $(LDFLAGS) $(LIBFT) \
+			$(LDLIBS) $(OBJS) -o $@  
 			@printf "\e[38;5;226m./$@ successfully build\n"
 
 %.o 	: 	%.c

@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/20 18:37:19 by jg                #+#    #+#             */
-/*   Updated: 2022/05/27 21:56:22 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/28 16:22:03 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_befor_exit(char *str, char **split_arg, t_info *info)
+{
+	free_string_array(split_arg);
+	free(str);
+	clear_info(info);
+}
 
 void	free_string_array(char **str)
 {

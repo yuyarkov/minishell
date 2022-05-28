@@ -6,7 +6,7 @@
 /*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 12:42:00 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/24 20:09:00 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/28 16:55:05 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,11 @@
 
 void	if_pointer_is_null(char **value)
 {
-
-	if (NULL == value)// добавил проверку
+	if (NULL == value)
 	{
 		ft_putstr_fd("Memory has not been properly allocated\n", 2);
 		exit(1);
 	}
-	// int	i;
-
-	// i = 0;
-	// while (value[i])
-	// {
-	// 	if (NULL == value[i])
-	// 	{
-	// 		ft_putstr_fd("Memory has not been properly allocated\n", 2);
-	// 		exit(1);
-	// 	}
-	// 	i++;
-	// }
 }
 
 void	if_value_is_null(void *value)

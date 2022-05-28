@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 20:26:34 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 18:24:39 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/28 14:29:32 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	dup_redirect_out_for_cmd(t_list *cmd)
 
 void	dup_back_redirect(t_list *cmd)
 {
-	printf("inside dup_back, fd[0]: %d, fd[1]: %d\n", cmd->fd[0], cmd->fd[1]);
 	if (cmd->redirect_in)
 	{
 		if (dup2(cmd->fd[2], STDIN_FILENO) < 0)

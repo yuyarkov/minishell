@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 19:03:58 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/25 20:06:07 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/28 16:47:48 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	put_tree_level_marks(t_info *info)
 		tokens[i].level = level;
 		i++;
 	}
+	put_group_id_marks(info);
+	put_tree_marks(info, info->tokens);
 }
 
 void	put_group_id_marks(t_info *info)

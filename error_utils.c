@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 21:56:08 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/28 16:53:45 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_cmd_error(char *argv, int *status)
 		ft_putstr_fd(temp, 2);
 		ft_putendl_fd(": command not found", 2);
 		free(temp);
-		*status = 127;//так же работает bash
+		*status = 127;
 	}
 }
 

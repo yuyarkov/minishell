@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:08:27 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/27 21:57:01 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/28 16:58:22 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-// typedef struct s_limiter
-// {
-// 	int	sign;
-// 	int	index;
-// }	t_limiter;
-
 typedef struct s_token
 {
 	int				type;
@@ -106,8 +100,6 @@ typedef struct s_line
 	int				last_buff;
 	int				last_line;
 }	t_line;
-
-// int		is_exit_command(char *str, t_info *info);
 
 void	get_tokens_from_string(char *s, t_info *info);
 
@@ -148,7 +140,7 @@ void	ft_double_list_add_back(t_list **list, t_list *new_elem);
 char	*get_first_word(char *cmd);
 char	*get_cmd_path(char *cmd, t_info *info);
 char	*find_cmd_path(char *cmd, char *path);
-void	print_cmd_error(char *argv);
+void	print_cmd_error(char *argv, int *status);
 void	print_file_error(char *file_name);
 
 t_list	*create_elem_cmd(t_token *t, t_info *info);
@@ -161,6 +153,7 @@ char	**return_env_to_char(t_env *env);
 void	clear_env(t_env *list);
 void	lstiter_env(t_env *list, void (*f)(void *));
 void	free_string_array(char **str);
+void	free_befor_exit(char *str, char **split_arg, t_info *info);
 void	clear_tokens(t_info *info);
 void	clear_info(t_info *info);
 void	clear_cmd(t_list *iter);
@@ -173,8 +166,8 @@ void	execute_cmd(t_list *cmd, char **envp);
 
 // builtin's //
 int		execute_cd_command(t_list *cmd, char **envp, t_env *env);
-int		execute_exit_command(t_list *cmd);
-// void	execute_exit_command(char **split_arg, int *status);
+int		is_exit_command(char *str, t_info *info);
+void	execute_exit_command(t_list *cmd);
 int		execute_echo_command(t_list *cmd);
 int		execute_pwd_command(t_list *cmd);
 int		execute_unset_command(t_list *cmd, t_env *env);
