@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:05:23 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 18:07:00 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/29 15:36:10 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 void	print_cmd_error(char *argv, int *status)
 {
-	char	*temp;
-
 	if (argv && *argv != '\0')
 	{
-		temp = get_first_word(argv);
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(temp, 2);
+		ft_putstr_fd(argv, 2);
 		ft_putendl_fd(": command not found", 2);
-		free(temp);
 		*status = 127;
 	}
 }

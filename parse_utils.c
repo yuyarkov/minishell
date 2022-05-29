@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 19:55:35 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 13:55:48 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/29 15:36:39 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	is_exit_command(char *str, t_info *info)
-// {
-// 	if (!str)
-// 		return (0);
-// 	if (ft_strncmp(str, "exit\0", 5) == 0)
-// 	{
-// 		clear_info(info);
-// 		return (1);
-// 	}
-// 	else
-// 		return (0);
-// }
 
 int	is_builtin_command(char *s)
 {
@@ -102,7 +89,7 @@ char	*find_cmd_path(char *cmd, char *path)
 
 	dirs = ft_split(path, ':');
 	free(path);
-	temp = get_first_word(cmd);
+	temp = ft_strdup(cmd);
 	if (cmd[0] != '/')
 		temp_cmd = ft_strjoin("/", temp);
 	else
