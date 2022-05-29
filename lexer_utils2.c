@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 19:33:17 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 18:07:39 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/29 13:12:50 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ int	put_special_token(char *s, t_token *token, int *k)
 
 t_token	*init_tokens(char *s)
 {
-	int		i;
+	size_t	i;
 	t_token	*result;
 
-	result = malloc(sizeof(t_token) * (ft_strlen(s) + 2));
+	result = malloc(sizeof(t_token) * ((ft_strlen(s) * 2) + 2));
 	if (NULL == result)
 		exit(EXIT_FAILURE);
 	i = 0;
-	while (s[i])
+	while (i < (ft_strlen(s) * 2) + 1)
 	{
 		result[i] = (t_token){};
 		result[i].status = NEVER_EXECUTED;
@@ -97,7 +97,7 @@ void	pre_parse_and_execute(t_info *info)
 		parse_and_execute_tree(info);
 }
 
-void	get_tokens_from_string(char *s, t_info *info)
+void	parse_and_execute_string(char *s, t_info *info)
 {
 	int		i;
 	int		k;
@@ -121,7 +121,5 @@ void	get_tokens_from_string(char *s, t_info *info)
 	result[k].type = EOF_TOKENS;
 	info->tokens = result;
 	info->num_of_tokens = k;
-	put_tree_level_marks(info);
-	if (!check_bad_syntax(info))
-		parse_and_execute_tree(info);
+	pre_parse_and_execute(info);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:02:19 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 16:51:02 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/29 13:16:29 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	main(int argc, char **argv, char **envp)
 		str = readline(SHELL);
 		if (is_exit_command(str, &info) == 1)
 			break ;
-		if (str)
+		if (str && *str != '\0')
 			add_history(str);
-		else if (free_after_ctrl_d(&info, &str))
+		else if (!str && free_after_ctrl_d(&info, &str))
 			break ;
-		get_tokens_from_string(str, &info);
+		parse_and_execute_string(str, &info);
 		clear_info_except_envp(&info);
 		free(str);
 		str = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:48:38 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 14:16:31 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/29 13:58:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int	execute_group(t_list *commands, char **envp, t_info *info)
 	int		status;
 	t_list	*iter;
 
-	// if (commands) //зачем это действие?
-	// 	status = 0;
-	// else
-	// 	status = 127;
+	if (commands)
+		status = 0;
+	else
+		status = 127;
 	iter = commands;
 	while (iter)
 	{
@@ -80,6 +80,6 @@ int	execute_group(t_list *commands, char **envp, t_info *info)
 			return (EXIT_FAILURE);
 		iter = iter->next;
 	}
-	// info->status = status / 256;//зачем это действие?
+	info->status = status / 256;
 	return (status);
 }

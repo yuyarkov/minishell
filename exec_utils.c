@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/28 16:53:21 by fdarkhaw         ###   ########.fr       */
+/*   Updated: 2022/05/29 14:02:07 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	execute_builtin(t_list *cmd, char **envp, t_info *info)
 		dup_redirect_in_for_cmd(cmd);
 	if (cmd->redirect_out)
 		dup_redirect_out_for_cmd(cmd);
-	// info->status = 0;// зачем это действие?
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
 		info->status = execute_cd_command(cmd, envp, info->env);
 	else if (ft_strncmp(cmd->cmd, "exit", 5) == 0)
@@ -76,7 +75,7 @@ int	execute_with_pipe(t_list *list, t_info *info)
 		close_parent_pipes(iter);
 		if (!iter->next)
 			waitpid(child, &status, 0);
-		info->status = status / 256;// зачем это действие?
+		info->status = status / 256;
 		iter = iter->next;
 	}
 	return (info->status);

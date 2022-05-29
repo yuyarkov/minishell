@@ -6,7 +6,7 @@
 /*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 20:57:31 by fdarkhaw          #+#    #+#             */
-/*   Updated: 2022/05/27 21:42:26 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/29 13:12:19 by dirony           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*join_word_chain(t_token *t, int *inc)
 	gr = t->group;
 	result = NULL;
 	i = *inc;
-	while (t[i].in_qoutes && t[i].type != EOF_TOKENS && t[i].group == gr)
+	while (t && t[i].in_qoutes && t[i].type != EOF_TOKENS && t[i].group == gr)
 	{
 		temp = result;
 		result = ft_strjoin(result, t[i].value);
