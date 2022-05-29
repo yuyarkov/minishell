@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dirony <dirony@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: fdarkhaw <fdarkhaw@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 17:03:52 by dirony            #+#    #+#             */
-/*   Updated: 2022/05/29 14:02:07 by dirony           ###   ########.fr       */
+/*   Updated: 2022/05/29 20:51:40 by fdarkhaw         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ void	close_parent_pipes(t_list *iter)
 
 int	execute_with_pipe(t_list *list, t_info *info)
 {
-	int		status;
+	int		status = 0;
 	pid_t	child;
 	t_list	*iter;
+	int		i = 0;
 
 	iter = list;
 	while (iter && (iter->limiter == PIPE
@@ -73,10 +74,15 @@ int	execute_with_pipe(t_list *list, t_info *info)
 		if (child == 0)
 			child_pipex(iter, info);
 		close_parent_pipes(iter);
-		if (!iter->next)
-			waitpid(child, &status, 0);
 		info->status = status / 256;
 		iter = iter->next;
+		i++;
+	}
+	while (i)// waitpid ждёт все процессы, раньше ждали только последний
+	{
+		// if (!iter->next)//ждали только последний проц
+		waitpid(-1, &status, 0);//-1 - любой ребёнок
+		i--;
 	}
 	return (info->status);
 }
